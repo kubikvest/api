@@ -69,7 +69,7 @@ return [
                 'kvest'       => 1,
                 'point'       => 0,
                 'title' => 'Задание 0',
-                'description' => 'Вы должны прийти сюда чтобы начать',
+                'description' => '111111',
                 'coords' => [
                     'latitude'  => [0, 100],
                     'longitude' => [0, 100],
