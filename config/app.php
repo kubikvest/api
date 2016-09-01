@@ -51,16 +51,16 @@ return [
             [
                 'kvest'       => 0,
                 'point'       => 0,
-                'title'       => 'Title',
-                'description' => 'Description',
+                'title'       => 'Test title',
+                'description' => 'Test description',
                 'coords' => [
                     'latitude'  => [0, 100],
                     'longitude' => [0, 100],
                 ],
                 'prompt' => [
-                    20 => 'First prompt',
-                    40 => 'Secont prompt',
-                    60 => 'Answer',
+                    20 => 'Test first prompt',
+                    40 => 'Test secont prompt',
+                    60 => 'Test answer',
                 ],
             ],
         ],

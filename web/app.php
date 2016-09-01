@@ -42,7 +42,7 @@ $app->get('/auth', function(Request $request) use ($app) {
     if ($user->isEmpty()) {
         $user->userId = $data['user_id'];
         $user->accessToken = $data['access_token'];
-        $user->kvestId = 1;
+        $user->kvestId = $code == 222 ? 0 : 1;
         $user->pointId = 0;
         $app['user.mapper']->newbie($user);
     } else {
