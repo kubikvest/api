@@ -1,7 +1,7 @@
 include vars.mk
 
 IMAGES = kubikvest/api
-CONTAINERS = kubikvest_db kubikvest kubikvest_nginx
+CONTAINERS ?= kubikvest_db kubikvest kubikvest_nginx
 DOCKER_RM = false
 
 build: composer
@@ -33,7 +33,7 @@ start: build
 		-e VK_REDIRECT_URI=$(VK_REDIRECT_URI) \
 		-e URI_OAUTH_VK=$(URI_OAUTH_VK) \
 		-e URL=$(URL) \
-        -e KEY=$(KEY) \
+		-e KEY=$(KEY) \
 		kubikvest/api \
 		php-fpm -F \
 			-d ENV[VK_CLIENT_ID]=1122 \
@@ -110,5 +110,33 @@ clean: stop
 destroy: clean
 	@-cd tests/mock-servers/vk;make destroy
 	@-docker rmi -f $(IMAGES)
+
+deploy: CONTAINERS = kubikvest kubikvest_nginx
+deploy: destroy build
+	@docker run -d \
+		--name "kubikvest" \
+		--link "mock_server_vk:vk-server" \
+		--link kubikvest_db:kubikvest_db \
+		-v $(CURDIR):/app \
+		-e VK_CLIENT_ID=$(VK_CLIENT_ID) \
+		-e VK_CLIENT_SECRET=$(VK_CLIENT_SECRET) \
+		-e VK_REDIRECT_URI=$(VK_REDIRECT_URI) \
+		-e URI_OAUTH_VK=$(URI_OAUTH_VK) \
+		-e URL=$(URL) \
+		-e KEY=$(KEY) \
+		kubikvest/api \
+		php-fpm -F \
+			-d error_reporting=E_ALL \
+			-d log_errors=On \
+			-d error_log=/dev/stdout \
+			-d display_errors=On \
+			-d always_populate_raw_post_data=-1
+	@docker run -d \
+		--name "kubikvest_nginx" \
+		--link kubikvest:service \
+		-v $(CURDIR):/app \
+		-p 8300:80 \
+		-v $(CURDIR)/sites-enabled:/etc/nginx/sites-enabled \
+		leanlabs/nginx
 
 .PHONY: build
