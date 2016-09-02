@@ -112,7 +112,7 @@ destroy: clean
 	@-docker rmi -f $(IMAGES)
 
 deploy: CONTAINERS = kubikvest kubikvest_nginx
-deploy: destroy build
+deploy: destroy
 	@docker run -d \
 		--name "kubikvest" \
 		--link "mock_server_vk:vk-server" \
