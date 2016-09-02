@@ -112,7 +112,7 @@ destroy: clean
 	@-docker rmi -f $(IMAGES)
 
 deploy: CONTAINERS = kubikvest kubikvest_nginx
-deploy: destroy
+deploy: destroy build
 	@docker run -d \
 		--name "kubikvest" \
 		--link kubikvest_db:kubikvest_db \
