@@ -7,6 +7,8 @@ ENV VK_CLIENT_ID="111" \
     VK_REDIRECT_URI="kubikvest" \
     URI_OAUTH_VK="vk-server"
 
+COPY . /app
+
 RUN echo "@stale http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
     apk add --update \
         php-zlib \
