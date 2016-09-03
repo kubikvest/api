@@ -100,6 +100,7 @@ test: build
 		--link kubikvest_nginx:service \
 		alpine \
 		sh -c 'apk add --update bash curl jq && ./test.sh service'
+	@-cd tests/mock-servers/vk;make destroy
 
 stop:
 	@-docker stop $(CONTAINERS)
@@ -108,7 +109,6 @@ clean: stop
 	@-docker rm -fv $(CONTAINERS)
 
 destroy: clean
-	@-cd tests/mock-servers/vk;make destroy
 	@-docker rmi -f $(IMAGES)
 
 deploy: CONTAINERS = kubikvest kubikvest_nginx
