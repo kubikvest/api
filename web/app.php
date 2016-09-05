@@ -108,7 +108,7 @@ $app->get('/task', function (Request $request) use ($app) {
     ];
 
     if (null === $user->startTask) {
-        $user->startTask = date('Y-m-d h:i:s');
+        $user->startTask = date('Y-m-d H:i:s');
         $app['user.mapper']->setStartTask($user);
     }
 
