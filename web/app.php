@@ -116,11 +116,15 @@ $app->get('/task', function (Request $request) use ($app) {
 
     $startTask  = new DateTime($user->startTask);
     $sinceStart = $startTask->diff(new DateTime());
-
-    foreach ($app['tasks'][$user->kvestId][$user->pointId]['prompt'] as $k => $v) {
+    $response['since'] = $sinceStart->i;
+    $prompt = $app['tasks'][$user->kvestId][$user->pointId]['prompt'];
+    foreach ($prompt as $k => $v) {
         if ($k > $sinceStart->i) {
             $response['timer'] = $k - $sinceStart->i;
             break;
+        }
+        if (false === next($prompt)) {
+            unset($response['timer']);
         }
     }
 
