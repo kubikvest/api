@@ -122,6 +122,7 @@ class User
                 'accessToken' => $user->accessToken,
                 'kvestId'     => $user->kvestId,
                 'pointId'     => $user->pointId,
+                'startTask'   => $user->startTask,
             ])
             ->where(['userId' => $user->userId]);
         $this->pdo->exec(QueryAssembler::stringify($query));
