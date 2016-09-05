@@ -89,6 +89,7 @@ $app->get('/task', function (Request $request) use ($app) {
     $user = $app['user.mapper']->getUser($data->user_id);
 
     $response = [
+        'title'        => $app['tasks'][$user->kvestId][$user->pointId]['title'],
         'description'  => $app['tasks'][$user->kvestId][$user->pointId]['description'],
         'point_id'     => $user->pointId,
         'total_points' => count($app['tasks'][$user->kvestId]),
