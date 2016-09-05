@@ -133,7 +133,6 @@ $app->get('/task', function (Request $request) use ($app) {
 
     if (0 < $sinceStart->h) {
         unset($response['timer']);
-        unset($response['prompt']);
     }
 
     return new JsonResponse($response, JsonResponse::HTTP_OK);
