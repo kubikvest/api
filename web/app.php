@@ -9,7 +9,8 @@ use Kubikvest\Model;
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $config = require_once __DIR__ . '/../config/app.php';
-$app    = new Application($config);
+$quest  = require_once __DIR__ . '/../config/quest.php';
+$app    = new Application(array_merge_recursive($config, $quest));
 
 $app->get('/auth', function(Request $request) use ($app) {
     $code = $request->get('code');
