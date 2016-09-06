@@ -46,6 +46,9 @@ return [
     'user.mapper' => function (Application $app) {
         return new \Kubikvest\Mapper\User($app['pdo'], $app['queryBuilder']);
     },
+    'quest.mapper' => function (Application $app) {
+        return new \Kubikvest\Mapper\QuestMapper($app['quest']);
+    },
     'tasks' => [
         0 => [
             [
