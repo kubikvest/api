@@ -107,6 +107,7 @@ stop:
 
 clean: stop
 	@-docker rm -fv $(CONTAINERS)
+	cd tests/mock-servers/vk;make clean
 
 destroy: clean
 	@-docker rmi -f $(IMAGES)
