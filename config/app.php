@@ -3,9 +3,6 @@
 use Silex\Application;
 use GuzzleHttp\Client as GuzzleClient;
 
-const MIN = 0;
-const MAX = 1;
-
 return [
     'debug' => true,
     'client_id'     => getenv('VK_CLIENT_ID'),
@@ -44,10 +41,16 @@ return [
         return new \Packaged\QueryBuilder\Builder\QueryBuilder();
     },
     'user.mapper' => function (Application $app) {
-        return new \Kubikvest\Mapper\User($app['pdo'], $app['queryBuilder']);
+        return new \Kubikvest\Mapper\UserMapper($app['pdo'], $app['queryBuilder']);
     },
     'quest.mapper' => function (Application $app) {
         return new \Kubikvest\Mapper\QuestMapper($app['quest']);
+    },
+    'point.mapper' => function (Application $app) {
+        return new \Kubikvest\Mapper\PointMapper($app['points']);
+    },
+    'link.gen' => function (Application $app) {
+        return new \Kubikvest\Model\LinkGenerator($app['url'], $app['key']);
     },
     'tasks' => [
         0 => [

@@ -3,7 +3,7 @@ machine:
     - docker
 
 dependencies:
-  pre:
+  override:
     - sudo apt-get install -y make
 
 test:

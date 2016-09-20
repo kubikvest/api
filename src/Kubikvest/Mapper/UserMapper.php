@@ -9,7 +9,7 @@ use Kubikvest\Model;
  * Class User
  * @package Kubikvest\Mapper
  */
-class User
+class UserMapper
 {
     /**
      * @var
@@ -44,7 +44,7 @@ class User
                 ->select(
                     'userId',
                     'accessToken',
-                    'kvestId',
+                    'questId',
                     'pointId',
                     'startTask'
                 )
@@ -55,8 +55,8 @@ class User
             if (!empty($record)) {
                 $user->userId      = (int) $record['userId'];
                 $user->accessToken = $record['accessToken'];
-                $user->kvestId     = (int) $record['kvestId'];
-                $user->pointId     = (int) $record['pointId'];
+                $user->questId     = $record['questId'];
+                $user->pointId     = $record['pointId'];
                 $user->startTask   = $record['startTask'];
             }
         } catch(\Exception $e) {
@@ -100,11 +100,11 @@ class User
     public function newbie(Model\User $user)
     {
         $query = $this->queryBuilder
-            ->insertInto('user', 'userId', 'accessToken', 'kvestId', 'pointId')
+            ->insertInto('user', 'userId', 'accessToken', 'questId', 'pointId')
             ->values(
                 $user->userId,
                 $user->accessToken,
-                $user->kvestId,
+                $user->questId,
                 $user->pointId
             );
         $this->pdo->exec(QueryAssembler::stringify($query));
@@ -120,7 +120,7 @@ class User
         $query = $this->queryBuilder
             ->update('user', [
                 'accessToken' => $user->accessToken,
-                'kvestId'     => $user->kvestId,
+                'questId'     => $user->questId,
                 'pointId'     => $user->pointId,
                 'startTask'   => $user->startTask,
             ])

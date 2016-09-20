@@ -57,11 +57,6 @@ test: build
 	@docker run -d --name "kubikvest_db" imega/mysql
 
 	@-docker run --rm \
-		--link kubikvest_db:kubikvest_db \
-		imega/mysql-client \
-		mysqladmin --silent --host=kubikvest_db --wait=5 ping
-
-	@-docker run --rm \
 		-v $(CURDIR)/sql:/sql \
 		--link kubikvest_db:kubikvest_db \
 		imega/mysql-client \
