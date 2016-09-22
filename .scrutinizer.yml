@@ -1,0 +1,11 @@
+build:
+  environment:
+    php:
+      version: 5.6.9
+  tests:
+    override:
+      -
+        command: 'phpunit'
+        coverage:
+          file: './phpunit.xml.dist'
+          format: 'php-clover'
