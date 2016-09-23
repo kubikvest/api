@@ -20,19 +20,21 @@ class QuestMapper
     }
 
     /**
-     * @param $id
+     * @param string $questId
      *
      * @return Quest
      */
-    public function getQuest($id)
+    public function getQuest($questId)
     {
         $quest = new Quest();
 
-        $quest->questId     = $this->db[$id]['id'];
-        $quest->title       = $this->db[$id]['title'];
-        $quest->description = $this->db[$id]['description'];
+        $data = $this->db[$questId];
 
-        $point = new Point();
-        $quest->currentPoint = $point;
+        $quest->questId     = $questId;
+        $quest->title       = $data['title'];
+        $quest->description = $data['description'];
+        $quest->points      = $data['points'];
+
+        return $quest;
     }
 }

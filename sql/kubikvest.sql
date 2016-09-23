@@ -6,9 +6,11 @@ DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
   `userId` bigint(20) unsigned NOT NULL,
+  `provider` char(2)  DEFAULT NULL,
   `accessToken` varchar(255) DEFAULT NULL,
-  `kvestId` int(10) unsigned,
-  `pointId` int(10) unsigned,
+  `questId` char(36) DEFAULT NULL,
+  `pointId` char(36) DEFAULT NULL,
+  `logQuest` blob,
   `startTask` datetime
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -5,8 +5,9 @@ namespace Kubikvest\Model;
 class User
 {
     public $userId = null;
+    public $provider = null;
     public $accessToken = null;
-    public $kvestId = null;
+    public $questId = null;
     public $pointId = null;
     public $startTask = null;
 
@@ -22,6 +23,7 @@ class User
     {
         return [
             'userId',
+            'provider',
             'accessToken',
             'kvestId',
             'pointId',
