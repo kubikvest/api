@@ -16,8 +16,9 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetLink($data, $expected)
     {
+        $user = $data['user'];
         $linkGen = new LinkGenerator($data['url'], $data['key']);
-        $actual = $linkGen->getLink($data['type'], $data['user'], $data['ttl']);
+        $actual = $linkGen->getLink($data['type'], $user(), $data['ttl']);
 
         $this->assertEquals($expected, $actual);
     }
