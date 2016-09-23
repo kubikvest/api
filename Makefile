@@ -4,13 +4,13 @@ IMAGES = kubikvest/api
 CONTAINERS ?= kubikvest_db kubikvest kubikvest_nginx
 DOCKER_RM = false
 
-build: composer
+build:
 	@docker build -t kubikvest/api .
 
 composer:
 	@-docker run --rm -v $(CURDIR):/data imega/composer install $(COMPOSER_FLAGS)
 
-start: build
+start: composer build
 	@docker run -d --name "kubikvest_db" -v $(CURDIR)/mysql.conf.d:/etc/mysql/conf.d imega/mysql
 
 	@docker run --rm \
@@ -52,7 +52,7 @@ start: build
 		leanlabs/nginx
 
 test: COMPOSER_FLAGS = --ignore-platform-reqs --no-interaction
-test: build
+test: composer build
 	cd tests/mock-servers/vk;make start
 
 	@docker run -d --name "kubikvest_db" imega/mysql
@@ -110,7 +110,7 @@ destroy: clean
 
 deploy: COMPOSER_FLAGS = --no-dev --ignore-platform-reqs --no-interaction
 deploy: CONTAINERS = kubikvest kubikvest_nginx
-deploy: destroy build
+deploy: composer destroy build
 	@docker run -d \
 		--name "kubikvest" \
 		--link kubikvest_db:kubikvest_db \
