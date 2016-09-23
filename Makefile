@@ -8,7 +8,7 @@ build: composer
 	@docker build -t kubikvest/api .
 
 composer:
-	@-docker run --rm -v $(CURDIR):/data imega/composer install --ignore-platform-reqs --no-interaction
+	@-docker run --rm -v $(CURDIR):/data imega/composer install $(COMPOSER_FLAGS)
 
 start: build
 	@docker run -d --name "kubikvest_db" -v $(CURDIR)/mysql.conf.d:/etc/mysql/conf.d imega/mysql
@@ -51,6 +51,7 @@ start: build
 		-v $(CURDIR)/sites-enabled:/etc/nginx/sites-enabled \
 		leanlabs/nginx
 
+test: COMPOSER_FLAGS = --ignore-platform-reqs --no-interaction
 test: build
 	cd tests/mock-servers/vk;make start
 
@@ -107,6 +108,7 @@ clean: stop
 destroy: clean
 	@-docker rmi -f $(IMAGES)
 
+deploy: COMPOSER_FLAGS = --no-dev --ignore-platform-reqs --no-interaction
 deploy: CONTAINERS = kubikvest kubikvest_nginx
 deploy: destroy build
 	@docker run -d \
