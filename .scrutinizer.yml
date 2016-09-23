@@ -26,8 +26,8 @@ checks:
 
 tools:
   external_code_coverage:
+    enabled: true
     timeout: 600
-    runs: 3
   php_loc:
     enabled: true
     excluded_dirs: [vendor, tests]
