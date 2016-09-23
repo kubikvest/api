@@ -5,10 +5,15 @@ build:
   tests:
     override:
       -
-        command: 'phpunit --coverage-clover=clover.xml'
+        command: 'phpunit --coverage-clover=coverage.clover'
         coverage:
-          file: 'clover.xml'
+          file: 'coverage.clover'
           format: 'php-clover'
+
+after_script:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+
 checks:
   php:
     code_rating: true
