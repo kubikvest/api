@@ -208,4 +208,8 @@ $app->get('/finish', function (Request $request) use ($app) {
     );
 });
 
-$app->run();
+if (true === (bool) getenv('TEST')) {
+    return $app;
+} else {
+    $app->run();
+}

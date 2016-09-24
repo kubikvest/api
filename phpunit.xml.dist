@@ -11,6 +11,11 @@
          syntaxCheck="false"
          bootstrap="tests/bootstrap.php"
         >
+    <php>
+        <env name="TEST" value="1"/>
+        <env name="KEY" value="qwerty"/>
+        <env name="URL" value="http://server"/>
+    </php>
     <testsuites>
         <testsuite name="Kubikvest Test Suite">
             <directory>./tests</directory>

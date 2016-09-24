@@ -12,7 +12,7 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider testGetLinkDataProvider
+     * @dataProvider getLinkDataProvider
      */
     public function testGetLink($data, $expected)
     {
@@ -23,7 +23,7 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testGetLinkDataProvider()
+    public function getLinkDataProvider()
     {
         return [
             [
