@@ -46,10 +46,8 @@ start: composer build
 	@docker run -d \
 		--name "kubikvest_nginx" \
 		--link kubikvest:service \
-		-v $(CURDIR):/app \
 		-p 8300:80 \
-		-v $(CURDIR)/sites-enabled:/etc/nginx/sites-enabled \
-		leanlabs/nginx
+		kubikvest/nginx
 
 test: COMPOSER_FLAGS = --ignore-platform-reqs --no-interaction
 test: composer build
@@ -85,10 +83,8 @@ test: composer build
 	@docker run -d \
 		--name "kubikvest_nginx" \
 		--link kubikvest:service \
-		-v $(CURDIR):/app \
 		-p 8300:80 \
-		-v $(CURDIR)/sites-enabled:/etc/nginx/sites-enabled \
-		leanlabs/nginx
+		kubikvest/nginx
 
 	@docker run --rm=$(DOCKER_RM) \
 		-v $(CURDIR)/tests:/data \
@@ -96,7 +92,14 @@ test: composer build
 		--link kubikvest_nginx:service \
 		alpine \
 		sh -c 'apk add --update bash curl jq && ./test.sh service'
-	@-cd tests/mock-servers/vk;make destroy
+#@-cd tests/mock-servers/vk;make destroy
+
+testunit:
+	@docker run --rm \
+		-v $(CURDIR):/app \
+		-w /app \
+		kubikvest/api \
+		sh -c '/app/vendor/bin/phpunit'
 
 stop:
 	@-docker stop $(CONTAINERS)
@@ -130,9 +133,7 @@ deploy: composer destroy build
 	@docker run -d \
 		--name "kubikvest_nginx" \
 		--link kubikvest:service \
-		-v $(CURDIR):/app \
 		-p 8300:80 \
-		-v $(CURDIR)/sites-enabled:/etc/nginx/sites-enabled \
-		leanlabs/nginx
+		kubikvest/nginx
 
 .PHONY: build

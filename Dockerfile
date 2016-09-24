@@ -13,6 +13,7 @@ RUN echo "@stale http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/re
     apk add --update \
         php-zlib \
         php-pdo_mysql \
+        php-dom \
         php-pdo && \
     rm -rf /var/cache/apk/*
 
