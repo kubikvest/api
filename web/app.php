@@ -5,12 +5,15 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Firebase\JWT\JWT;
 use Kubikvest\Model;
+use iMega\Teleport\Subscriber\RequestSubscriber;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $config = require_once __DIR__ . '/../config/app.php';
 $quest  = require_once __DIR__ . '/../config/quest.php';
 $app    = new Application(array_merge_recursive($config, $quest));
+
+$app['dispatcher']->addSubscriber(new RequestSubscriber($app));
 
 $app->get('/auth', function(Request $request) use ($app) {
     $code = $request->get('code');
@@ -43,6 +46,7 @@ $app->get('/auth', function(Request $request) use ($app) {
         return new JsonResponse([], JsonResponse::HTTP_BAD_REQUEST);
     }
 
+    //$user = Model\User::signin($data['user_id'], 'vk', $data['avatar']);
     /**
      * @var \Kubikvest\Model\User $user
      */
@@ -71,6 +75,10 @@ $app->get('/auth', function(Request $request) use ($app) {
             'task' => $app['link.gen']->getLink(Model\LinkGenerator::TASK, $user, $data['expires_in'], 'vk'),
         ]
     ]);
+});
+
+$app->get('/board', function (Request $request) use ($app) {
+
 });
 
 $app->get('/task', function (Request $request) use ($app) {
