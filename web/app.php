@@ -46,7 +46,7 @@ $app->get('/auth', function(Request $request) use ($app) {
     /**
      * @var \Kubikvest\Model\User $user
      */
-    $user = $app['user.mapper']->getUser($data['user_id']);
+    $user = $app['user.manager']->getUser($data['user_id']);
 
     if ($user->isEmpty()) {
         $questId = $code == 222 ? 'd9b135d3-9a29-45f0-8742-7ca6f99d9b73' : '74184cd8-b02a-4505-9416-b136468bfeaf';
@@ -60,10 +60,10 @@ $app->get('/auth', function(Request $request) use ($app) {
         $user->accessToken = $data['access_token'];
         $user->questId     = $questId;
         $user->pointId     = $quest->points[0];
-        $app['user.mapper']->newbie($user);
+        $app['user.manager']->newbie($user);
     } else {
         $user->accessToken = $data['access_token'];
-        $app['user.mapper']->update($user);
+        $app['user.manager']->update($user);
     }
 
     return new JsonResponse([
@@ -92,7 +92,7 @@ $app->get('/task', function (Request $request) use ($app) {
      * @var \Kubikvest\Model\Quest $quest
      * @var \Kubikvest\Model\Point $point
      */
-    $user  = $app['user.mapper']->getUser($data->user_id);
+    $user  = $app['user.manager']->getUser($data->user_id);
     $quest = $app['quest.mapper']->getQuest($user->questId);
     $point = $app['point.mapper']->getPoint($user->pointId);
 
@@ -132,7 +132,7 @@ $app->get('/checkpoint', function (Request $request) use ($app) {
      * @var \Kubikvest\Model\Quest $quest
      * @var \Kubikvest\Model\Point $point
      */
-    $user  = $app['user.mapper']->getUser($data->user_id);
+    $user  = $app['user.manager']->getUser($data->user_id);
     $quest = $app['quest.mapper']->getQuest($user->questId);
     $point = $app['point.mapper']->getPoint($user->pointId);
 
@@ -184,7 +184,7 @@ $app->get('/finish', function (Request $request) use ($app) {
     /**
      * @var \Kubikvest\Model\User $user
      */
-    $user = $app['user.mapper']->getUser($data->user_id);
+    $user = $app['user.manager']->getUser($data->user_id);
 
     return new JsonResponse(
         [
