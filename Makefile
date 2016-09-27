@@ -96,6 +96,7 @@ test: composer build
 
 testunit:
 	@docker run --rm \
+		--link kubikvest_db:server_db \
 		-v $(CURDIR):/app \
 		-w /app \
 		kubikvest/api \
