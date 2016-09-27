@@ -4,6 +4,8 @@ php:
   - 5.6
 
 before_script:
+  - mysql -e "CREATE DATABASE kubikvest CHARACTER SET utf8 COLLATE utf8_general_ci"
+  - cat sql/kubikvest.sql | mysql kubikvest
   - composer install --prefer-source --no-interaction
   - composer dumpautoload
 
