@@ -15,4 +15,4 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-insert user (userId, accessToken) value (1111,'asdasd');
+insert user (userId, provider, accessToken) value (1111, 'vk', 'token');
