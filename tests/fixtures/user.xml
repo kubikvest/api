@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<dataset>
+    <user userId="1111" provider="vk" accessToken="token"/>
+</dataset>
