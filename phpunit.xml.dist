@@ -15,6 +15,10 @@
         <env name="TEST" value="1"/>
         <env name="KEY" value="qwerty"/>
         <env name="URL" value="http://server"/>
+        <env name="DB_DSN" value="mysql:dbname=kubikvest;host=server_db;charset=UTF8"/>
+        <env name="DB_USER" value="" />
+        <env name="DB_PASSWD" value="" />
+        <env name="DB_DBNAME" value="kubikvest" />
     </php>
     <testsuites>
         <testsuite name="Kubikvest Test Suite">
