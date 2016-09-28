@@ -2,10 +2,11 @@
 
 namespace Kubikvest\Model;
 
-class User
+class User implements UserInterface
 {
     public $userId = null;
     public $provider = null;
+    public $avatar = null;
     public $accessToken = null;
     public $questId = null;
     public $pointId = null;
@@ -19,14 +20,17 @@ class User
         return null === $this->userId;
     }
 
-    public static function getFields()
+    /**
+     * @param string $userId
+     * @param string $provider
+     * @param string $avatar
+     *
+     * @return User
+     */
+    public static function signin($userId, $provider, $avatar = null)
     {
-        return [
-            'userId',
-            'provider',
-            'accessToken',
-            'kvestId',
-            'pointId',
-        ];
+        $user = new User();
+
+        return $user;
     }
 }
