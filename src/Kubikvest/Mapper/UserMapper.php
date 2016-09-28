@@ -32,38 +32,36 @@ class UserMapper
     }
 
     /**
-     * @param int $userId
+     * @param int    $userId
+     * @param string $provider
      *
-     * @return Model\User
+     * @return array
      */
-    public function getUser($userId)
+    public function getUser($userId, $provider)
     {
-        $user = new Model\User();
+        $record = [];
         try {
             $query = $this->queryBuilder
                 ->select(
                     'userId',
+                    'provider',
                     'accessToken',
                     'questId',
                     'pointId',
                     'startTask'
                 )
                 ->from('user')
-                ->where(['userId' => $userId]);
+                ->where([
+                    'userId'   => $userId,
+                    'provider' => $provider,
+                ]);
             $record = $this->pdo->query(QueryAssembler::stringify($query))
                 ->fetch(\PDO::FETCH_ASSOC);
-            if (!empty($record)) {
-                $user->userId      = (int) $record['userId'];
-                $user->accessToken = $record['accessToken'];
-                $user->questId     = $record['questId'];
-                $user->pointId     = $record['pointId'];
-                $user->startTask   = $record['startTask'];
-            }
         } catch(\Exception $e) {
             //
         }
 
-        return $user;
+        return $record;
     }
 
     /**
@@ -100,9 +98,10 @@ class UserMapper
     public function newbie(Model\User $user)
     {
         $query = $this->queryBuilder
-            ->insertInto('user', 'userId', 'accessToken', 'questId', 'pointId')
+            ->insertInto('user', 'userId', 'provider', 'accessToken', 'questId', 'pointId')
             ->values(
                 $user->userId,
+                $user->provider,
                 $user->accessToken,
                 $user->questId,
                 $user->pointId
