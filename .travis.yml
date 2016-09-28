@@ -3,6 +3,9 @@ language: php
 php:
   - 5.6
 
+env:
+  - DB_HOST=127.0.0.1
+
 before_script:
   - mysql -e "CREATE DATABASE kubikvest CHARACTER SET utf8 COLLATE utf8_general_ci"
   - cat sql/kubikvest.sql | mysql kubikvest

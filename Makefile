@@ -98,6 +98,7 @@ testunit:
 	@docker run --rm \
 		--link kubikvest_db:server_db \
 		-v $(CURDIR):/app \
+		-e DB_HOST=server_db \
 		-w /app \
 		kubikvest/api \
 		sh -c '/app/vendor/bin/phpunit'

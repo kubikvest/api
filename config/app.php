@@ -43,6 +43,9 @@ return [
     'user.mapper' => function (Application $app) {
         return new \Kubikvest\Mapper\UserMapper($app['pdo'], $app['queryBuilder']);
     },
+    'user.manager' => function (Application $app) {
+        return new \Kubikvest\Manager\UserManager($app['user.mapper']);
+    },
     'quest.mapper' => function (Application $app) {
         return new \Kubikvest\Mapper\QuestMapper($app['quest']);
     },

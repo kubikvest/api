@@ -2,7 +2,7 @@
 
 namespace Kubikvest\Model;
 
-use Kubikvest\Mapper\UserMapper;
+use Kubikvest\Manager\UserManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use GuzzleHttp\Psr7\Response;
@@ -19,7 +19,7 @@ class AppTest extends \PHPUnit_Framework_TestCase
         $this->app = require_once __DIR__.'/../../web/app.php';
 
         $this->app['curl'] = $this->mockVk();
-        $this->app['user.mapper'] = $this->mockUserMapper();
+        $this->app['user.manager'] = $this->mockUser();
 
         //$this->app['debug'] = true;
         //unset($this->app['exception_handler']);
@@ -39,11 +39,13 @@ class AppTest extends \PHPUnit_Framework_TestCase
         return $mock;
     }
 
-    public function mockUserMapper()
+    public function mockUser()
     {
         $user = new User();
-        $mock = $this->createMock(UserMapper::class);
+        $mock = $this->createMock(UserManager::class);
         $mock->method('getUser')->willReturn($user);
+        $mock->method('newbie');
+        $mock->method('update');
 
         return $mock;
     }
