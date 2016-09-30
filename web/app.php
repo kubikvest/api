@@ -48,31 +48,29 @@ $app->get('/auth', function(Request $request) use ($app) {
     /**
      * @var \Kubikvest\Model\User $user
      */
-    $user = $app['user.manager']->getUser($data['user_id']);
+    $user = $app['user.manager']->getUserByProviderCreds($data['user_id'], 'vk');
 
     if ($user->isEmpty()) {
-        $questId = $code == 222 ? 'd9b135d3-9a29-45f0-8742-7ca6f99d9b73' : '74184cd8-b02a-4505-9416-b136468bfeaf';
-        /**
-         * @var \Kubikvest\Model\Quest $quest
-         */
-        $quest = $app['quest.mapper']->getQuest($questId);
-
-        $user->provider    = 'vk';
-        $user->userId      = $data['user_id'];
-        $user->accessToken = $data['access_token'];
-        $user->ttl         = $data['expires_in'];
-        $user->questId     = $questId;
-        $user->pointId     = $quest->points[0];
-        $app['user.manager']->newbie($user);
+        if (222 == $code) {
+            $user = $app['user.manager']->createOnlyTest($data['user_id'], 'vk', $data['access_token'], $data['expires_in']);
+        } else {
+            $user = $app['user.manager']->create($data['user_id'], 'vk', $data['access_token'], $data['expires_in']);
+        }
     } else {
         $user->accessToken = $data['access_token'];
+        $user->ttl         = $data['expires_in'];
         $app['user.manager']->update($user);
     }
 
+    if ($user->isEmptyGroup()) {
+        $links['list_quest'] = $app['link.gen']->getLink(Model\LinkGenerator::LIST_QUEST, $user);
+    } else {
+        $links['task'] = $app['link.gen']->getLink(Model\LinkGenerator::TASK, $user);
+    }
+
     return new JsonResponse([
-        'links' => [
-            'task' => $app['link.gen']->getLink(Model\LinkGenerator::TASK, $user, $data['expires_in'], 'vk'),
-        ]
+        't'     => $app['link.gen']->getToken($user),
+        'links' => $links,
     ]);
 });
 
@@ -86,43 +84,65 @@ $app->get('/list-quest', function (Request $request) use ($app) {
     $data = [];
 
     foreach ($quests as $item) {
+        if ('8c5a3934-31b0-465e-812d-9a2e2074d0da' != $user->userId) {
+            continue;
+        }
         /**
          * @var \Kubikvest\Model\Quest $item
          */
         $data[] = [
-            'questId'     => $item->questId,
+            'quest_id'    => $item->questId,
             'title'       => $item->title,
             'description' => $item->description,
-            'link'        => $app['link.gen']->getLink(Model\LinkGenerator::QUEST, $user),
+            'link'        => $app['link.gen']->getLink(Model\LinkGenerator::CREATE_GAME, $user),
         ];
+        if ('8c5a3934-31b0-465e-812d-9a2e2074d0da' == $user->userId) {
+            break;
+        }
     }
 
     return new JsonResponse([
+        't'      => $app['link.gen']->getToken($user),
         'quests' => $data,
     ]);
 });
 
-$app->get('/task', function (Request $request) use ($app) {
-    $jwt = $request->get('t');
-    try {
-        $data = JWT::decode($jwt, $app['key'], ['HS256']);
-    } catch(Exception $e) {
-        return new JsonResponse(
-            [
-                'error' => $e->getMessage(),
-            ],
-            JsonResponse::HTTP_BAD_REQUEST
-        );
-    }
+$app->post('/create-game', function (Request $request) use ($app) {
+    $data = $app['request.content'];
 
     /**
      * @var \Kubikvest\Model\User  $user
      * @var \Kubikvest\Model\Quest $quest
+     * @var \Kubikvest\Model\Group $group
+     */
+    $user  = $app['user'];
+    $quest = $app['quest.mapper']->getQuest($data['quest_id']);
+    if (empty($user->groupId)){
+        $group = $app['group.manager']->create($quest);
+        $group->addUser($user);
+        $user->groupId = $group->groupId;
+        $app['user.manager']->update($user);
+    }
+
+    return new JsonResponse([
+        't'     => $app['link.gen']->getToken($user),
+        'links' => [
+            'task' => $app['link.gen']->getLink(Model\LinkGenerator::TASK, $user),
+        ],
+    ]);
+});
+
+$app->get('/task', function (Request $request) use ($app) {
+    /**
+     * @var \Kubikvest\Model\User  $user
+     * @var \Kubikvest\Model\Quest $quest
+     * @var \Kubikvest\Model\Group $group
      * @var \Kubikvest\Model\Point $point
      */
     $user  = $app['user'];
-    $quest = $app['quest.mapper']->getQuest($user->questId);
-    $point = $app['point.mapper']->getPoint($user->pointId);
+    $group = $app['group.manager']->get($user->groupId);
+    $quest = $app['quest.mapper']->getQuest($group->questId);
+    $point = $app['point.mapper']->getPoint($group->pointId);
 
     if (null === $user->startTask) {
         $user->startTask = date('Y-m-d H:i:s');
@@ -130,89 +150,79 @@ $app->get('/task', function (Request $request) use ($app) {
     }
 
     $response = [
-        'quest'        => (array) $quest,
-        'point'        => (array) $point,
-        'start_task'   => $user->startTask,
-        'timer'        => $point->getTimer($user->startTask),
-        'total_points' => count($quest->points),
+        'quest' => (array) $quest,
+        'point' => (array) $point,
+        'timer' => $point->getTimer($user->startTask),
+        't'     => $app['link.gen']->getToken($user),
         'links' => [
-            'checkpoint' => $app['link.gen']->getLink(Model\LinkGenerator::CHECKPOINT, $user, $data->ttl, $user->provider),
+            'checkpoint' => $app['link.gen']->getLink(Model\LinkGenerator::CHECKPOINT, $user),
         ],
+        'total_points' => count($quest->points),
     ];
     $response['point']['prompt'] = $point->getPrompt($user->startTask);
 
-    return new JsonResponse($response, JsonResponse::HTTP_OK);
+    return new JsonResponse($response);
 });
 
-$app->get('/checkpoint', function (Request $request) use ($app) {
-    $jwt    = $request->get('t');
-    $coords = $request->get('c');
-    list($lat, $lon) = explode(',', $coords);
-
-    try {
-        $data = JWT::decode($jwt, $app['key'], ['HS256']);
-    } catch(Exception $e) {
-        return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
-    }
+$app->post('/checkpoint', function (Request $request) use ($app) {
+    $data = $app['request.content'];
 
     /**
      * @var \Kubikvest\Model\User  $user
+     * @var \Kubikvest\Model\Group $group
      * @var \Kubikvest\Model\Quest $quest
      * @var \Kubikvest\Model\Point $point
      */
     $user  = $app['user'];
-    $quest = $app['quest.mapper']->getQuest($user->questId);
-    $point = $app['point.mapper']->getPoint($user->pointId);
+    $group = $app['group.manager']->get($user->groupId);
+    $quest = $app['quest.mapper']->getQuest($group->questId);
+    $point = $app['point.mapper']->getPoint($group->pointId);
 
     $response = [
+        't'            => $app['link.gen']->getToken($user),
         'quest'        => (array) $quest,
         'point'        => (array) $point,
         'total_points' => count($quest->points),
         'finish'       => false,
     ];
     unset($response['point']['prompt']);
-    if (!$point->checkCoordinates((double) $lat, (double) $lon)) {
+    if (!$point->checkCoordinates((double) $data['lat'], (double) $data['lon'])) {
         $response['links']['checkpoint'] = $app['link.gen']
-            ->getLink(Model\LinkGenerator::CHECKPOINT, $user, $data->ttl, 'vk');
+            ->getLink(Model\LinkGenerator::CHECKPOINT, $user);
         $response['error'] = 'Не верное место отметки.';
 
         return new JsonResponse($response, JsonResponse::HTTP_OK);
     }
 
-    $user->pointId   = $quest->nextPoint($user->pointId);
-    $user->startTask = null;
-    $app['user.mapper']->update($user);
-
-    if ($data->point_id == end($quest->points)) {
-        $response['links']['finish'] = $app['link.gen']->getLink(Model\LinkGenerator::FINISH, $user, $data->ttl, 'vk');
-        $user->pointId = null;
-        $app['user.mapper']->update($user);
+    if ($group->pointId == end($quest->points)) {
+        $response['links']['finish'] = $app['link.gen']->getLink(Model\LinkGenerator::FINISH, $user);
+        $group->pointId = null;
+        $app['group.manager']->update($group);
         $response['finish'] = true;
     } else {
-        $response['links']['task'] = $app['link.gen']->getLink(Model\LinkGenerator::TASK, $user, $data->ttl, 'vk');
+        $group->pointId = $quest->nextPoint($group->pointId);
+        $app['group.manager']->update($group);
+        $response['links']['task'] = $app['link.gen']->getLink(Model\LinkGenerator::TASK, $user);
     }
 
     return new JsonResponse($response, JsonResponse::HTTP_OK);
 });
 
 $app->get('/finish', function (Request $request) use ($app) {
-    $jwt = $request->get('t');
-
-    try {
-        $data = JWT::decode($jwt, $app['key'], ['HS256']);
-    } catch(Exception $e) {
-        return new JsonResponse(
-            [
-                'error' => $e->getMessage(),
-            ],
-            JsonResponse::HTTP_BAD_REQUEST
-        );
-    }
-
     /**
-     * @var \Kubikvest\Model\User $user
+     * @var \Kubikvest\Model\User  $user
+     * @var \Kubikvest\Model\Group $group
      */
     $user = $app['user'];
+    $group = $app['group.manager']->get($user->groupId);
+
+    if (! $group->isEmpty()) {
+        $group->active = false;
+        $app['group.manager']->update($group);
+    }
+
+    $user->groupId = null;
+    $app['user.manager']->update($user);
 
     return new JsonResponse([], JsonResponse::HTTP_OK);
 });

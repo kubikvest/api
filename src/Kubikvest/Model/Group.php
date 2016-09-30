@@ -2,34 +2,49 @@
 
 namespace Kubikvest\Model;
 
-use Kubikvest\Mapper\GroupMapper;
+use Kubikvest\Manager\GroupManager;
 
-class Group implements GroupInterface
+class Group extends Generic implements GroupInterface
 {
+    public $groupId = null;
+    public $gameId  = null;
+    public $questId = null;
+    public $pointId = null;
     protected $users   = [];
-    protected $gameId  = null;
-    protected $questId = null;
-    protected $pointId = null;
-    protected $pin     = null;
-    protected $active  = true;
+    public $pin     = null;
+    public $active  = true;
 
-    protected $mapper = null;
+    /**
+     * @var GroupManager
+     */
+    protected $manager;
 
-    public function __construct(GroupMapper $groupMapper)
+    public static function getTable()
     {
-        $this->mapper = $groupMapper;
+        return 'group';
     }
 
-    public function setQuest(Quest $quest)
+    public static function getFields()
     {
-        $this->questId = $quest->questId;
-        $this->mapper->update($this);
+        return [
+            'gameId',
+            'questId',
+            'pointId',
+            'users',
+            'pin',
+            'active',
+        ];
+    }
+
+    public function __construct(GroupManager $manager)
+    {
+        $this->manager = $manager;
     }
 
     public function addUser(User $user)
     {
-        $this->users[] = $user->userId;
-        $this->mapper->update($this);
+        array_push($this->users, $user->userId);
+        $this->manager->addUser($this);
     }
 
     public function getTask($uuid)
@@ -46,5 +61,23 @@ class Group implements GroupInterface
     {
         $this->active = false;
         $this->mapper->update($this);
+    }
+
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    public function setUsers($users)
+    {
+        $this->users = json_decode($users, true);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return null === $this->groupId;
     }
 }

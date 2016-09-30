@@ -33,9 +33,9 @@ class UserMapperTest extends \PHPUnit_Extensions_Database_TestCase
     /**
      * @dataProvider getUserDataProvider
      */
-    public function testGetUser($expected)
+    public function testGetUser($user, $expected)
     {
-        $actual = $this->mapper->getUser('1111', 'vk');
+        $actual = $this->mapper->getUser($user['userId']);
 
         $this->assertEquals($expected, $actual);
     }
@@ -44,14 +44,16 @@ class UserMapperTest extends \PHPUnit_Extensions_Database_TestCase
     {
         return [
             [
+                'user' => [
+                    'userId' => 'adff5c92-008c-47ac-bad8-11be43ea1469',
+                ],
                 'expected' => [
-                    'userId'      => '1111',
+                    'userId'      => 'adff5c92-008c-47ac-bad8-11be43ea1469',
                     'provider'    => 'vk',
+                    'uid'         => 1111,
                     'accessToken' => 'token',
                     'groupId'     => null,
                     'ttl'         => null,
-                    'questId'     => null,
-                    'pointId'     => null,
                     'startTask'   => null,
                 ],
             ]

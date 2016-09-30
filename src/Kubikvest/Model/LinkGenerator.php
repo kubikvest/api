@@ -10,10 +10,12 @@ use Firebase\JWT\JWT;
  */
 class LinkGenerator
 {
-    const TASK       = 'task';
-    const CHECKPOINT = 'checkpoint';
-    const FINISH     = 'finish';
-    const QUEST      = 'quest';
+    const TASK        = 'task';
+    const CHECKPOINT  = 'checkpoint';
+    const FINISH      = 'finish';
+    const QUEST       = 'quest';
+    const LIST_QUEST  = 'list-quest';
+    const CREATE_GAME = 'create-game';
 
     protected $key;
     protected $url;
@@ -23,25 +25,25 @@ class LinkGenerator
         $this->url = $url;
         $this->key = $key;
     }
+
     /**
      * @param string $type
      * @param User   $user
-     * @param int    $ttl
-     * @param string $provider
      */
     public function getLink($type, User $user, $ttl = 0, $provider = 'vk')
     {
-        $token = JWT::encode(
-            [
-                'auth_provider' => $provider,
-                'user_id'       => $user->userId,
-                'ttl'           => $ttl,
-                'quest_id'      => $user->questId,
-                'point_id'      => $user->pointId,
-            ],
-            $this->key
-        );
+        $token = JWT::encode(['user_id' => $user->userId], $this->key);
 
         return sprintf("%s/%s?t=%s", $this->url, $type, $token);
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return string
+     */
+    public function getToken(User $user)
+    {
+        return JWT::encode(['user_id' => $user->userId], $this->key);
     }
 }

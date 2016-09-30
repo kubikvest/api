@@ -20,9 +20,6 @@ class AppTest extends \PHPUnit_Framework_TestCase
 
         $this->app['curl'] = $this->mockVk();
         $this->app['user.manager'] = $this->mockUser();
-
-        //$this->app['debug'] = true;
-        //unset($this->app['exception_handler']);
     }
 
     public function mockVk()
@@ -42,9 +39,10 @@ class AppTest extends \PHPUnit_Framework_TestCase
     public function mockUser()
     {
         $user = new User();
+        $user->userId = '8c5a3934-31b0-465e-812d-9a2e2074d0da';
         $mock = $this->createMock(UserManager::class);
-        $mock->method('getUser')->willReturn($user);
-        $mock->method('newbie');
+        $mock->method('getUserByProviderCreds')->willReturn($user);
+        $mock->method('create');
         $mock->method('update');
 
         return $mock;
@@ -77,7 +75,12 @@ class AppTest extends \PHPUnit_Framework_TestCase
                     'method' => 'GET',
                     'params' => ['code' => 222],
                 ],
-                'expected' => '{"links":{"task":"http:\/\/server\/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6IjE2YTRmOWRmLWU2MzYtNGNmYy1hZTMyLTkxMGMwYTIwYmEwMyJ9.uyy2xryrZjc0I5qdaplRc1Sdu1tbApwihtSFjIo2YBM"}}',
+                'expected' => json_encode([
+                    't' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4',
+                    'links' => [
+                        'list_quest' => 'http://server/list-quest?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4',
+                    ],
+                ]),
             ]
         ];
     }

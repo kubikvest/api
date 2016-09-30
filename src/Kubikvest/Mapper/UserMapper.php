@@ -21,6 +21,8 @@ class UserMapper
      */
     protected $queryBuilder;
 
+    protected $table = 'kv_user';
+
     /**
      * @param $pdo
      * @param $queryBuilder
@@ -31,13 +33,7 @@ class UserMapper
         $this->queryBuilder = $queryBuilder;
     }
 
-    /**
-     * @param int    $userId
-     * @param string $provider
-     *
-     * @return array
-     */
-    public function getUser($userId, $provider)
+    public function getUser($userId)
     {
         $record = [];
         try {
@@ -45,17 +41,49 @@ class UserMapper
                 ->select(
                     'userId',
                     'provider',
+                    'uid',
                     'accessToken',
                     'groupId',
                     'ttl',
-                    'questId',
-                    'pointId',
                     'startTask'
                 )
-                ->from('user')
+                ->from($this->table)
                 ->where([
                     'userId'   => $userId,
+                ]);
+            $record = $this->pdo->query(QueryAssembler::stringify($query))
+                ->fetch(\PDO::FETCH_ASSOC);
+        } catch(\Exception $e) {
+            //
+        }
+
+        return $record;
+    }
+
+    /**
+     * @param int    $userId
+     * @param string $provider
+     *
+     * @return array
+     */
+    public function getUserByProviderCreds($uid, $provider)
+    {
+        $record = [];
+        try {
+            $query = $this->queryBuilder
+                ->select(
+                    'userId',
+                    'provider',
+                    'uid',
+                    'accessToken',
+                    'groupId',
+                    'ttl',
+                    'startTask'
+                )
+                ->from($this->table)
+                ->where([
                     'provider' => $provider,
+                    'uid'      => $uid,
                 ]);
             $record = $this->pdo->query(QueryAssembler::stringify($query))
                 ->fetch(\PDO::FETCH_ASSOC);
@@ -77,7 +105,7 @@ class UserMapper
         try {
             $query = $this->queryBuilder
                 ->select('userId')
-                ->from('user')
+                ->from($this->table)
                 ->where(['accessToken' => $accessToken]);
             $record = $this->pdo->exec(QueryAssembler::stringify($query))
                 ->fetch();
@@ -93,42 +121,37 @@ class UserMapper
     }
 
     /**
-     * @param Model\User $user
-     *
-     * @return Model\User
+     * @param array $data
      */
-    public function newbie(Model\User $user)
+    public function create(array $data)
     {
         $query = $this->queryBuilder
-            ->insertInto('user', 'userId', 'provider', 'accessToken', 'ttl', 'questId', 'pointId')
+            ->insertInto($this->table, 'userId', 'provider', 'uid', 'accessToken', 'ttl')
             ->values(
-                $user->userId,
-                $user->provider,
-                $user->accessToken,
-                $user->ttl,
-                $user->questId,
-                $user->pointId
+                $data['userId'],
+                $data['provider'],
+                $data['uid'],
+                $data['accessToken'],
+                $data['ttl']
             );
         $this->pdo->exec(QueryAssembler::stringify($query));
-
-        return $user;
     }
 
     /**
-     * @param Model\User $user
+     * @param array $data
      */
-    public function update(Model\User $user)
+    public function update(array $data)
     {
         $query = $this->queryBuilder
-            ->update('user', [
-                'accessToken' => $user->accessToken,
-                'groupId'     => $user->groupId,
-                'ttl'         => $user->ttl,
-                'questId'     => $user->questId,
-                'pointId'     => $user->pointId,
-                'startTask'   => $user->startTask,
+            ->update($this->table, [
+                'accessToken' => $data['accessToken'],
+                'groupId'     => $data['groupId'],
+                'ttl'         => $data['ttl'],
+                'startTask'   => $data['startTask'],
             ])
-            ->where(['userId' => $user->userId]);
+            ->where([
+                'userId' => $data['userId'],
+            ]);
         $this->pdo->exec(QueryAssembler::stringify($query));
     }
 
@@ -138,7 +161,7 @@ class UserMapper
     public function setStartTask(Model\User $user)
     {
         $query = $this->queryBuilder
-            ->update('user', [
+            ->update($this->table, [
                 'startTask' => $user->startTask,
             ])
             ->where(['userId' => $user->userId]);

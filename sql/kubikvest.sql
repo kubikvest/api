@@ -2,19 +2,31 @@ create database if not exists `kubikvest` character set utf8 collate utf8_genera
 
 use kubikvest;
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `kv_user`;
 
-CREATE TABLE `user` (
-  `userId` bigint(20) unsigned NOT NULL,
-  `provider` char(2)  DEFAULT NULL,
+CREATE TABLE `kv_user` (
+  `userId` char(36) NOT NULL,
+  `provider` char(2) DEFAULT NULL,
+  `uid` bigint(20) unsigned NOT NULL,
   `accessToken` varchar(255) DEFAULT NULL,
   `groupId` char(36) DEFAULT NULL,
-  `ttl` int(11) DEFAULT NULL,
+  `ttl` int(11) unsigned DEFAULT NULL,
   `questId` char(36) DEFAULT NULL,
   `pointId` char(36) DEFAULT NULL,
   `logQuest` blob,
   `startTask` datetime
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `kv_group`;
 
-insert user (userId, provider, accessToken) value (1111, 'vk', 'token');
+CREATE TABLE `kv_group` (
+  `groupId` char(36) NOT NULL,
+  `gameId` char(36) DEFAULT NULL,
+  `questId` char(36) DEFAULT NULL,
+  `pointId` char(36) DEFAULT NULL,
+  `users` blob,
+  `pin` smallint(4) unsigned DEFAULT NULL,
+  `active` tinyint(2) unsigned DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+insert kv_user (userId, provider, uid, accessToken) values ('adff5c92-008c-47ac-bad8-11be43ea1469', 'vk', 1111, 'token');
