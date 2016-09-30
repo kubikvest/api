@@ -160,7 +160,7 @@ $app->get('/checkpoint', function (Request $request) use ($app) {
      * @var \Kubikvest\Model\Quest $quest
      * @var \Kubikvest\Model\Point $point
      */
-    $user  = $app['user.manager']->getUser($data->user_id);
+    $user  = $app['user'];
     $quest = $app['quest.mapper']->getQuest($user->questId);
     $point = $app['point.mapper']->getPoint($user->pointId);
 
@@ -212,7 +212,7 @@ $app->get('/finish', function (Request $request) use ($app) {
     /**
      * @var \Kubikvest\Model\User $user
      */
-    $user = $app['user.manager']->getUser($data->user_id);
+    $user = $app['user'];
 
     return new JsonResponse([], JsonResponse::HTTP_OK);
 });

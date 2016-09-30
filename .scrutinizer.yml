@@ -1,7 +1,17 @@
 build:
   environment:
+    variables:
+      DB_HOST: 127.0.0.1
     php:
       version: 5.6.9
+  dependencies:
+    before:
+      - mysql -e "CREATE DATABASE kubikvest CHARACTER SET utf8 COLLATE utf8_general_ci"
+      - cat sql/kubikvest.sql | mysql kubikvest
+  tests:
+      override:
+        -
+          command: 'phpunit'
 
 filter:
   excluded_paths: [vendor/*, tests/*]
