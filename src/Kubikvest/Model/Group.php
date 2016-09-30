@@ -11,6 +11,7 @@ class Group implements GroupInterface
     protected $questId = null;
     protected $pointId = null;
     protected $pin     = null;
+    protected $active  = true;
 
     protected $mapper = null;
 
@@ -27,7 +28,8 @@ class Group implements GroupInterface
 
     public function addUser(User $user)
     {
-
+        $this->users[] = $user->userId;
+        $this->mapper->update($this);
     }
 
     public function getTask($uuid)
@@ -38,5 +40,11 @@ class Group implements GroupInterface
     public function getNextTask()
     {
 
+    }
+
+    public function remove()
+    {
+        $this->active = false;
+        $this->mapper->update($this);
     }
 }
