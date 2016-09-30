@@ -13,12 +13,6 @@ class UserManager
     {
         $this->mapper = $userMapper;
     }
-    public function signin($userId, $provider, $avatar = null)
-    {
-        $user = new User();
-
-        return $user;
-    }
 
     public function getUser($userId, $provider = 'vk')
     {
@@ -28,6 +22,7 @@ class UserManager
             $user->userId      = (int) $userData['userId'];
             $user->provider    = $userData['provider'];
             $user->accessToken = $userData['accessToken'];
+            $user->groupId     = $userData['groupId'];
             $user->questId     = $userData['questId'];
             $user->pointId     = $userData['pointId'];
             $user->startTask   = $userData['startTask'];

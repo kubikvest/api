@@ -5,12 +5,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Firebase\JWT\JWT;
 use Kubikvest\Model;
+use Kubikvest\Subscriber\RequestSubscriber;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $config = require_once __DIR__ . '/../config/app.php';
 $quest  = require_once __DIR__ . '/../config/quest.php';
 $app    = new Application(array_merge_recursive($config, $quest));
+$app['dispatcher']->addSubscriber(new RequestSubscriber($app));
 
 $app->get('/auth', function(Request $request) use ($app) {
     $code = $request->get('code');
@@ -75,7 +77,6 @@ $app->get('/auth', function(Request $request) use ($app) {
 
 $app->get('/task', function (Request $request) use ($app) {
     $jwt = $request->get('t');
-
     try {
         $data = JWT::decode($jwt, $app['key'], ['HS256']);
     } catch(Exception $e) {
@@ -92,7 +93,7 @@ $app->get('/task', function (Request $request) use ($app) {
      * @var \Kubikvest\Model\Quest $quest
      * @var \Kubikvest\Model\Point $point
      */
-    $user  = $app['user.manager']->getUser($data->user_id);
+    $user  = $app['user'];
     $quest = $app['quest.mapper']->getQuest($user->questId);
     $point = $app['point.mapper']->getPoint($user->pointId);
 
@@ -108,7 +109,7 @@ $app->get('/task', function (Request $request) use ($app) {
         'timer'        => $point->getTimer($user->startTask),
         'total_points' => count($quest->points),
         'links' => [
-            'checkpoint' => $app['link.gen']->getLink(Model\LinkGenerator::CHECKPOINT, $user, $data->ttl, 'vk'),
+            'checkpoint' => $app['link.gen']->getLink(Model\LinkGenerator::CHECKPOINT, $user, $data->ttl, $user->provider),
         ],
     ];
     $response['point']['prompt'] = $point->getPrompt($user->startTask);
