@@ -16,9 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace iMega\Teleport\Subscriber;
+namespace Kubikvest\Subscriber;
 
-use Kubikvest\Model\User;
 use Silex\Application;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -53,7 +52,7 @@ class RequestSubscriber implements EventSubscriberInterface
 
         if (null !== $token) {
             $data = JWT::decode($token, $this->app['key'], ['HS256']);
-            $this->app['user'] = User::signin($data['user_id'], $data['provider']);
+            $this->app['user'] = $this->app['user.manager']->getUser($data->user_id, $data->auth_provider);
         }
     }
     /**
