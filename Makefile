@@ -115,7 +115,7 @@ destroy: clean
 
 deploy: COMPOSER_FLAGS = --no-dev --ignore-platform-reqs --no-interaction
 deploy: CONTAINERS = kubikvest kubikvest_nginx
-deploy: composer destroy build
+deploy: composer destroy build migrate
 	@docker run -d \
 		--name "kubikvest" \
 		--link kubikvest_db:kubikvest_db \
@@ -142,6 +142,6 @@ migrate:
 	@docker run --rm \
 		-v $(CURDIR)/sql:/sql \
 		--link kubikvest_db:kubikvest_db \
-		imega/mysql-client mysql --host=kubikvest_db --database=kubikvest -e "source /sql/2016-09-28-01.sql"
+		imega/mysql-client mysql --host=kubikvest_db --database=kubikvest -e "source /sql/2016-09-30-01.sql"
 
 .PHONY: build

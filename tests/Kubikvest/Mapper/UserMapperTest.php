@@ -48,6 +48,8 @@ class UserMapperTest extends \PHPUnit_Extensions_Database_TestCase
                     'userId'      => '1111',
                     'provider'    => 'vk',
                     'accessToken' => 'token',
+                    'groupId'     => null,
+                    'ttl'         => null,
                     'questId'     => null,
                     'pointId'     => null,
                     'startTask'   => null,

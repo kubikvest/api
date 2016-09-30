@@ -28,7 +28,7 @@ class LinkGenerator
      * @param int    $ttl
      * @param string $provider
      */
-    public function getLink($type, User $user, $ttl, $provider = 'vk')
+    public function getLink($type, User $user, $ttl = 0, $provider = 'vk')
     {
         $token = JWT::encode(
             [

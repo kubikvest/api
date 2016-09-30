@@ -46,6 +46,8 @@ class UserMapper
                     'userId',
                     'provider',
                     'accessToken',
+                    'groupId',
+                    'ttl',
                     'questId',
                     'pointId',
                     'startTask'
@@ -98,11 +100,12 @@ class UserMapper
     public function newbie(Model\User $user)
     {
         $query = $this->queryBuilder
-            ->insertInto('user', 'userId', 'provider', 'accessToken', 'questId', 'pointId')
+            ->insertInto('user', 'userId', 'provider', 'accessToken', 'ttl', 'questId', 'pointId')
             ->values(
                 $user->userId,
                 $user->provider,
                 $user->accessToken,
+                $user->ttl,
                 $user->questId,
                 $user->pointId
             );
@@ -119,6 +122,8 @@ class UserMapper
         $query = $this->queryBuilder
             ->update('user', [
                 'accessToken' => $user->accessToken,
+                'groupId'     => $user->groupId,
+                'ttl'         => $user->ttl,
                 'questId'     => $user->questId,
                 'pointId'     => $user->pointId,
                 'startTask'   => $user->startTask,
