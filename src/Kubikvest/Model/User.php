@@ -17,6 +17,7 @@ class User
     public $pointId     = null;
     public $startTask   = null;
     public $groupId     = null;
+    public $ttl         = null;
 
     /**
      * @return bool
