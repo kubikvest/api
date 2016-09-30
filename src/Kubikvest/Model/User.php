@@ -4,12 +4,19 @@ namespace Kubikvest\Model;
 
 class User
 {
-    public $userId = null;
-    public $provider = null;
+    public $userId      = null;
+    public $provider    = null;
     public $accessToken = null;
-    public $questId = null;
-    public $pointId = null;
-    public $startTask = null;
+    /**
+     * @deprecated
+     */
+    public $questId     = null;
+    /**
+     * @deprecated
+     */
+    public $pointId     = null;
+    public $startTask   = null;
+    public $groupId     = null;
 
     /**
      * @return bool

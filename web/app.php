@@ -186,26 +186,7 @@ $app->get('/finish', function (Request $request) use ($app) {
      */
     $user = $app['user.manager']->getUser($data->user_id);
 
-    return new JsonResponse(
-        [
-            'description'  => $app['tasks'][$user->questId][$user->pointId]['description'],
-            'point_id'     => $user->pointId,
-            'total_points' => count($app['tasks'][$user->questId]),
-            'links' => [
-                'checkpoint' => $app['url'] . '/checkpoint?t=' . JWT::encode(
-                        [
-                            'auth_provider' => 'vk',
-                            'user_id'       => $user->userId,
-                            'ttl'           => $data->ttl,
-                            'kvest_id'      => $user->questId,
-                            'point_id'      => $user->pointId,
-                        ],
-                        $app['key']
-                    )
-            ],
-        ],
-        JsonResponse::HTTP_OK
-    );
+    return new JsonResponse([], JsonResponse::HTTP_OK);
 });
 
 if (true === (bool) getenv('TEST')) {
