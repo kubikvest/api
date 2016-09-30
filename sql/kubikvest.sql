@@ -9,6 +9,7 @@ CREATE TABLE `user` (
   `provider` char(2)  DEFAULT NULL,
   `accessToken` varchar(255) DEFAULT NULL,
   `groupId` char(36) DEFAULT NULL,
+  `ttl` int(11) DEFAULT NULL,
   `questId` char(36) DEFAULT NULL,
   `pointId` char(36) DEFAULT NULL,
   `logQuest` blob,

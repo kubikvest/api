@@ -60,6 +60,7 @@ $app->get('/auth', function(Request $request) use ($app) {
         $user->provider    = 'vk';
         $user->userId      = $data['user_id'];
         $user->accessToken = $data['access_token'];
+        $user->ttl         = $data['expires_in'];
         $user->questId     = $questId;
         $user->pointId     = $quest->points[0];
         $app['user.manager']->newbie($user);
