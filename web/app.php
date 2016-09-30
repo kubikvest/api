@@ -76,6 +76,32 @@ $app->get('/auth', function(Request $request) use ($app) {
     ]);
 });
 
+$app->get('/list-quest', function (Request $request) use ($app) {
+    /**
+     * @var \Kubikvest\Model\User $user
+     */
+    $user   = $app['user'];
+    $quests = $app['quest.manager']->listQuest([]);
+
+    $data = [];
+
+    foreach ($quests as $item) {
+        /**
+         * @var \Kubikvest\Model\Quest $item
+         */
+        $data[] = [
+            'questId'     => $item->questId,
+            'title'       => $item->title,
+            'description' => $item->description,
+            'link'        => $app['link.gen']->getLink(Model\LinkGenerator::QUEST, $user),
+        ];
+    }
+
+    return new JsonResponse([
+        'quests' => $data,
+    ]);
+});
+
 $app->get('/task', function (Request $request) use ($app) {
     $jwt = $request->get('t');
     try {

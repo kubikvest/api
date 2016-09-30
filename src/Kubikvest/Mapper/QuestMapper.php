@@ -37,4 +37,9 @@ class QuestMapper
 
         return $quest;
     }
+
+    public function listQuest(array $filter)
+    {
+        return $this->db;
+    }
 }

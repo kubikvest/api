@@ -13,6 +13,7 @@ class LinkGenerator
     const TASK       = 'task';
     const CHECKPOINT = 'checkpoint';
     const FINISH     = 'finish';
+    const QUEST      = 'quest';
 
     protected $key;
     protected $url;

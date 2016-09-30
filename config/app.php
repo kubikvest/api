@@ -49,6 +49,9 @@ return [
     'quest.mapper' => function (Application $app) {
         return new \Kubikvest\Mapper\QuestMapper($app['quest']);
     },
+    'quest.manager' => function (Application $app) {
+        return new \Kubikvest\Manager\QuestManager($app['quest.mapper']);
+    },
     'point.mapper' => function (Application $app) {
         return new \Kubikvest\Mapper\PointMapper($app['points']);
     },
