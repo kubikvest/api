@@ -83,10 +83,11 @@ $app->get('/list-quest', function (Request $request) use ($app) {
 
     $data = [];
 
+    if ('8c5a3934-31b0-465e-812d-9a2e2074d0da' != $user->userId) {
+        array_shift($quests);
+    }
+
     foreach ($quests as $item) {
-        if ('8c5a3934-31b0-465e-812d-9a2e2074d0da' != $user->userId) {
-            continue;
-        }
         /**
          * @var \Kubikvest\Model\Quest $item
          */

@@ -115,7 +115,7 @@ destroy: clean
 
 deploy: COMPOSER_FLAGS = --no-dev --ignore-platform-reqs --no-interaction
 deploy: CONTAINERS = kubikvest kubikvest_nginx
-deploy: composer destroy build migrate
+deploy: composer destroy build
 	@docker run -d \
 		--name "kubikvest" \
 		--link kubikvest_db:kubikvest_db \
