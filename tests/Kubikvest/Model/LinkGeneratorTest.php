@@ -34,15 +34,15 @@ class LinkGeneratorTest extends \PHPUnit_Framework_TestCase
                     'ttl' => 43200,
                     'user' => function() {
                         $user = new User();
-                        $user->userId   = 66748;
+                        $user->userId   = 'adff5c92-008c-47ac-bad8-11be43ea1469';
                         $user->provider = 'vk';
-                        $user->questId  = 'd9b135d3-9a29-45f0-8742-7ca6f99d9b73';
-                        $user->pointId  = '16a4f9df-e636-4cfc-ae32-910c0a20ba03';
+                        $user->uid      = 66748;
+                        $user->ttl      = 43200;
 
                         return $user;
                     },
                 ],
-                'expected' => 'http://kubikvest.xyz/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6IjE2YTRmOWRmLWU2MzYtNGNmYy1hZTMyLTkxMGMwYTIwYmEwMyJ9.uyy2xryrZjc0I5qdaplRc1Sdu1tbApwihtSFjIo2YBM',
+                'expected' => 'http://kubikvest.xyz/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiYWRmZjVjOTItMDA4Yy00N2FjLWJhZDgtMTFiZTQzZWExNDY5In0.kRthgyyUgQF3Aa3WwN2NhFnxSQh1OXoXkXiG0G_fX4s',
             ],
         ];
     }

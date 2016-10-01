@@ -28,201 +28,382 @@ testAuth() {
 
     assertTrue 200 $ACTUAL "$FUNCNAME Code"
 
-    EXPECTED='{"links":{"task":"http:\/\/kubikvest.xyz\/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6IjE2YTRmOWRmLWU2MzYtNGNmYy1hZTMyLTkxMGMwYTIwYmEwMyJ9.uyy2xryrZjc0I5qdaplRc1Sdu1tbApwihtSFjIo2YBM"}}'
+    BODY=$(curl --silent http://$URL/auth?code=222)
 
-    ACTUAL=$(curl --silent http://$URL/auth?code=222)
+    TOKEN=$(echo $BODY | jq '.t' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$TOKEN" "$FUNCNAME TOKEN"
 
-    assertTrue "$EXPECTED" "$ACTUAL" "$FUNCNAME body"
+    TASK=$(echo $BODY | jq '.links.list_quest' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "http://kubikvest.xyz/list-quest?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$TASK" "$FUNCNAME TASK"
 }
 
-testStartTask() {
-    ACTUAL=$(curl --write-out %{http_code} --silent --output /dev/null "http://$URL/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6IjE2YTRmOWRmLWU2MzYtNGNmYy1hZTMyLTkxMGMwYTIwYmEwMyJ9.uyy2xryrZjc0I5qdaplRc1Sdu1tbApwihtSFjIo2YBM")
+testListQuest() {
+    ACTUAL=$(curl --write-out %{http_code} --silent --output /dev/null "http://$URL/list-quest?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4")
 
     assertTrue 200 $ACTUAL "$FUNCNAME Code"
 
-    BODY=$(curl --silent "http://$URL/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6IjE2YTRmOWRmLWU2MzYtNGNmYy1hZTMyLTkxMGMwYTIwYmEwMyJ9.uyy2xryrZjc0I5qdaplRc1Sdu1tbApwihtSFjIo2YBM")
+    BODY=$(curl --silent "http://$URL/list-quest?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4")
 
-    DESCRIPTION=$(echo $BODY | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "Test point start description" "$DESCRIPTION" "$FUNCNAME DESCRIPTION"
+    TOKEN=$(echo $BODY | jq '.t' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$TOKEN" "$FUNCNAME TOKEN"
+
+    QUEST_ID=$(echo $BODY | jq '.quests[0].quest_id' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d9b135d3-9a29-45f0-8742-7ca6f99d9b73" "$QUEST_ID" "$FUNCNAME QUEST_ID"
+
+    QUEST_TITLE=$(echo $BODY | jq '.quests[0].title' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "Task Zero" "$QUEST_TITLE" "$FUNCNAME QUEST_TITLE"
+
+    QUEST_DESCRIPTION=$(echo $BODY | jq '.quests[0].description' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "Test task zero description" "$QUEST_DESCRIPTION" "$FUNCNAME QUEST_DESCRIPTION"
+
+    QUEST_LINK=$(echo $BODY | jq '.quests[0].link' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "http://kubikvest.xyz/create-game?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$QUEST_LINK" "$FUNCNAME QUEST_LINK"
+}
+
+testCreateGame() {
+    ACTUAL=$(curl -X POST --write-out %{http_code} --silent --output /dev/null -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "quest_id":"d9b135d3-9a29-45f0-8742-7ca6f99d9b73"}' "http://$URL/create-game")
+
+    assertTrue 200 $ACTUAL "$FUNCNAME Code"
+
+    BODY=$(curl -X POST --silent -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "quest_id":"d9b135d3-9a29-45f0-8742-7ca6f99d9b73"}' "http://$URL/create-game")
+
+    TOKEN=$(echo $BODY | jq '.t' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$TOKEN" "$FUNCNAME TOKEN"
+
+    TASK=$(echo $BODY | jq '.links.task' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "http://kubikvest.xyz/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$TASK" "$FUNCNAME TASK"
+}
+
+testStartTask() {
+    ACTUAL=$(curl --write-out %{http_code} --silent --output /dev/null "http://$URL/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4")
+
+    assertTrue 200 $ACTUAL "$FUNCNAME Code"
+
+    BODY=$(curl --silent "http://$URL/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4")
+
+    TOKEN=$(echo $BODY | jq '.t' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$TOKEN" "$FUNCNAME TOKEN"
+
+    QUEST_ID=$(echo $BODY | jq '.quest.questId' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d9b135d3-9a29-45f0-8742-7ca6f99d9b73" "$QUEST_ID" "$FUNCNAME QUEST_ID"
+
+    QUEST_TITLE=$(echo $BODY | jq '.quest.title' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "Task Zero" "$QUEST_TITLE" "$FUNCNAME QUEST_TITLE"
+
+    QUEST_DESCRIPTION=$(echo $BODY | jq '.quest.description' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "Test task zero description" "$QUEST_DESCRIPTION" "$FUNCNAME QUEST_DESCRIPTION"
+
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[0]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "16a4f9df-e636-4cfc-ae32-910c0a20ba03" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 1"
+
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[1]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d7e9f433-7f21-47f0-b322-b8ef4af03113" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 2"
+
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[2]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "ddc3ec2e-9d11-4c26-96ff-620788af9e37" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 3"
+
+    POINT_ID=$(echo $BODY | jq '.point.pointId' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "16a4f9df-e636-4cfc-ae32-910c0a20ba03" "$POINT_ID" "$FUNCNAME POINT_ID"
+
+    POINT_TITLE=$(echo $BODY | jq '.point.title' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "Test title start point" "$POINT_TITLE" "$FUNCNAME POINT_TITLE"
+
+    POINT_DESCRIPTION=$(echo $BODY | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "Test point start description" "$POINT_DESCRIPTION" "$FUNCNAME POINT_DESCRIPTION"
 
     TOTAL_POINTS=$(echo $BODY | jq '.total_points' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "3" "$TOTAL_POINTS" "$FUNCNAME TOTAL_POINTS"
 
     CHECKPOINT=$(echo $BODY | jq '.links.checkpoint' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "http://kubikvest.xyz/checkpoint?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6IjE2YTRmOWRmLWU2MzYtNGNmYy1hZTMyLTkxMGMwYTIwYmEwMyJ9.uyy2xryrZjc0I5qdaplRc1Sdu1tbApwihtSFjIo2YBM" "$CHECKPOINT" "$FUNCNAME CHECKPOINT"
+    assertTrue "http://kubikvest.xyz/checkpoint?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$CHECKPOINT" "$FUNCNAME CHECKPOINT"
 }
 
 testFailLocationCheckpoint() {
-    ACTUAL=$(curl --silent "http://$URL/checkpoint?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6IjE2YTRmOWRmLWU2MzYtNGNmYy1hZTMyLTkxMGMwYTIwYmEwMyJ9.uyy2xryrZjc0I5qdaplRc1Sdu1tbApwihtSFjIo2YBM&c=200,200")
+    ACTUAL=$(curl -X POST --write-out %{http_code} --silent --output /dev/null -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":200, "lon":200}' http://$URL/checkpoint)
 
-    QUEST_DESCRIPTION=$(echo $ACTUAL | jq '.quest.description' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue 200 $ACTUAL "$FUNCNAME Code"
+
+    BODY=$(curl -X POST --silent -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":200, "lon":200}' http://$URL/checkpoint)
+
+    TOKEN=$(echo $BODY | jq '.t' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$TOKEN" "$FUNCNAME TOKEN"
+
+    QUEST_ID=$(echo $BODY | jq '.quest.questId' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d9b135d3-9a29-45f0-8742-7ca6f99d9b73" "$QUEST_ID" "$FUNCNAME QUEST_ID"
+
+    QUEST_TITLE=$(echo $BODY | jq '.quest.title' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "Task Zero" "$QUEST_TITLE" "$FUNCNAME QUEST_TITLE"
+
+    QUEST_DESCRIPTION=$(echo $BODY | jq '.quest.description' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test task zero description" "$QUEST_DESCRIPTION" "$FUNCNAME QUEST_DESCRIPTION"
 
-    TOTAL_POINTS=$(echo $ACTUAL | jq '.total_points' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "3" "$TOTAL_POINTS" "$FUNCNAME TOTAL_POINTS"
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[0]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "16a4f9df-e636-4cfc-ae32-910c0a20ba03" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 1"
 
-    FINISH=$(echo $ACTUAL | jq '.finish' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "false" "$FINISH" "$FUNCNAME FINISH"
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[1]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d7e9f433-7f21-47f0-b322-b8ef4af03113" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 2"
 
-    POINT_DESCRIPTION=$(echo $ACTUAL | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[2]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "ddc3ec2e-9d11-4c26-96ff-620788af9e37" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 3"
+
+    POINT_ID=$(echo $BODY | jq '.point.pointId' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "16a4f9df-e636-4cfc-ae32-910c0a20ba03" "$POINT_ID" "$FUNCNAME POINT_ID"
+
+    POINT_TITLE=$(echo $BODY | jq '.point.title' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "Test title start point" "$POINT_TITLE" "$FUNCNAME POINT_TITLE"
+
+    POINT_DESCRIPTION=$(echo $BODY | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test point start description" "$POINT_DESCRIPTION" "$FUNCNAME POINT_DESCRIPTION"
 
-    CHECKPOINT=$(echo $ACTUAL | jq '.links.checkpoint' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "http://kubikvest.xyz/checkpoint?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6IjE2YTRmOWRmLWU2MzYtNGNmYy1hZTMyLTkxMGMwYTIwYmEwMyJ9.uyy2xryrZjc0I5qdaplRc1Sdu1tbApwihtSFjIo2YBM" "$CHECKPOINT" "$FUNCNAME CHECKPOINT"
+    POINT_DESCRIPTION=$(echo $BODY | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "Test point start description" "$POINT_DESCRIPTION" "$FUNCNAME POINT_DESCRIPTION"
 
-    ERROR=$(echo $ACTUAL | jq '.error' | sed -e 's/^"//' -e 's/"$//')
+    TOTAL_POINTS=$(echo $BODY | jq '.total_points' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "3" "$TOTAL_POINTS" "$FUNCNAME TOTAL_POINTS"
+
+    CHECKPOINT=$(echo $BODY | jq '.links.checkpoint' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "http://kubikvest.xyz/checkpoint?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$CHECKPOINT" "$FUNCNAME CHECKPOINT"
+
+    FINISH=$(echo $BODY | jq '.finish' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "false" "$FINISH" "$FUNCNAME FINISH"
+
+    ERROR=$(echo $BODY | jq '.error' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Не верное место отметки." "$ERROR" "$FUNCNAME ERROR"
 }
 
 testCheckpoint() {
-    ACTUAL=$(curl --silent "http://$URL/checkpoint?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6IjE2YTRmOWRmLWU2MzYtNGNmYy1hZTMyLTkxMGMwYTIwYmEwMyJ9.uyy2xryrZjc0I5qdaplRc1Sdu1tbApwihtSFjIo2YBM&c=10,10")
+    BODY=$(curl --silent -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":10, "lon":10}' http://$URL/checkpoint)
 
-    QUEST_TITLE=$(echo $ACTUAL | jq '.quest.title' | sed -e 's/^"//' -e 's/"$//')
+    TOKEN=$(echo $BODY | jq '.t' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$TOKEN" "$FUNCNAME TOKEN"
+
+    QUEST_ID=$(echo $BODY | jq '.quest.questId' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d9b135d3-9a29-45f0-8742-7ca6f99d9b73" "$QUEST_ID" "$FUNCNAME QUEST_ID"
+
+    QUEST_TITLE=$(echo $BODY | jq '.quest.title' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Task Zero" "$QUEST_TITLE" "$FUNCNAME QUEST_TITLE"
 
-    QUEST_DESCRIPTION=$(echo $ACTUAL | jq '.quest.description' | sed -e 's/^"//' -e 's/"$//')
+    QUEST_DESCRIPTION=$(echo $BODY | jq '.quest.description' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test task zero description" "$QUEST_DESCRIPTION" "$FUNCNAME QUEST_DESCRIPTION"
 
-    TOTAL_POINTS=$(echo $ACTUAL | jq '.total_points' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "3" "$TOTAL_POINTS" "$FUNCNAME TOTAL_POINTS"
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[0]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "16a4f9df-e636-4cfc-ae32-910c0a20ba03" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 1"
 
-    FINISH=$(echo $ACTUAL | jq '.finish' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "false" "$FINISH" "$FUNCNAME FINISH"
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[1]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d7e9f433-7f21-47f0-b322-b8ef4af03113" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 2"
 
-    POINT_TITLE=$(echo $ACTUAL | jq '.point.title' | sed -e 's/^"//' -e 's/"$//')
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[2]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "ddc3ec2e-9d11-4c26-96ff-620788af9e37" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 3"
+
+    POINT_ID=$(echo $BODY | jq '.point.pointId' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "16a4f9df-e636-4cfc-ae32-910c0a20ba03" "$POINT_ID" "$FUNCNAME POINT_ID"
+
+    POINT_TITLE=$(echo $BODY | jq '.point.title' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test title start point" "$POINT_TITLE" "$FUNCNAME POINT_TITLE"
 
-    POINT_DESCRIPTION=$(echo $ACTUAL | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
+    POINT_DESCRIPTION=$(echo $BODY | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test point start description" "$POINT_DESCRIPTION" "$FUNCNAME POINT_DESCRIPTION"
 
-    POINT_PROMPT=$(echo $ACTUAL | jq '.point.prompt' | sed -e 's/^"//' -e 's/"$//')
+    POINT_PROMPT=$(echo $BODY | jq '.point.prompt' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "null" "$POINT_PROMPT" "$FUNCNAME POINT_PROMPT"
 
-    TASK=$(echo $ACTUAL | jq '.links.task' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "http://kubikvest.xyz/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6ImQ3ZTlmNDMzLTdmMjEtNDdmMC1iMzIyLWI4ZWY0YWYwMzExMyJ9.GuKe3ZRrBoYivw50q9CovFq3Ob3wB-1Wu11398mTkDI" "$TASK" "$FUNCNAME TASK"
+    TASK=$(echo $BODY | jq '.links.task' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "http://kubikvest.xyz/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$TASK" "$FUNCNAME TASK"
+
+    TOTAL_POINTS=$(echo $BODY | jq '.total_points' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "3" "$TOTAL_POINTS" "$FUNCNAME TOTAL_POINTS"
+
+    FINISH=$(echo $BODY | jq '.finish' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "false" "$FINISH" "$FUNCNAME FINISH"
 }
 
 testFirstTask() {
-    ACTUAL=$(curl --write-out %{http_code} --silent --output /dev/null "http://$URL/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6ImQ3ZTlmNDMzLTdmMjEtNDdmMC1iMzIyLWI4ZWY0YWYwMzExMyJ9.GuKe3ZRrBoYivw50q9CovFq3Ob3wB-1Wu11398mTkDI")
+    ACTUAL=$(curl --write-out %{http_code} --silent --output /dev/null "http://$URL/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4")
 
     assertTrue 200 $ACTUAL "$FUNCNAME Code"
 
-    ACTUAL=$(curl --silent "http://$URL/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6ImQ3ZTlmNDMzLTdmMjEtNDdmMC1iMzIyLWI4ZWY0YWYwMzExMyJ9.GuKe3ZRrBoYivw50q9CovFq3Ob3wB-1Wu11398mTkDI")
+    BODY=$(curl --silent "http://$URL/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4")
 
-    QUEST_TITLE=$(echo $ACTUAL | jq '.quest.title' | sed -e 's/^"//' -e 's/"$//')
+    QUEST_ID=$(echo $BODY | jq '.quest.questId' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d9b135d3-9a29-45f0-8742-7ca6f99d9b73" "$QUEST_ID" "$FUNCNAME QUEST_ID"
+
+    QUEST_TITLE=$(echo $BODY | jq '.quest.title' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Task Zero" "$QUEST_TITLE" "$FUNCNAME QUEST_TITLE"
 
-    QUEST_DESCRIPTION=$(echo $ACTUAL | jq '.quest.description' | sed -e 's/^"//' -e 's/"$//')
+    QUEST_DESCRIPTION=$(echo $BODY | jq '.quest.description' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test task zero description" "$QUEST_DESCRIPTION" "$FUNCNAME QUEST_DESCRIPTION"
 
-    TOTAL_POINTS=$(echo $ACTUAL | jq '.total_points' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "3" "$TOTAL_POINTS" "$FUNCNAME TOTAL_POINTS"
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[0]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "16a4f9df-e636-4cfc-ae32-910c0a20ba03" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 1"
 
-    POINT_ID=$(echo $ACTUAL | jq '.point.pointId' | sed -e 's/^"//' -e 's/"$//')
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[1]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d7e9f433-7f21-47f0-b322-b8ef4af03113" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 2"
+
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[2]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "ddc3ec2e-9d11-4c26-96ff-620788af9e37" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 3"
+
+    POINT_ID=$(echo $BODY | jq '.point.pointId' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "d7e9f433-7f21-47f0-b322-b8ef4af03113" "$POINT_ID" "$FUNCNAME POINT_ID"
 
-    POINT_TITLE=$(echo $ACTUAL | jq '.point.title' | sed -e 's/^"//' -e 's/"$//')
+    POINT_TITLE=$(echo $BODY | jq '.point.title' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test title first point" "$POINT_TITLE" "$FUNCNAME POINT_TITLE"
 
-    POINT_DESCRIPTION=$(echo $ACTUAL | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
+    POINT_DESCRIPTION=$(echo $BODY | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test point first description" "$POINT_DESCRIPTION" "$FUNCNAME POINT_DESCRIPTION"
 
-    POINT_PROMPT=$(echo $ACTUAL | jq '.point.prompt' | sed -e 's/^"//' -e 's/"$//')
+    POINT_PROMPT=$(echo $BODY | jq '.point.prompt' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "" "$POINT_PROMPT" "$FUNCNAME POINT_PROMPT"
 
-    CHECKPOINT=$(echo $ACTUAL | jq '.links.checkpoint' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "http://kubikvest.xyz/checkpoint?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6ImQ3ZTlmNDMzLTdmMjEtNDdmMC1iMzIyLWI4ZWY0YWYwMzExMyJ9.GuKe3ZRrBoYivw50q9CovFq3Ob3wB-1Wu11398mTkDI" "$CHECKPOINT" "$FUNCNAME CHECKPOINT"
+    CHECKPOINT=$(echo $BODY | jq '.links.checkpoint' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "http://kubikvest.xyz/checkpoint?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$CHECKPOINT" "$FUNCNAME CHECKPOINT"
+
+    TOTAL_POINTS=$(echo $BODY | jq '.total_points' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "3" "$TOTAL_POINTS" "$FUNCNAME TOTAL_POINTS"
 }
 
 testFirstTaskCheckpoint() {
-    ACTUAL=$(curl --silent "http://$URL/checkpoint?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6ImQ3ZTlmNDMzLTdmMjEtNDdmMC1iMzIyLWI4ZWY0YWYwMzExMyJ9.GuKe3ZRrBoYivw50q9CovFq3Ob3wB-1Wu11398mTkDI&c=10,10")
+    BODY=$(curl --silent -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":10, "lon":10}' http://$URL/checkpoint)
 
-    QUEST_TITLE=$(echo $ACTUAL | jq '.quest.title' | sed -e 's/^"//' -e 's/"$//')
+    TOKEN=$(echo $BODY | jq '.t' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$TOKEN" "$FUNCNAME TOKEN"
+
+    QUEST_ID=$(echo $BODY | jq '.quest.questId' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d9b135d3-9a29-45f0-8742-7ca6f99d9b73" "$QUEST_ID" "$FUNCNAME QUEST_ID"
+
+    QUEST_TITLE=$(echo $BODY | jq '.quest.title' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Task Zero" "$QUEST_TITLE" "$FUNCNAME QUEST_TITLE"
 
-    QUEST_DESCRIPTION=$(echo $ACTUAL | jq '.quest.description' | sed -e 's/^"//' -e 's/"$//')
+    QUEST_DESCRIPTION=$(echo $BODY | jq '.quest.description' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test task zero description" "$QUEST_DESCRIPTION" "$FUNCNAME QUEST_DESCRIPTION"
 
-    TOTAL_POINTS=$(echo $ACTUAL | jq '.total_points' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "3" "$TOTAL_POINTS" "$FUNCNAME TOTAL_POINTS"
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[0]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "16a4f9df-e636-4cfc-ae32-910c0a20ba03" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 1"
 
-    FINISH=$(echo $ACTUAL | jq '.finish' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "false" "$FINISH" "$FUNCNAME FINISH"
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[1]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d7e9f433-7f21-47f0-b322-b8ef4af03113" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 2"
 
-    POINT_TITLE=$(echo $ACTUAL | jq '.point.title' | sed -e 's/^"//' -e 's/"$//')
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[2]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "ddc3ec2e-9d11-4c26-96ff-620788af9e37" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 3"
+
+    POINT_ID=$(echo $BODY | jq '.point.pointId' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d7e9f433-7f21-47f0-b322-b8ef4af03113" "$POINT_ID" "$FUNCNAME POINT_ID"
+
+    POINT_TITLE=$(echo $BODY | jq '.point.title' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test title first point" "$POINT_TITLE" "$FUNCNAME POINT_TITLE"
 
-    POINT_DESCRIPTION=$(echo $ACTUAL | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
+    POINT_DESCRIPTION=$(echo $BODY | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test point first description" "$POINT_DESCRIPTION" "$FUNCNAME POINT_DESCRIPTION"
 
-    POINT_PROMPT=$(echo $ACTUAL | jq '.point.prompt' | sed -e 's/^"//' -e 's/"$//')
+    POINT_PROMPT=$(echo $BODY | jq '.point.prompt' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "null" "$POINT_PROMPT" "$FUNCNAME POINT_PROMPT"
 
-    TASK=$(echo $ACTUAL | jq '.links.task' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "http://kubikvest.xyz/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6ImRkYzNlYzJlLTlkMTEtNGMyNi05NmZmLTYyMDc4OGFmOWUzNyJ9.HYT5KoUkUAsv7-8iUzoSB-3Xaj7cjCJSjvS0LHIJeto" "$TASK" "$FUNCNAME TASK"
+    TASK=$(echo $BODY | jq '.links.task' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "http://kubikvest.xyz/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$TASK" "$FUNCNAME TASK"
+
+    TOTAL_POINTS=$(echo $BODY | jq '.total_points' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "3" "$TOTAL_POINTS" "$FUNCNAME TOTAL_POINTS"
+
+    FINISH=$(echo $BODY | jq '.finish' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "false" "$FINISH" "$FUNCNAME FINISH"
 }
 
 testSecondTask() {
-    ACTUAL=$(curl --write-out %{http_code} --silent --output /dev/null "http://$URL/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6ImRkYzNlYzJlLTlkMTEtNGMyNi05NmZmLTYyMDc4OGFmOWUzNyJ9.HYT5KoUkUAsv7-8iUzoSB-3Xaj7cjCJSjvS0LHIJeto")
+    ACTUAL=$(curl --write-out %{http_code} --silent --output /dev/null "http://$URL/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4")
 
     assertTrue 200 $ACTUAL "$FUNCNAME Code"
 
-    ACTUAL=$(curl --silent "http://$URL/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6ImRkYzNlYzJlLTlkMTEtNGMyNi05NmZmLTYyMDc4OGFmOWUzNyJ9.HYT5KoUkUAsv7-8iUzoSB-3Xaj7cjCJSjvS0LHIJeto")
+    BODY=$(curl --silent "http://$URL/task?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4")
 
-    QUEST_TITLE=$(echo $ACTUAL | jq '.quest.title' | sed -e 's/^"//' -e 's/"$//')
+    QUEST_ID=$(echo $BODY | jq '.quest.questId' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d9b135d3-9a29-45f0-8742-7ca6f99d9b73" "$QUEST_ID" "$FUNCNAME QUEST_ID"
+
+    QUEST_TITLE=$(echo $BODY | jq '.quest.title' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Task Zero" "$QUEST_TITLE" "$FUNCNAME QUEST_TITLE"
 
-    QUEST_DESCRIPTION=$(echo $ACTUAL | jq '.quest.description' | sed -e 's/^"//' -e 's/"$//')
+    QUEST_DESCRIPTION=$(echo $BODY | jq '.quest.description' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test task zero description" "$QUEST_DESCRIPTION" "$FUNCNAME QUEST_DESCRIPTION"
 
-    TOTAL_POINTS=$(echo $ACTUAL | jq '.total_points' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "3" "$TOTAL_POINTS" "$FUNCNAME TOTAL_POINTS"
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[0]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "16a4f9df-e636-4cfc-ae32-910c0a20ba03" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 1"
 
-    POINT_ID=$(echo $ACTUAL | jq '.point.pointId' | sed -e 's/^"//' -e 's/"$//')
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[1]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d7e9f433-7f21-47f0-b322-b8ef4af03113" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 2"
+
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[2]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "ddc3ec2e-9d11-4c26-96ff-620788af9e37" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 3"
+
+    POINT_ID=$(echo $BODY | jq '.point.pointId' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "ddc3ec2e-9d11-4c26-96ff-620788af9e37" "$POINT_ID" "$FUNCNAME POINT_ID"
 
-    POINT_TITLE=$(echo $ACTUAL | jq '.point.title' | sed -e 's/^"//' -e 's/"$//')
+    POINT_TITLE=$(echo $BODY | jq '.point.title' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test title second point" "$POINT_TITLE" "$FUNCNAME POINT_TITLE"
 
-    POINT_DESCRIPTION=$(echo $ACTUAL | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
+    POINT_DESCRIPTION=$(echo $BODY | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test point second description" "$POINT_DESCRIPTION" "$FUNCNAME POINT_DESCRIPTION"
 
-    POINT_PROMPT=$(echo $ACTUAL | jq '.point.prompt' | sed -e 's/^"//' -e 's/"$//')
+    POINT_PROMPT=$(echo $BODY | jq '.point.prompt' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "" "$POINT_PROMPT" "$FUNCNAME POINT_PROMPT"
 
-    CHECKPOINT=$(echo $ACTUAL | jq '.links.checkpoint' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "http://kubikvest.xyz/checkpoint?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6ImRkYzNlYzJlLTlkMTEtNGMyNi05NmZmLTYyMDc4OGFmOWUzNyJ9.HYT5KoUkUAsv7-8iUzoSB-3Xaj7cjCJSjvS0LHIJeto" "$CHECKPOINT" "$FUNCNAME CHECKPOINT"
+    CHECKPOINT=$(echo $BODY | jq '.links.checkpoint' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "http://kubikvest.xyz/checkpoint?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$CHECKPOINT" "$FUNCNAME CHECKPOINT"
+
+    TOTAL_POINTS=$(echo $BODY | jq '.total_points' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "3" "$TOTAL_POINTS" "$FUNCNAME TOTAL_POINTS"
 }
 
 testSecondTaskCheckpoint() {
-    ACTUAL=$(curl --silent "http://$URL/checkpoint?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6ImRkYzNlYzJlLTlkMTEtNGMyNi05NmZmLTYyMDc4OGFmOWUzNyJ9.HYT5KoUkUAsv7-8iUzoSB-3Xaj7cjCJSjvS0LHIJeto&c=10,10")
+    BODY=$(curl --silent -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":10, "lon":10}' http://$URL/checkpoint)
 
-    QUEST_TITLE=$(echo $ACTUAL | jq '.quest.title' | sed -e 's/^"//' -e 's/"$//')
+    QUEST_ID=$(echo $BODY | jq '.quest.questId' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d9b135d3-9a29-45f0-8742-7ca6f99d9b73" "$QUEST_ID" "$FUNCNAME QUEST_ID"
+
+    QUEST_TITLE=$(echo $BODY | jq '.quest.title' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Task Zero" "$QUEST_TITLE" "$FUNCNAME QUEST_TITLE"
 
-    QUEST_DESCRIPTION=$(echo $ACTUAL | jq '.quest.description' | sed -e 's/^"//' -e 's/"$//')
+    QUEST_DESCRIPTION=$(echo $BODY | jq '.quest.description' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test task zero description" "$QUEST_DESCRIPTION" "$FUNCNAME QUEST_DESCRIPTION"
 
-    TOTAL_POINTS=$(echo $ACTUAL | jq '.total_points' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "3" "$TOTAL_POINTS" "$FUNCNAME TOTAL_POINTS"
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[0]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "16a4f9df-e636-4cfc-ae32-910c0a20ba03" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 1"
 
-    FINISH=$(echo $ACTUAL | jq '.finish' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "true" "$FINISH" "$FUNCNAME FINISH"
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[1]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d7e9f433-7f21-47f0-b322-b8ef4af03113" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 2"
 
-    POINT_TITLE=$(echo $ACTUAL | jq '.point.title' | sed -e 's/^"//' -e 's/"$//')
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[2]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "ddc3ec2e-9d11-4c26-96ff-620788af9e37" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 3"
+
+    POINT_TITLE=$(echo $BODY | jq '.point.title' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test title second point" "$POINT_TITLE" "$FUNCNAME POINT_TITLE"
 
-    POINT_DESCRIPTION=$(echo $ACTUAL | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
+    POINT_DESCRIPTION=$(echo $BODY | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test point second description" "$POINT_DESCRIPTION" "$FUNCNAME POINT_DESCRIPTION"
 
-    POINT_PROMPT=$(echo $ACTUAL | jq '.point.prompt' | sed -e 's/^"//' -e 's/"$//')
+    POINT_PROMPT=$(echo $BODY | jq '.point.prompt' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "null" "$POINT_PROMPT" "$FUNCNAME POINT_PROMPT"
 
-    FINISH=$(echo $ACTUAL | jq '.links.finish' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "http://kubikvest.xyz/finish?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoX3Byb3ZpZGVyIjoidmsiLCJ1c2VyX2lkIjo2Njc0OCwidHRsIjo0MzIwMCwicXVlc3RfaWQiOiJkOWIxMzVkMy05YTI5LTQ1ZjAtODc0Mi03Y2E2Zjk5ZDliNzMiLCJwb2ludF9pZCI6ImRkYzNlYzJlLTlkMTEtNGMyNi05NmZmLTYyMDc4OGFmOWUzNyJ9.HYT5KoUkUAsv7-8iUzoSB-3Xaj7cjCJSjvS0LHIJeto" "$FINISH" "$FUNCNAME TASK"
+    FINISH=$(echo $BODY | jq '.links.finish' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "http://kubikvest.xyz/finish?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$FINISH" "$FUNCNAME TASK"
+
+    FINISH=$(echo $BODY | jq '.finish' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "true" "$FINISH" "$FUNCNAME FINISH"
+
+    TOTAL_POINTS=$(echo $BODY | jq '.total_points' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "3" "$TOTAL_POINTS" "$FUNCNAME TOTAL_POINTS"
+}
+
+testFinish() {
+    ACTUAL=$(curl --write-out %{http_code} --silent --output /dev/null "http://$URL/finish?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4")
+    assertTrue 200 $ACTUAL "$FUNCNAME Code"
+
+    BODY=$(curl --silent "http://$URL/finish?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4")
 }
 
 testAuth
+
+testListQuest
+
+testCreateGame
+
 
 testStartTask
 testFailLocationCheckpoint
@@ -233,6 +414,8 @@ testFirstTaskCheckpoint
 
 testSecondTask
 testSecondTaskCheckpoint
+
+testFinish
 
 printf '%.0s-' {1..80}
 echo

@@ -20,6 +20,7 @@ namespace Kubikvest\Subscriber;
 
 use Silex\Application;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Firebase\JWT\JWT;
@@ -48,11 +49,18 @@ class RequestSubscriber implements EventSubscriberInterface
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
-        $token   = $request->get('t', null);
+        $token   = null;
+        if ($request->isMethod('POST')) {
+            $data = json_decode($request->getContent(), true);
+            $this->app['request.content'] = $data;
+            $token = $data['t'];
+        } elseif ($request->isMethod('GET')) {
+            $token = $request->get('t', null);
+        }
 
         if (null !== $token) {
             $data = JWT::decode($token, $this->app['key'], ['HS256']);
-            $this->app['user'] = $this->app['user.manager']->getUser($data->user_id, $data->auth_provider);
+            $this->app['user'] = $this->app['user.manager']->getUser($data->user_id);
         }
     }
     /**

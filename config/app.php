@@ -52,6 +52,11 @@ return [
     'quest.manager' => function (Application $app) {
         return new \Kubikvest\Manager\QuestManager($app['quest.mapper']);
     },
+    'group.manager' => function (Application $app) {
+        return new \Kubikvest\Manager\GroupManager(
+            new \Kubikvest\Mapper\GroupMapper($app['pdo'], $app['queryBuilder'])
+        );
+    },
     'point.mapper' => function (Application $app) {
         return new \Kubikvest\Mapper\PointMapper($app['points']);
     },

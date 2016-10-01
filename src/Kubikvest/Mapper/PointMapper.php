@@ -2,7 +2,6 @@
 
 namespace Kubikvest\Mapper;
 
-use Kubikvest\Model\Quest;
 use Kubikvest\Model\Point;
 
 /**

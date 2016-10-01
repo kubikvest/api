@@ -7,6 +7,7 @@ class User
     public $userId      = null;
     public $provider    = null;
     public $accessToken = null;
+    public $uid         = null;
     /**
      * @deprecated
      */
@@ -25,6 +26,14 @@ class User
     public function isEmpty()
     {
         return null === $this->userId;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEmptyGroup()
+    {
+        return null === $this->groupId;
     }
 
     public static function getFields()
