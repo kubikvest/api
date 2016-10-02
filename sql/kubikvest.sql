@@ -26,6 +26,7 @@ CREATE TABLE `kv_group` (
   `pointId` char(36) DEFAULT NULL,
   `users` blob,
   `pin` smallint(4) unsigned DEFAULT NULL,
+  `startPoint` datetime,
   `active` tinyint(2) unsigned DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
