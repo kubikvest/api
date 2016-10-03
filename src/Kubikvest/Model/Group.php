@@ -12,6 +12,7 @@ class Group extends Generic implements GroupInterface
     public $pointId = null;
     protected $users   = [];
     public $pin     = null;
+    public $startPoint = null;
     public $active  = true;
 
     /**
