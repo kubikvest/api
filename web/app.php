@@ -145,15 +145,15 @@ $app->get('/task', function (Request $request) use ($app) {
     $quest = $app['quest.mapper']->getQuest($group->questId);
     $point = $app['point.mapper']->getPoint($group->pointId);
 
-    if (null === $user->startTask) {
-        $user->startTask = date('Y-m-d H:i:s');
-        $app['user.mapper']->setStartTask($user);
+    if (null === $group->startPoint) {
+        $group->startPoint = date('Y-m-d H:i:s');
+        $app['group.manager']->update($group);
     }
 
     $response = [
         'quest' => (array) $quest,
         'point' => (array) $point,
-        'timer' => $point->getTimer($user->startTask),
+        'timer' => $point->getTimer($group->startPoint),
         't'     => $app['link.gen']->getToken($user),
         'links' => [
             'checkpoint' => $app['link.gen']->getLink(Model\LinkGenerator::CHECKPOINT, $user),
@@ -194,6 +194,8 @@ $app->post('/checkpoint', function (Request $request) use ($app) {
 
         return new JsonResponse($response, JsonResponse::HTTP_OK);
     }
+
+    $group->startPoint = null;
 
     if ($group->pointId == end($quest->points)) {
         $response['links']['finish'] = $app['link.gen']->getLink(Model\LinkGenerator::FINISH, $user);
