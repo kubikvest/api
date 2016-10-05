@@ -160,7 +160,7 @@ $app->get('/task', function (Request $request) use ($app) {
         ],
         'total_points' => count($quest->points),
     ];
-    $response['point']['prompt'] = $point->getPrompt($user->startTask);
+    $response['point']['prompt'] = $point->getPrompt($group->startPoint);
 
     return new JsonResponse($response);
 });
