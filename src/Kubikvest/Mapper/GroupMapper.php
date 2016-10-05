@@ -33,6 +33,7 @@ class GroupMapper
                 'pointId' => $group['pointId'],
                 'users'   => $group['users'],
                 'pin'     => $group['pin'],
+                'startPoint' => $group['startPoint'],
                 'active'  => $group['active'],
             ])
             ->where([
@@ -53,6 +54,7 @@ class GroupMapper
                     'pointId',
                     'users',
                     'pin',
+                    'startPoint',
                     'active'
                 )
                 ->from($this->table)
