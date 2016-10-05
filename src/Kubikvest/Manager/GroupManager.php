@@ -63,6 +63,7 @@ class GroupManager
         $group->pointId = $data['pointId'];
         $group->setUsers($data['users']);
         $group->pin     = $data['pin'];
+        $group->startPoint = $data['startPoint'];
         $group->active  = $data['active'];
 
         return $group;
@@ -77,6 +78,7 @@ class GroupManager
             'pointId' => $group->pointId,
             'users'   => json_encode($group->getUsers()),
             'pin'     => $group->pin,
+            'startPoint' => $group->startPoint,
             'active'  => $group->active,
         ]);
     }
