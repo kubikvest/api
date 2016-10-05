@@ -52,7 +52,8 @@ class Point
 
         foreach ($this->prompt as $k => $v) {
             if ($k > $since->i) {
-                $timer = $k - $since->i;
+                $min = $k - $since->i;
+                $timer = $min * 60 + $since->s;
                 break;
             }
         }
