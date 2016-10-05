@@ -187,7 +187,7 @@ $app->post('/checkpoint', function (Request $request) use ($app) {
         'finish'       => false,
     ];
     unset($response['point']['prompt']);
-    if (!$point->checkCoordinates((double) $data['lat'], (double) $data['lon'])) {
+    if (!$point->checkCoordinates((double) $data['lat'], (double) $data['lng'])) {
         $response['links']['checkpoint'] = $app['link.gen']
             ->getLink(Model\LinkGenerator::CHECKPOINT, $user);
         $response['error'] = 'Не верное место отметки.';
