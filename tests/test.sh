@@ -352,7 +352,7 @@ testSecondTask() {
 }
 
 testSecondTaskCheckpoint() {
-    BODY=$(curl --silent -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":10, "lng":10}' http://$URL/checkpoint)
+    BODY=$(curl --silent -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":10.9, "lng":10.9}' http://$URL/checkpoint)
 
     QUEST_ID=$(echo $BODY | jq '.quest.questId' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "d9b135d3-9a29-45f0-8742-7ca6f99d9b73" "$QUEST_ID" "$FUNCNAME QUEST_ID"
