@@ -6,6 +6,7 @@ class Point
 {
     const MIN = 0;
     const MAX = 1;
+    const ACCURACY_MAX = 40;
 
     public $pointId = null;
     public $title = null;
@@ -33,6 +34,17 @@ class Point
             $latitude <= $this->coords['latitude'][self::MAX] &&
             $this->coords['longitude'][self::MIN] <= $longitude &&
             $longitude <= $this->coords['longitude'][self::MAX];
+    }
+
+    /**
+     * @param int   $accuracy
+     * @param float $minDistance
+     *
+     * @return bool
+     */
+    public function checkAccuracy($accuracy, $minDistance)
+    {
+        return !(Point::ACCURACY_MAX < (int) $accuracy || $accuracy < $minDistance);
     }
 
     /**

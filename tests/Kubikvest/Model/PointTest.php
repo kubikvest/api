@@ -35,6 +35,53 @@ class PointTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * @dataProvider checkAccuracyDataProvider
+     */
+    public function testCheckAccuracy($accuracy, $distance, $expected)
+    {
+        $point = new Point();
+        $actual = $point->checkAccuracy($accuracy, $distance);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function checkAccuracyDataProvider()
+    {
+        return [
+            [
+                'accuracy' => Point::ACCURACY_MAX,
+                'distance' => 23,
+                'expected' => true,
+            ],
+            [
+                'accuracy' => 12,
+                'distance' => 12,
+                'expected' => true,
+            ],
+            [
+                'accuracy' => 12,
+                'distance' => 23,
+                'expected' => false,
+            ],
+            [
+                'accuracy' => Point::ACCURACY_MAX + 1,
+                'distance' => 23,
+                'expected' => false,
+            ],
+            [
+                'accuracy' => Point::ACCURACY_MAX,
+                'distance' => 100,
+                'expected' => false,
+            ],
+            [
+                'accuracy' => Point::ACCURACY_MAX + 1,
+                'distance' => 100,
+                'expected' => false,
+            ],
+        ];
+    }
+
     public function checkCoordinatesDataProvider()
     {
         return [

@@ -108,8 +108,8 @@ return [
             'title'       => 'Test title start point',
             'description' => 'Test point start description',
             'coords' => [
-                'latitude'  => [0, 100],
-                'longitude' => [0, 100],
+                'latitude'  => [60.983826, 60.983902],
+                'longitude' => [25.658975, 25.659115],
             ],
             'prompt' => [],
         ],
@@ -117,8 +117,8 @@ return [
             'title'       => 'Test title first point',
             'description' => 'Test point first description',
             'coords' => [
-                'latitude'  => [0, 100],
-                'longitude' => [0, 100],
+                'latitude'  => [60.983826, 60.983902],
+                'longitude' => [25.658975, 25.659115],
             ],
             'prompt' => [
                 20 => 'Test first prompt',
@@ -130,8 +130,8 @@ return [
             'title'       => 'Test title second point',
             'description' => 'Test point second description',
             'coords' => [
-                'latitude'  => [0, 100],
-                'longitude' => [0, 100],
+                'latitude'  => [60.983826, 60.983902],
+                'longitude' => [25.658975, 25.659115],
             ],
             'prompt' => [
                 20 => 'Test first prompt',
