@@ -208,6 +208,12 @@ $app->post('/checkpoint', function (Request $request) use ($app) {
         $response['links']['task'] = $app['link.gen']->getLink(Model\LinkGenerator::TASK, $user);
     }
 
+    $response['coords'] = [
+        'lat' => $data['lat'] . '(' . (double) $data['lat'] . ')',
+        'lng' => $data['lng'] . '(' . (double) $data['lng'] . ')',
+        'acr' => $data['acr'],
+    ];
+
     return new JsonResponse($response, JsonResponse::HTTP_OK);
 });
 
