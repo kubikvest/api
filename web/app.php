@@ -187,12 +187,15 @@ $app->post('/checkpoint', function (Request $request) use ($app) {
         'finish'       => false,
     ];
     unset($response['point']['prompt']);
-    if (!$point->checkCoordinates((double) $data['lat'], (double) $data['lng'])) {
-        $response['links']['checkpoint'] = $app['link.gen']
-            ->getLink(Model\LinkGenerator::CHECKPOINT, $user);
-        $response['error'] = 'Не верное место отметки.';
+    if (! $point->checkCoordinates((double) $data['lat'], (double) $data['lng'])) {
+        $distances = $point->calcDistanceToPointsSector((double) $data['lat'], (double) $data['lng']);
+        if (! $point->checkAccuracy((int) $data['acr'], min($distances))) {
+            $response['links']['checkpoint'] = $app['link.gen']
+                ->getLink(Model\LinkGenerator::CHECKPOINT, $user);
+            $response['error'] = 'Не верное место отметки.';
 
-        return new JsonResponse($response, JsonResponse::HTTP_OK);
+            return new JsonResponse($response, JsonResponse::HTTP_OK);
+        }
     }
 
     $group->startPoint = null;
