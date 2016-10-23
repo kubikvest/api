@@ -25,6 +25,15 @@ return [
                 '1bdf7da9-a290-405e-8d4d-3d43bac4f9d2',
             ],
         ],
+        '023fabdb-82fa-4feb-92b1-afbde628403d' => [
+            'title' => 'квест "Спб"',
+            'description' => '',
+            'points' => [
+                'ab95b999-6b02-45b2-a4c1-ac7098201d36',
+                '17120974-ce95-4ac0-b34a-1097c1806fe6',
+                'a69da8fa-30e2-4513-bb8f-4c8ebf03982e',
+            ],
+        ],
     ],
     'points' => [
         '1d2d4455-bb0a-48f0-8970-63e4db6bc52c' => [
@@ -99,6 +108,60 @@ return [
                 20 => 'Открытие этого памятника было приурочено к 1150-летию Великого Новгорода.',
                 40 => 'Не думай об огромной скамейке!)',
                 60 => 'Памятник композитору Сергею Рахманинову.',
+            ],
+        ],
+        /**
+         * SPB
+         */
+        'ab95b999-6b02-45b2-a4c1-ac7098201d36' => [
+            'title'       => 'First point',
+            'description' => '',
+            'coords' => [
+                'latitude'  => [0, 100],
+                'longitude' => [0, 100],
+            ],
+            'prompt' => [
+                20 => 'Test first prompt',
+                40 => 'Test secont prompt',
+                60 => 'Test answer',
+            ],
+        ],
+        /**
+         * 60.006151, 30.402674
+         * 60.006250, 30.403245
+         * 60.005967, 30.402859
+         * 60.006037, 30.403487
+         */
+        '17120974-ce95-4ac0-b34a-1097c1806fe6' => [
+            'title'       => 'Second point',
+            'description' => '',
+            'coords' => [
+                'latitude'  => [60.0059, 60.0062],
+                'longitude' => [30.4026, 30.4034],
+            ],
+            'prompt' => [
+                20 => 'Test first prompt',
+                40 => 'Test secont prompt',
+                60 => 'Test answer',
+            ],
+        ],
+        /**
+         * 60.006507, 30.402248
+         * 60.006603, 30.401875
+         * 60.006859, 30.402275
+         * 60.006766, 30.402658
+         */
+        'a69da8fa-30e2-4513-bb8f-4c8ebf03982e' => [
+            'title'       => 'Finish point',
+            'description' => '',
+            'coords' => [
+                'latitude'  => [60.0065, 60.0068],
+                'longitude' => [30.4018, 30.4026],
+            ],
+            'prompt' => [
+                20 => 'Test first prompt',
+                40 => 'Test secont prompt',
+                60 => 'Test answer',
             ],
         ],
         /**
