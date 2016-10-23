@@ -187,6 +187,15 @@ $app->post('/checkpoint', function (Request $request) use ($app) {
         'finish'       => false,
     ];
     unset($response['point']['prompt']);
+    $app['logger']->log(
+        \Psr\Log\LogLevel::INFO,
+        'Checkout',
+        [
+            'lat' => $data['lat'],
+            'lng' => $data['lng'],
+            'acr' => $data['acr'],
+        ]
+    );
     if (! $point->checkCoordinates((double) $data['lat'], (double) $data['lng'])) {
         $distances = $point->calcDistanceToPointsSector((double) $data['lat'], (double) $data['lng']);
         if (! $point->checkAccuracy((int) $data['acr'], min($distances))) {

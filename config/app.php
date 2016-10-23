@@ -177,5 +177,13 @@ return [
                 $rangePosition['longitude'][MIN] <= $longitude &&
                 $longitude <= $rangePosition['longitude'][MAX];
         };
-    }
+    },
+    'logger' => function () {
+        $logger = new Monolog\Logger('kubikvest');
+        $logger->setHandlers([
+            new Monolog\Handler\StreamHandler('php://stdout'),
+        ]);
+
+        return $logger;
+    },
 ];
