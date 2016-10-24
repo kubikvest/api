@@ -30,4 +30,12 @@ CREATE TABLE `kv_group` (
   `active` tinyint(2) unsigned DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `kv_log` (
+  `gameId` char(36) DEFAULT NULL,
+  `groupId` char(36) NOT NULL,
+  `userId` char(36) DEFAULT NULL,
+  `created` datetime,
+  `content` blob
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 insert kv_user (userId, provider, uid, accessToken) values ('adff5c92-008c-47ac-bad8-11be43ea1469', 'vk', 1111, 'token');
