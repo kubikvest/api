@@ -196,6 +196,13 @@ $app->post('/checkpoint', function (Request $request) use ($app) {
             'acr' => $data['acr'],
         ]
     );
+
+    $response['coords'] = [
+        'lat' => $data['lat'] . '(' . (double) $data['lat'] . ')',
+        'lng' => $data['lng'] . '(' . (double) $data['lng'] . ')',
+        'acr' => $data['acr'],
+    ];
+
     if (! $point->checkCoordinates((double) $data['lat'], (double) $data['lng'])) {
         $distances = $point->calcDistanceToPointsSector((double) $data['lat'], (double) $data['lng']);
         if (! $point->checkAccuracy((int) $data['acr'], min($distances))) {
@@ -219,12 +226,6 @@ $app->post('/checkpoint', function (Request $request) use ($app) {
         $app['group.manager']->update($group);
         $response['links']['task'] = $app['link.gen']->getLink(Model\LinkGenerator::TASK, $user);
     }
-
-    $response['coords'] = [
-        'lat' => $data['lat'] . '(' . (double) $data['lat'] . ')',
-        'lng' => $data['lng'] . '(' . (double) $data['lng'] . ')',
-        'acr' => $data['acr'],
-    ];
 
     return new JsonResponse($response, JsonResponse::HTTP_OK);
 });
