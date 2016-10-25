@@ -205,6 +205,14 @@ $app->post('/checkpoint', function (Request $request) use ($app) {
 
     if (! $point->checkCoordinates((double) $data['lat'], (double) $data['lng'])) {
         $distances = $point->calcDistanceToPointsSector((double) $data['lat'], (double) $data['lng']);
+        $response['distance'] = min($distances);
+        $app['logger']->log(
+            \Psr\Log\LogLevel::INFO,
+            'distance',
+            [
+                'min_distance' => min($distances),
+            ]
+        );
         if (! $point->checkAccuracy((int) $data['acr'], min($distances))) {
             $response['links']['checkpoint'] = $app['link.gen']
                 ->getLink(Model\LinkGenerator::CHECKPOINT, $user);
