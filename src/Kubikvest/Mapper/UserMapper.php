@@ -167,4 +167,10 @@ class UserMapper
             ->where(['userId' => $user->userId]);
         $this->pdo->exec(QueryAssembler::stringify($query));
     }
+
+    public function truncate()
+    {
+        $this->pdo->exec('truncate kv_user');
+        $this->pdo->exec('truncate kv_group');
+    }
 }

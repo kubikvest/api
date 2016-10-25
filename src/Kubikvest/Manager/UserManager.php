@@ -120,4 +120,9 @@ class UserManager
             'startTask'   => $user->startTask,
         ]);
     }
+
+    public function truncate()
+    {
+        $this->mapper->truncate();
+    }
 }
