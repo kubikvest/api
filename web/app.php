@@ -74,6 +74,11 @@ $app->get('/auth', function(Request $request) use ($app) {
     ]);
 });
 
+$app->get('/clean', function (Request $request) use ($app) {
+    $app['user.manager']->truncate();
+    return new JsonResponse([]);
+});
+
 $app->get('/list-quest', function (Request $request) use ($app) {
     /**
      * @var \Kubikvest\Model\User $user

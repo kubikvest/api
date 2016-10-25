@@ -25,6 +25,13 @@ return [
                 '1bdf7da9-a290-405e-8d4d-3d43bac4f9d2',
             ],
         ],
+        'c38ba007-a47d-410e-856e-4e3a89fd5d64' => [
+            'title' => 'квест "Дом"',
+            'description' => 'Только для тестов',
+            'points' => [
+                '1d2d4455-bb0a-48f0-8970-63e4db6bc52c',
+            ],
+        ],
         '023fabdb-82fa-4feb-92b1-afbde628403d' => [
             'title' => 'квест "Спб"',
             'description' => '',
