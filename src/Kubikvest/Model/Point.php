@@ -121,6 +121,20 @@ class Point
     }
 
     /**
+     * @param array $distances
+     *
+     * @return float
+     */
+    public function distanceBorderSector(array $distances)
+    {
+        sort($distances);
+        list($a, $b) = $distances;
+        $c = pow($a, 2) + pow($b, 2);
+
+        return $this->altitudeTriangle($a, $b, $c);
+    }
+
+    /**
      * Calculates the great-circle distance between two points, with
      * the Vincenty formula.
      *
@@ -152,5 +166,20 @@ class Point
         $angle = atan2(sqrt($a), $b);
 
         return $angle * $earthRadius;
+    }
+
+    /**
+     * @param float $a
+     * @param float $b
+     * @param float $c
+     *
+     * @return float
+     */
+    protected function altitudeTriangle($a, $b, $c)
+    {
+        $p = 0.5 * ($a + $b + $c);
+        $s = sqrt($p * ($p - $a) * ($p - $b) * ($p - $c));
+
+        return 2 * $s / $c;
     }
 }
