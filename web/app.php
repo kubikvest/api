@@ -216,9 +216,13 @@ $app->post('/checkpoint', function (Request $request) use ($app) {
             'distance',
             [
                 'min_distance' => min($distances),
+                'distance_border' => $point->distanceBorderSector($distances),
             ]
         );
-        if (! $point->checkAccuracy((int) $data['acr'], min($distances))) {
+
+        if ($point->distanceBorderSector($distances) > (int) $data['acr'] ||
+            ! $point->checkAccuracy((int) $data['acr'], min($distances))
+        ){
             $response['links']['checkpoint'] = $app['link.gen']
                 ->getLink(Model\LinkGenerator::CHECKPOINT, $user);
             $response['error'] = 'Не верное место отметки.';
