@@ -244,6 +244,14 @@ $app->post('/checkpoint', function (Request $request) use ($app) {
         $response['links']['task'] = $app['link.gen']->getLink(Model\LinkGenerator::TASK, $user);
     }
 
+    $app['logger']->log(
+        \Psr\Log\LogLevel::INFO,
+        'Пройдена точка',
+        [
+            'finish' => $response['finish'],
+        ]
+    );
+
     return new JsonResponse($response, JsonResponse::HTTP_OK);
 });
 
