@@ -60,6 +60,9 @@ return [
     'point.mapper' => function (Application $app) {
         return new \Kubikvest\Mapper\PointMapper($app['points']);
     },
+    'point.manager' => function (Application $app) {
+        return new \Kubikvest\Manager\PointManager($app['point.mapper']);
+    },
     'link.gen' => function (Application $app) {
         return new \Kubikvest\Model\LinkGenerator($app['url'], $app['key']);
     },
