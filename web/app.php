@@ -178,11 +178,13 @@ $app->post('/checkpoint', function (Request $request) use ($app) {
      * @var \Kubikvest\Model\Group $group
      * @var \Kubikvest\Model\Quest $quest
      * @var \Kubikvest\Model\Point $point
+     * @var \Kubikvest\Manager\PointManager $pointManager
      */
     $user  = $app['user'];
     $group = $app['group.manager']->get($user->groupId);
     $quest = $app['quest.mapper']->getQuest($group->questId);
     $point = $app['point.mapper']->getPoint($group->pointId);
+    $pointManager = $app['point.manager'];
 
     $response = [
         't'            => $app['link.gen']->getToken($user),
@@ -203,25 +205,25 @@ $app->post('/checkpoint', function (Request $request) use ($app) {
     );
 
     $response['coords'] = [
-        'lat' => $data['lat'] . '(' . (double) $data['lat'] . ')',
-        'lng' => $data['lng'] . '(' . (double) $data['lng'] . ')',
+        'lat' => $data['lat'] . '(' . (double)$data['lat'] . ')',
+        'lng' => $data['lng'] . '(' . (double)$data['lng'] . ')',
         'acr' => $data['acr'],
     ];
 
-    if (! $point->checkCoordinates((double) $data['lat'], (double) $data['lng'])) {
-        $distances = $point->calcDistanceToPointsSector((double) $data['lat'], (double) $data['lng']);
+    if (!$pointManager->checkCoordinates($point->coords, (double)$data['lat'], (double)$data['lng'])) {
+        $distances = $pointManager->calcDistanceToPointsSector($point->coords, (double)$data['lat'], (double)$data['lng']);
         $response['distance'] = min($distances);
         $app['logger']->log(
             \Psr\Log\LogLevel::INFO,
             'distance',
             [
                 'min_distance' => min($distances),
-                'distance_border' => $point->distanceBorderSector($distances),
+                'distance_border' => $pointManager->distanceBorderSector($distances),
             ]
         );
 
-        if ($point->distanceBorderSector($distances) > (int) $data['acr'] ||
-            ! $point->checkAccuracy((int) $data['acr'], min($distances))
+        if ($pointManager->distanceBorderSector($distances) > (int)$data['acr'] ||
+            !$pointManager->pointIncludedAccuracyRange((int)$data['acr'], min($distances))
         ){
             $response['links']['checkpoint'] = $app['link.gen']
                 ->getLink(Model\LinkGenerator::CHECKPOINT, $user);
