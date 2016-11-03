@@ -1,6 +1,9 @@
 <?php
 return [
     'quest' => [
+        /**
+         * Для автотестов
+         */
         'd9b135d3-9a29-45f0-8742-7ca6f99d9b73' => [
             'title' => 'Task Zero',
             'description' => 'Test task zero description',
@@ -10,6 +13,9 @@ return [
                 'ddc3ec2e-9d11-4c26-96ff-620788af9e37',
             ],
         ],
+        /**
+         * Живые квесты
+         */
         '74184cd8-b02a-4505-9416-b136468bfeaf' => [
             'title' => 'квест "Окольный град"',
             'description' => 'Тип квеста - пеший
@@ -22,6 +28,13 @@ return [
                 'e4e37339-b783-4f20-8eca-fb498366e496',
                 '05132aee-a9fc-447d-bef6-4798e4f31bcf',
                 'c477f2c1-9368-4560-aaa6-19876a9acb6e',
+                '1bdf7da9-a290-405e-8d4d-3d43bac4f9d2',
+            ],
+        ],
+        '47b1e19c-b010-4f32-baeb-f534650ed299' => [
+            'title' => 'Работа',
+            'description' => '',
+            'points' => [
                 '1bdf7da9-a290-405e-8d4d-3d43bac4f9d2',
             ],
         ],
