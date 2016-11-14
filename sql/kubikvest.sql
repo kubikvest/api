@@ -5,16 +5,16 @@ use kubikvest;
 DROP TABLE IF EXISTS `kv_user`;
 
 CREATE TABLE `kv_user` (
-  `userId` char(36) NOT NULL,
+  `user_id` char(36) NOT NULL,
   `provider` char(2) DEFAULT NULL,
   `uid` bigint(20) unsigned NOT NULL,
-  `accessToken` varchar(255) DEFAULT NULL,
-  `groupId` char(36) DEFAULT NULL,
+  `access_token` varchar(255) DEFAULT NULL,
+  `group_id` char(36) DEFAULT NULL,
   `ttl` int(11) unsigned DEFAULT NULL,
-  `questId` char(36) DEFAULT NULL,
-  `pointId` char(36) DEFAULT NULL,
-  `logQuest` blob,
-  `startTask` datetime
+  `quest_id` char(36) DEFAULT NULL,
+  `point_id` char(36) DEFAULT NULL,
+  `log_quest` blob,
+  `start_task` datetime
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `kv_group`;
@@ -30,4 +30,4 @@ CREATE TABLE `kv_group` (
   `active` tinyint(2) unsigned DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-insert kv_user (userId, provider, uid, accessToken) values ('adff5c92-008c-47ac-bad8-11be43ea1469', 'vk', 1111, 'token');
+insert kv_user (user_id, provider, uid, access_token) values ('adff5c92-008c-47ac-bad8-11be43ea1469', 'vk', 1111, 'token');

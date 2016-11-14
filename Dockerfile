@@ -1,4 +1,4 @@
-FROM leanlabs/php:1.1.1
+FROM alpine:3.4
 
 VOLUME ["/app"]
 
@@ -9,14 +9,16 @@ ENV VK_CLIENT_ID="111" \
 
 COPY . /app
 
-RUN echo "@stale http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
+RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
     apk add --update \
-        php-zlib \
-        php-pdo_mysql \
-        php-dom \
-        php-pdo && \
+        php7-fpm@community \
+        php7-zlib@community \
+        php7-pdo_mysql@community \
+        php7-dom@community \
+        php7-json@community \
+        php7-pdo@community && \
     rm -rf /var/cache/apk/*
 
 ENTRYPOINT ["/bin/sh", "/app/entrypoint/kubikvest.sh"]
 
-CMD ["php-fpm", "-F", "-d error_reporting=E_ALL", "-d log_errors=ON", "-d error_log=/dev/stdout","-d display_errors=YES"]
+CMD ["php-fpm7", "-F", "-d error_reporting=E_ALL", "-d log_errors=ON", "-d error_log=/dev/stdout","-d display_errors=YES"]

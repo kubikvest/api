@@ -4,28 +4,34 @@ namespace Kubikvest\Model;
 
 class User
 {
-    public $userId      = null;
-    public $provider    = null;
-    public $accessToken = null;
-    public $uid         = null;
+    public $userId      = '';
+    public $provider    = '';
+    public $accessToken = '';
+    public $uid         = 0;
     /**
      * @deprecated
      */
-    public $questId     = null;
+    public $questId     = '';
     /**
      * @deprecated
      */
-    public $pointId     = null;
-    public $startTask   = null;
-    public $groupId     = null;
-    public $ttl         = null;
+    public $pointId     = '';
+    /**
+     * @var \DateTime
+     */
+    public $startTask   = '';
+    public $groupId     = '';
+    /**
+     * @var int
+     */
+    public $ttl         = 0;
 
     /**
      * @return bool
      */
     public function isEmpty()
     {
-        return null === $this->userId;
+        return empty($this->userId);
     }
 
     /**
@@ -33,17 +39,6 @@ class User
      */
     public function isEmptyGroup()
     {
-        return null === $this->groupId;
-    }
-
-    public static function getFields()
-    {
-        return [
-            'userId',
-            'provider',
-            'accessToken',
-            'kvestId',
-            'pointId',
-        ];
+        return empty($this->groupId);
     }
 }

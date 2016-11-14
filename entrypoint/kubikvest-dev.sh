@@ -20,7 +20,8 @@ pm.min_spare_servers = 1
 pm.max_spare_servers = 3
 pm.max_requests = 1000
 access.log = /proc/1/fd/2
-request_terminate_timeout = 35s
+;request_terminate_timeout = 35s
+request_terminate_timeout = 5m
 chdir = /
 catch_workers_output = yes
 php_admin_value[error_log] = /proc/self/fd/2
@@ -158,6 +159,12 @@ soap.wsdl_cache_limit = 5
 
 [ldap]
 ldap.max_links = -1
+
+[xdebug]
+xdebug.remote_autostart = 1
+xdebug.remote_enable = 1
+xdebug.remote_connect_back=1
+xdebug.remote_port = 9005
 EOF
 
 set -e
