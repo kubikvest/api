@@ -29,16 +29,16 @@ class UserManager
 
         $user->userId      = Uuid::gen();
         $user->provider    = $provider;
-        $user->uid         = (int) $uid;
+        $user->uid         = $uid;
         $user->accessToken = $token;
-        $user->ttl         = (int) $ttl;
+        $user->ttl         = $ttl;
 
         $this->mapper->create([
-            'userId'      => $user->userId,
-            'provider'    => $user->provider,
-            'uid'         => $user->uid,
-            'accessToken' => $user->accessToken,
-            'ttl'         => $user->ttl,
+            'user_id'      => $user->userId,
+            'provider'     => $user->provider,
+            'uid'          => $user->uid,
+            'access_token' => $user->accessToken,
+            'ttl'          => $user->ttl,
         ]);
 
         return $user;
@@ -58,16 +58,16 @@ class UserManager
 
         $user->userId      = '8c5a3934-31b0-465e-812d-9a2e2074d0da';
         $user->provider    = $provider;
-        $user->uid         = (int) $uid;
+        $user->uid         = $uid;
         $user->accessToken = $token;
-        $user->ttl         = (int) $ttl;
+        $user->ttl         = $ttl;
 
         $this->mapper->create([
-            'userId'      => $user->userId,
-            'provider'    => $user->provider,
-            'uid'         => $user->uid,
-            'accessToken' => $user->accessToken,
-            'ttl'         => $user->ttl,
+            'user_id'      => $user->userId,
+            'provider'     => $user->provider,
+            'uid'          => $user->uid,
+            'access_token' => $user->accessToken,
+            'ttl'          => $user->ttl,
         ]);
 
         return $user;
@@ -78,13 +78,13 @@ class UserManager
         $user = new User();
         $userData = $this->mapper->getUserByProviderCreds($userId, $provider);
         if (!empty($userData)) {
-            $user->userId      = $userData['userId'];
+            $user->userId      = $userData['user_id'];
             $user->provider    = $userData['provider'];
-            $user->uid         = (int) $userData['uid'];
-            $user->accessToken = $userData['accessToken'];
-            $user->groupId     = $userData['groupId'];
-            $user->ttl         = (int) $userData['ttl'];
-            $user->startTask   = $userData['startTask'];
+            $user->uid         = $userData['uid'];
+            $user->accessToken = $userData['access_token'];
+            $user->groupId     = $userData['group_id'];
+            $user->ttl         = $userData['ttl'];
+            $user->startTask   = $userData['start_task'];
         }
 
         return $user;
@@ -95,13 +95,13 @@ class UserManager
         $user = new User();
         $userData = $this->mapper->getUser($userId);
         if (!empty($userData)) {
-            $user->userId      = $userData['userId'];
+            $user->userId      = $userData['user_id'];
             $user->provider    = $userData['provider'];
-            $user->uid         = (int) $userData['uid'];
-            $user->accessToken = $userData['accessToken'];
-            $user->groupId     = $userData['groupId'];
-            $user->ttl         = (int) $userData['ttl'];
-            $user->startTask   = $userData['startTask'];
+            $user->uid         = $userData['uid'];
+            $user->accessToken = $userData['access_token'];
+            $user->groupId     = $userData['group_id'];
+            $user->ttl         = $userData['ttl'];
+            $user->startTask   = $userData['start_task'];
         }
 
         return $user;
@@ -113,16 +113,36 @@ class UserManager
     public function update(User $user)
     {
         $this->mapper->update([
-            'userId'      => $user->userId,
-            'accessToken' => $user->accessToken,
-            'groupId'     => $user->groupId,
-            'ttl'         => $user->ttl,
-            'startTask'   => $user->startTask,
+            'user_id'      => $user->userId,
+            'access_token' => $user->accessToken,
+            'group_id'     => $user->groupId,
+            'ttl'          => $user->ttl,
+            'start_task'   => $user->startTask,
         ]);
     }
 
     public function truncate()
     {
         $this->mapper->truncate();
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function isEmpty(User $user)
+    {
+        return empty($user->userId);
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function isEmptyGroup(User $user)
+    {
+        return empty($user->groupId);
     }
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<dataset>
+    <kv_user user_id="e56abaa3-ace5-4561-9b19-76c5fa49814b"
+             provider="vk"
+             uid="2222"
+             access_token="token"
+             group_id="##NULL##"
+             ttl="2"
+             quest_id="##NULL##"
+             point_id="##NULL##"
+             log_quest="##NULL##"
+             start_task="##NULL##"/>
+</dataset>
