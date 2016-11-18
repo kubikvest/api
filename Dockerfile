@@ -9,12 +9,15 @@ ENV VK_CLIENT_ID="111" \
 
 COPY . /app
 
-RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
+RUN echo "@main http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
+    echo "@community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
     apk add --update \
         php7-fpm@community \
         php7-zlib@community \
         php7-pdo_mysql@community \
         php7-dom@community \
+        libressl@main \
+        php7-openssl@community \
         php7-json@community \
         php7-pdo@community && \
     rm -rf /var/cache/apk/*
