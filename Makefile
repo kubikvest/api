@@ -75,7 +75,7 @@ test: composer build-dev
 		-e URI_OAUTH_VK=$(URI_OAUTH_VK) \
 		-e URL=$(URL) \
 		-e KEY=$(KEY) \
-		-p 9005:9005 \
+		-p 9015:9005 \
 		kubikvest/api-dev \
 		php-fpm7 -F \
 			-d error_reporting=E_ALL \
@@ -119,7 +119,7 @@ destroy: clean
 
 deploy: COMPOSER_FLAGS = --no-dev --ignore-platform-reqs --no-interaction
 deploy: CONTAINERS = kubikvest kubikvest_nginx
-deploy: composer destroy build migrate
+deploy: composer destroy build
 	@docker run -d \
 		--name "kubikvest" \
 		--link kubikvest_db:kubikvest_db \
