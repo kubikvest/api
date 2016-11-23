@@ -1,8 +1,8 @@
 FROM kubikvest/api
 
-RUN echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
+RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
     apk add --update \
-        php7-xdebug@testing && \
+        php7-xdebug@community && \
     rm -rf /var/cache/apk/*
 
 ENTRYPOINT ["/bin/sh", "/app/entrypoint/kubikvest-dev.sh"]
