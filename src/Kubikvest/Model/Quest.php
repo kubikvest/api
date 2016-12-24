@@ -7,6 +7,7 @@ class Quest
     public $questId = null;
     public $title = null;
     public $description = null;
+    public $picture = null;
     public $points = [];
 
     /**

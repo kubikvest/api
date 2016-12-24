@@ -33,6 +33,7 @@ class QuestMapper
         $quest->questId     = $questId;
         $quest->title       = $data['title'];
         $quest->description = $data['description'];
+        $quest->picture     = $data['picture'];
         $quest->points      = $data['points'];
 
         return $quest;

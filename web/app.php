@@ -100,6 +100,7 @@ $app->get('/list-quest', function (Request $request) use ($app) {
             'quest_id'    => $item->questId,
             'title'       => $item->title,
             'description' => $item->description,
+            'picture'     => $item->picture,
             'link'        => $app['link.gen']->getLink(Model\LinkGenerator::CREATE_GAME, $user),
         ];
         if ('8c5a3934-31b0-465e-812d-9a2e2074d0da' == $user->userId) {
