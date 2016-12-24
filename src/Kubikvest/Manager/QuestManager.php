@@ -24,6 +24,7 @@ class QuestManager
             $quest->questId     = $questId;
             $quest->title       = $item['title'];
             $quest->description = $item['description'];
+            $quest->picture     = $item['picture'];
             $ret[] = $quest;
         }
 
