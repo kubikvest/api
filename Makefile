@@ -104,8 +104,8 @@ testunit:
 		-v $(CURDIR):/app \
 		-e DB_HOST=server_db \
 		-w /app \
-		kubikvest/api \
-		sh -c '/app/vendor/bin/phpunit'
+		kubikvest/api-dev \
+		sh -c 'vendor/bin/phpunit'
 
 stop:
 	@-docker stop $(CONTAINERS)
