@@ -210,7 +210,7 @@ return [
             ],
         ],
         '6f3c2252-0f00-42ae-971c-718b35a21a1d' => [
-            'title' => 'Задание №5',
+            'title' => 'Задание №5 (последнее)',
             'description' => 'Теперь вам предстоит найти райскую птицу с головой девы. Не бойтесь, она не улетит, заперта в клетке навеки!',
             'coords' => [
                 'latitude'  => [58.5230, 58.5238],
@@ -275,7 +275,7 @@ return [
         ],
         'de9f4fb0-6501-4a8d-a750-8df7e106fed0' => [
             'title' => 'Найдите еще одну десткую площадку за https://goo.gl/5gPxDn',
-            'description' => '004',
+            'description' => 'Задание №4',
             'coords' => [
                 'latitude'  => [58.5365, 58.5366],
                 'longitude' => [31.2914, 31.2917],
@@ -287,7 +287,7 @@ return [
             ],
         ],
         '00cf856c-e259-405a-9c01-4345f4310168' => [
-            'title' => 'Задание №5',
+            'title' => 'Задание №5 (последнее)',
             'description' => 'Теперь посмотрим как вы читаете карты. https://goo.gl/5yRxq4',
             'coords' => [
                 'latitude'  => [58.5400, 58.5408],
@@ -306,8 +306,8 @@ return [
             'title'       => 'Старт',
             'description' => 'стартовое место',
             'coords' => [
-                'latitude'  => [58.5335, 58.5346],
-                'longitude' => [31.2662, 31.2684],
+                'latitude'  => [0, 100],
+                'longitude' => [0, 100],
             ],
             'prompt' => [],
         ],
@@ -315,8 +315,8 @@ return [
             'title' => 'Задание №1',
             'description' => '1 задание',
             'coords' => [
-                'latitude'  => [58.5325, 58.5335],
-                'longitude' => [31.2664, 31.2683],
+                'latitude'  => [0, 100],
+                'longitude' => [0, 100],
             ],
             'prompt' => [
                 20 => 'Можно долго вести диалог об этом человеке, однако лучше его увидеть. https://goo.gl/sh26uN',
@@ -328,8 +328,8 @@ return [
             'title' => 'Задание №2',
             'description' => '2 задание',
             'coords' => [
-                'latitude'  => [58.5301, 58.5309],
-                'longitude' => [31.2695, 31.2709],
+                'latitude'  => [0, 100],
+                'longitude' => [0, 100],
             ],
             'prompt' => [
                 20 => 'Около 35-ти лет он стоял без рогов, но сейчас все на месте.',
@@ -341,8 +341,8 @@ return [
             'title' => 'Задание №3',
             'description' => '3 задание',
             'coords' => [
-                'latitude'  => [58.5349, 58.5357],
-                'longitude' => [31.2665, 31.2679],
+                'latitude'  => [0, 100],
+                'longitude' => [0, 100],
             ],
             'prompt' => [
                 20 => 'Прошли? Молодцы! Наверняка где-то рядом виднеется сказочный замок и слышны голоса детей.',
@@ -351,11 +351,11 @@ return [
             ],
         ],
         'de9f4fb0-6501-4a8d-a750-8df7e106fed2' => [
-            'title' => '4 задание https://goo.gl/5gPxDn',
-            'description' => '004',
+            'title' => 'Задание №4',
+            'description' => '4 задание https://goo.gl/5gPxDn',
             'coords' => [
-                'latitude'  => [58.5406, 58.5414],
-                'longitude' => [31.2242, 31.2257],
+                'latitude'  => [0, 100],
+                'longitude' => [0, 100],
             ],
             'prompt' => [
                 20 => 'За четырехзвездочным паласом, она и находится.',
@@ -364,11 +364,13 @@ return [
             ],
         ],
         '00cf856c-e259-405a-9c01-4345f4310162' => [
-            'title' => 'Задание №5',
-            'description' => '5 задание https://goo.gl/5yRxq4',
+            'title' => 'Задание №5 (последнее)',
+            'description' => 'Как читаете карты https://goo.gl/5yRxq4',
+            <a href=”https://goo.gl/5yRxq4.html”>карта</a>
+            <img src="https://lh5.googleusercontent.com/vbcAws1mSL39oNvknnCuICi0r090E5qcWF0z3U1zqLMxCAQJd6c6zp7_4bvg-haAi8g4XvjZJ-Jto8Q=w1538-h806">
             'coords' => [
-                'latitude'  => [58.5417, 58.5426],
-                'longitude' => [31.2210, 31.2225],
+                'latitude'  => [58.5400, 58.5408],
+                'longitude' => [31.2881, 31.2886],
             ],
             'prompt' => [
                 20 => 'На карте изображен древнейший новгородский монастырь на улице парков.',
