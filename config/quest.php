@@ -367,7 +367,7 @@ return [
             'title' => 'Задание №5',
             'description' => '5 задание https://goo.gl/5yRxq4',
             'coords' => [
-                'latitude'  => [58.5405, [58.5412],
+                'latitude'  => [58.5405, 58.5412],
                 'longitude' => [31.2337, 31.2348],
             ],
             'prompt' => [
