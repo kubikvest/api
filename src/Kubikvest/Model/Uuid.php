@@ -5,8 +5,23 @@ namespace Kubikvest\Model;
 use Ramsey\Uuid\Uuid as LibUuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
-final class Uuid
+class Uuid
 {
+    protected $value;
+
+    public function __construct($value)
+    {
+        $this->value = $value;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
     public static function gen()
     {
         $uuid = '';
