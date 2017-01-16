@@ -4,6 +4,9 @@ namespace Kubikvest\Model\Geo;
 
 class Coordinate
 {
+    const LATITUDE = 'latitude';
+    const LONGITUDE = 'longitude';
+
     protected $latitude = 0.0;
     protected $longitude = 0.0;
 
