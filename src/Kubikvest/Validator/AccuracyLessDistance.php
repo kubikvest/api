@@ -24,13 +24,31 @@ use Kubikvest\Resource\Position\Model\Position;
 class AccuracyLessDistance
 {
     /**
+     * @var Position
+     */
+    private $position;
+    /**
+     * @var Distance
+     */
+    private $distance;
+
+    /**
+     * AccuracyLessDistance constructor.
+     *
      * @param Position $position
      * @param Distance $distance
-     *
+     */
+    public function __construct(Position $position, Distance $distance)
+    {
+        $this->position = $position;
+        $this->distance = $distance;
+    }
+
+    /**
      * @return bool
      */
-    public function validate(Position $position, Distance $distance)
+    public function validate()
     {
-        return $distance->getValue() >= $position->getAccuracy();
+        return $this->distance->getValue() >= $this->position->getAccuracy();
     }
 }

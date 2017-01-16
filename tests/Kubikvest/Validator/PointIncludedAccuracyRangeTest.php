@@ -30,7 +30,7 @@ class PointIncludedAccuracyRangeTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidate($position, $expected)
     {
-        $actual = (new PointIncludedAccuracyRange())->validate($position);
+        $actual = (new PointIncludedAccuracyRange($position))->validate();
         $this->assertSame($expected, $actual);
     }
 

@@ -26,16 +26,34 @@ use Kubikvest\Resource\Position\Model\Position;
 class PositionAroundBorderSector
 {
     /**
-     * Сравнить Accuracy позиции игрока с расстоянием до границы сектора
+     * @var Position
+     */
+    private $position;
+    /**
+     * @var Sector
+     */
+    private $sector;
+
+    /**
+     * PositionAroundBorderSector constructor.
      *
      * @param Position $position
      * @param Sector   $sector
+     */
+    public function __construct(Position $position, Sector $sector)
+    {
+        $this->position = $position;
+        $this->sector = $sector;
+    }
+
+    /**
+     * Сравнить Accuracy позиции игрока с расстоянием до границы сектора
      *
      * @return bool
      */
-    public function validate(Position $position, Sector $sector)
+    public function validate()
     {
-        $distances = $this->calcDistancesToPointsSector($position, $sector);
+        $distances = $this->calcDistancesToPointsSector($this->position, $this->sector);
         sort($distances);
         /**
          * @var Distance $a
@@ -46,7 +64,7 @@ class PositionAroundBorderSector
 
         $altitudeTriangle = $this->altitudeTriangle($a->getValue(), $b->getValue(), $distanceAB);
 
-        return $altitudeTriangle >= $position->getAccuracy();
+        return $altitudeTriangle >= $this->position->getAccuracy();
     }
 
     /**

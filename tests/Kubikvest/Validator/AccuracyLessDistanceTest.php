@@ -32,7 +32,7 @@ class AccuracyLessDistanceTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidate($position, $distance, $expected)
     {
-        $actual = (new AccuracyLessDistance())->validate($position, $distance);
+        $actual = (new AccuracyLessDistance($position, $distance))->validate();
         $this->assertSame($expected, $actual);
     }
 

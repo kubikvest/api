@@ -33,7 +33,7 @@ class PositionInsideSectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidate($position, $sector, $expected)
     {
-        $actual = (new PositionInsideSector())->validate($position, $sector);
+        $actual = (new PositionInsideSector($position, $sector))->validate();
 
         $this->assertSame($expected, $actual);
     }

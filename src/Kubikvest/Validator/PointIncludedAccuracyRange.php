@@ -23,14 +23,26 @@ use Kubikvest\Resource\Position\Model\Position;
 class PointIncludedAccuracyRange
 {
     const ACCURACY_MAX = 40;
+    /**
+     * @var Position
+     */
+    private $position;
 
     /**
-     * @param Position $position
+     * PointIncludedAccuracyRange constructor.
      *
+     * @param Position $position
+     */
+    public function __construct(Position $position)
+    {
+        $this->position = $position;
+    }
+
+    /**
      * @return bool
      */
-    public function validate(Position $position)
+    public function validate()
     {
-        return self::ACCURACY_MAX >= $position->getAccuracy();
+        return self::ACCURACY_MAX >= $this->position->getAccuracy();
     }
 }
