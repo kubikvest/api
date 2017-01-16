@@ -24,16 +24,28 @@ use Kubikvest\Resource\Position\Model\Position;
 class PositionInsideSector
 {
     /**
-     * @param Position $position
-     * @param Sector   $sector
-     *
+     * @var Position
+     */
+    private $position;
+    /**
+     * @var Sector
+     */
+    private $sector;
+
+    public function __construct(Position $position, Sector $sector)
+    {
+        $this->position = $position;
+        $this->sector = $sector;
+    }
+
+    /**
      * @return bool
      */
-    public function validate(Position $position, Sector $sector)
+    public function validate()
     {
-        return $sector->getLatitudeRange()->getMin() <= $position->getCoordinate()->getLatitude() &&
-            $sector->getLatitudeRange()->getMax() >= $position->getCoordinate()->getLatitude() &&
-            $sector->getLongitudeRange()->getMin() <= $position->getCoordinate()->getLongitude() &&
-            $sector->getLongitudeRange()->getMax() >= $position->getCoordinate()->getLongitude();
+        return $this->sector->getLatitudeRange()->getMin() <= $this->position->getCoordinate()->getLatitude() &&
+            $this->sector->getLatitudeRange()->getMax() >= $this->position->getCoordinate()->getLatitude() &&
+            $this->sector->getLongitudeRange()->getMin() <= $this->position->getCoordinate()->getLongitude() &&
+            $this->sector->getLongitudeRange()->getMax() >= $this->position->getCoordinate()->getLongitude();
     }
 }
