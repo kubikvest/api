@@ -35,7 +35,7 @@ class PositionAroundBorderSectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidate($position, $sector, $expected)
     {
-        $actual = (new PositionAroundBorderSector())->validate($position, $sector);
+        $actual = (new PositionAroundBorderSector($position, $sector))->validate();
         $this->assertSame($expected, $actual);
     }
 
@@ -67,7 +67,7 @@ class PositionAroundBorderSectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testCalcDistancesToPointsSector($position, $sector, $expected)
     {
-        $actual = (new PositionAroundBorderSector())->calcDistancesToPointsSector($position, $sector);
+        $actual = (new PositionAroundBorderSector($position, $sector))->calcDistancesToPointsSector($position, $sector);
         $this->assertEquals($expected, $actual);
     }
 
@@ -113,13 +113,15 @@ class PositionAroundBorderSectorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param array $data
+     * @param       $position
+     * @param       $sector
      * @param float $expected
      *
      * @dataProvider altitudeTriangleDataProvider
      */
-    public function testAltitudeTriangle($data, $expected)
+    public function testAltitudeTriangle($data, $position, $sector, $expected)
     {
-        $actual = (new PositionAroundBorderSector())->altitudeTriangle($data['a'], $data['b'], $data['c']);
+        $actual = (new PositionAroundBorderSector($position, $sector))->altitudeTriangle($data['a'], $data['b'], $data['c']);
         $this->assertSame($expected, $actual);
     }
 
@@ -137,6 +139,10 @@ class PositionAroundBorderSectorTest extends \PHPUnit_Framework_TestCase
                     'b' => 40,
                     'c' => 50,
                 ],
+                'position' => new Position(new Coordinate(0, 0), 0),
+                'sector'   => new Sector(
+                    new Distance(new Coordinate(-0.0001, -0.0001), new Coordinate(0.0001, 0.0001))
+                ),
                 'expected' => 24.0,
             ],
         ];
