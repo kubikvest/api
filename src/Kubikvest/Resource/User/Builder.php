@@ -58,11 +58,7 @@ class Builder
         $user = new User();
         $user->setUserId(new Uuid($data['user_id']));
         $user->setProvider($provider);
-        /**
-         * @var GroupBuilder $groupBuilder
-         */
-        $groupBuilder = $this->container[GroupBuilder::class];
-        $user->setGroup($groupBuilder->build(new Uuid($data['group_id'])));
+        $user->setGroupId(new Uuid($data['group_id']));
 
         return $user;
     }

@@ -35,9 +35,9 @@ class User
     protected $provider = null;
 
     /**
-     * @var Group
+     * @var Uuid
      */
-    protected $group = null;
+    protected $groupId = null;
 
     /**
      * @return Uuid
@@ -56,19 +56,19 @@ class User
     }
 
     /**
-     * @return Group
+     * @return Uuid
      */
-    public function getGroup()
+    public function getGroupId()
     {
-        return $this->group;
+        return $this->groupId;
     }
 
     /**
-     * @param Group $group
+     * @param Uuid $groupId
      */
-    public function setGroup(Group $group)
+    public function setGroupId(Uuid $groupId)
     {
-        $this->group = $group;
+        $this->groupId = $groupId;
     }
 
     /**
