@@ -39,11 +39,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $user = new User();
         $user->setUserId($data['userId']);
         $user->setProvider($data['provider']);
-        $user->setGroup($data['group']);
+        $user->setGroupId($data['group']);
 
         $this->assertSame($data['userId'], $user->getUserId());
         $this->assertSame($data['provider'], $user->getProvider());
-        $this->assertSame($data['group'], $user->getGroup());
+        $this->assertSame($data['group'], $user->getGroupId());
     }
 
     public function modelDataProvider()
@@ -53,7 +53,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
                 'data' => [
                     'userId' => new Uuid('23ecb2d3-2e37-4b55-9f7d-0efc68f83aea'),
                     'provider' => new Provider(),
-                    'group' => new Group(),
+                    'group' => new Uuid('7c12bdb0-b1d5-4f8b-867c-2572a712c3f9'),
                 ],
             ],
         ];
