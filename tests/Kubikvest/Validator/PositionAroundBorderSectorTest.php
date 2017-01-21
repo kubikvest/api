@@ -56,6 +56,13 @@ class PositionAroundBorderSectorTest extends \PHPUnit_Framework_TestCase
                 ),
                 'expected' => false,
             ],
+            [
+                'position' => new Position(new Coordinate(60.983729, 25.659049), 11),
+                'sector'   => new Sector(
+                    new Distance(new Coordinate(60.983826, 25.658975), new Coordinate(60.983902, 25.659115))
+                ),
+                'expected' => false,
+            ],
         ];
     }
 

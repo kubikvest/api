@@ -16,29 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Kubikvest\Resource\Group;
+namespace Kubikvest\Resource;
 
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
-
-class Provider implements ServiceProviderInterface
+interface Respondent
 {
-    public function register(Container $pimple)
-    {
-        $pimple[Builder::class] = function () use ($pimple) {
-            return new Builder($pimple);
-        };
-
-        $pimple[Mapper::class] = function () use ($pimple) {
-            return new Mapper($pimple['pdo'], $pimple['queryBuilder']);
-        };
-
-        $pimple[Updater::class] = function () use ($pimple) {
-            return new Updater($pimple);
-        };
-
-        $pimple[NextPoint::class] = function () use ($pimple) {
-            return new NextPoint($pimple);
-        };
-    }
+    public function response();
 }

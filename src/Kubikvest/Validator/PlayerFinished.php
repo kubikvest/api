@@ -16,29 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Kubikvest\Resource\Group;
+namespace Kubikvest\Validator;
 
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
+use Kubikvest\Resource\Group\Model\Group;
+use Kubikvest\Resource\Quest\Model\Quest;
 
-class Provider implements ServiceProviderInterface
+class PlayerFinished
 {
-    public function register(Container $pimple)
+    /**
+     * @var Group
+     */
+    private $group;
+    /**
+     * @var Quest
+     */
+    private $quest;
+
+    public function __construct(Group $group, Quest $quest)
     {
-        $pimple[Builder::class] = function () use ($pimple) {
-            return new Builder($pimple);
-        };
+        $this->group = $group;
+        $this->quest = $quest;
+    }
 
-        $pimple[Mapper::class] = function () use ($pimple) {
-            return new Mapper($pimple['pdo'], $pimple['queryBuilder']);
-        };
-
-        $pimple[Updater::class] = function () use ($pimple) {
-            return new Updater($pimple);
-        };
-
-        $pimple[NextPoint::class] = function () use ($pimple) {
-            return new NextPoint($pimple);
-        };
+    public function validate()
+    {
+        return $this->group->getPointId()->getValue() == end($this->quest->points);
     }
 }

@@ -54,12 +54,14 @@ class Mapper
     {
         $data = $this->db[$questId];
 
+        $points = $this->formatter->getData('points', $data['points']);
+
         return [
             'questid'     => $this->formatter->getValue('questid', $questId),
             'title'       => $this->formatter->getValue('title', $data['title']),
             'description' => $this->formatter->getValue('description', $data['description']),
             'picture'     => $this->formatter->getValue('picture', $data['picture']),
-            'points'      => $this->formatter->getValue('points', $data['points']),
+            'points'      => $this->formatter->getValue('points', $points),
         ];
     }
 

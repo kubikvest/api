@@ -105,7 +105,7 @@ testunit:
 		-e DB_HOST=server_db \
 		-w /app \
 		kubikvest/api-dev \
-		sh -c '/app/vendor/bin/phpunit'
+		sh -c '/app/vendor/bin/phpunit $(PHPUNITARG)'
 
 stop:
 	@-docker stop $(CONTAINERS)

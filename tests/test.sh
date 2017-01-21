@@ -118,7 +118,7 @@ testStartTask() {
     assertTrue "http://kubikvest.xyz/checkpoint?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$CHECKPOINT" "$FUNCNAME CHECKPOINT"
 }
 
-testFailLocationCheckpoint() {
+testFailLocation42MCheckpoint() {
     ACTUAL=$(curl -X POST --write-out %{http_code} --silent --output /dev/null -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":60.983626, "lng":25.658256, "acr":39}' http://$URL/checkpoint)
 
     assertTrue 200 $ACTUAL "$FUNCNAME Code"
@@ -171,7 +171,60 @@ testFailLocationCheckpoint() {
     assertTrue "Не верное место отметки." "$ERROR" "$FUNCNAME ERROR"
 }
 
-testCheckpoint() {
+testFailACRCheckpoint() {
+    ACTUAL=$(curl -X POST --write-out %{http_code} --silent --output /dev/null -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":60.983726, "lng":25.658856, "acr":42}' http://$URL/checkpoint)
+
+    assertTrue 200 $ACTUAL "$FUNCNAME Code"
+
+    BODY=$(curl -X POST --silent -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":60.983726, "lng":25.658856, "acr":42}' http://$URL/checkpoint)
+
+    TOKEN=$(echo $BODY | jq '.t' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$TOKEN" "$FUNCNAME TOKEN"
+
+    QUEST_ID=$(echo $BODY | jq '.quest.questId' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d9b135d3-9a29-45f0-8742-7ca6f99d9b73" "$QUEST_ID" "$FUNCNAME QUEST_ID"
+
+    QUEST_TITLE=$(echo $BODY | jq '.quest.title' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "Task Zero" "$QUEST_TITLE" "$FUNCNAME QUEST_TITLE"
+
+    QUEST_DESCRIPTION=$(echo $BODY | jq '.quest.description' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "Test task zero description" "$QUEST_DESCRIPTION" "$FUNCNAME QUEST_DESCRIPTION"
+
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[0]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "16a4f9df-e636-4cfc-ae32-910c0a20ba03" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 1"
+
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[1]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "d7e9f433-7f21-47f0-b322-b8ef4af03113" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 2"
+
+    QUEST_POINTS=$(echo $BODY | jq '.quest.points[2]' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "ddc3ec2e-9d11-4c26-96ff-620788af9e37" "$QUEST_POINTS" "$FUNCNAME QUEST_POINT 3"
+
+    POINT_ID=$(echo $BODY | jq '.point.pointId' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "16a4f9df-e636-4cfc-ae32-910c0a20ba03" "$POINT_ID" "$FUNCNAME POINT_ID"
+
+    POINT_TITLE=$(echo $BODY | jq '.point.title' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "Test title start point" "$POINT_TITLE" "$FUNCNAME POINT_TITLE"
+
+    POINT_DESCRIPTION=$(echo $BODY | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "Test point start description" "$POINT_DESCRIPTION" "$FUNCNAME POINT_DESCRIPTION"
+
+    POINT_DESCRIPTION=$(echo $BODY | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "Test point start description" "$POINT_DESCRIPTION" "$FUNCNAME POINT_DESCRIPTION"
+
+    TOTAL_POINTS=$(echo $BODY | jq '.total_points' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "3" "$TOTAL_POINTS" "$FUNCNAME TOTAL_POINTS"
+
+    CHECKPOINT=$(echo $BODY | jq '.links.checkpoint' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "http://kubikvest.xyz/checkpoint?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$CHECKPOINT" "$FUNCNAME CHECKPOINT"
+
+    FINISH=$(echo $BODY | jq '.finish' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "false" "$FINISH" "$FUNCNAME FINISH"
+
+    ERROR=$(echo $BODY | jq '.error' | sed -e 's/^"//' -e 's/"$//')
+    assertTrue "Не верное место отметки." "$ERROR" "$FUNCNAME ERROR"
+}
+
+testLocationInSectorCheckpoint() {
     BODY=$(curl --silent -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":60.983858, "lng":25.659040, "acr":39}' http://$URL/checkpoint)
 
     TOKEN=$(echo $BODY | jq '.t' | sed -e 's/^"//' -e 's/"$//')
@@ -251,8 +304,8 @@ testFirstTask() {
     POINT_DESCRIPTION=$(echo $BODY | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test point first description" "$POINT_DESCRIPTION" "$FUNCNAME POINT_DESCRIPTION"
 
-    POINT_PROMPT=$(echo $BODY | jq '.point.prompt' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "" "$POINT_PROMPT" "$FUNCNAME POINT_PROMPT"
+    #POINT_PROMPT=$(echo $BODY | jq '.point.prompt' | sed -e 's/^"//' -e 's/"$//')
+    #assertTrue "" "$POINT_PROMPT" "$FUNCNAME POINT_PROMPT"
 
     CHECKPOINT=$(echo $BODY | jq '.links.checkpoint' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "http://kubikvest.xyz/checkpoint?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$CHECKPOINT" "$FUNCNAME CHECKPOINT"
@@ -261,8 +314,8 @@ testFirstTask() {
     assertTrue "3" "$TOTAL_POINTS" "$FUNCNAME TOTAL_POINTS"
 }
 
-testFirstTaskCheckpoint() {
-    BODY=$(curl --silent -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":60.983858, "lng":25.659040, "acr":39}' http://$URL/checkpoint)
+testFirstTaskTriangleCheckpoint() {
+    BODY=$(curl --silent -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":60.983766, "lng":25.659005, "acr":39}' http://$URL/checkpoint)
 
     TOKEN=$(echo $BODY | jq '.t' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$TOKEN" "$FUNCNAME TOKEN"
@@ -341,8 +394,8 @@ testSecondTask() {
     POINT_DESCRIPTION=$(echo $BODY | jq '.point.description' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Test point second description" "$POINT_DESCRIPTION" "$FUNCNAME POINT_DESCRIPTION"
 
-    POINT_PROMPT=$(echo $BODY | jq '.point.prompt' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "" "$POINT_PROMPT" "$FUNCNAME POINT_PROMPT"
+    #POINT_PROMPT=$(echo $BODY | jq '.point.prompt' | sed -e 's/^"//' -e 's/"$//')
+    #assertTrue "" "$POINT_PROMPT" "$FUNCNAME POINT_PROMPT"
 
     CHECKPOINT=$(echo $BODY | jq '.links.checkpoint' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "http://kubikvest.xyz/checkpoint?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$CHECKPOINT" "$FUNCNAME CHECKPOINT"
@@ -351,8 +404,8 @@ testSecondTask() {
     assertTrue "3" "$TOTAL_POINTS" "$FUNCNAME TOTAL_POINTS"
 }
 
-testSecondTaskCheckpoint() {
-    BODY=$(curl --silent -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":60.983858, "lng":25.659040, "acr":39}' http://$URL/checkpoint)
+testSecondTaskLessDistanceCheckpoint() {
+    BODY=$(curl --silent -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":60.983766, "lng":25.659195, "acr":39}' http://$URL/checkpoint)
 
     QUEST_ID=$(echo $BODY | jq '.quest.questId' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "d9b135d3-9a29-45f0-8742-7ca6f99d9b73" "$QUEST_ID" "$FUNCNAME QUEST_ID"
@@ -406,14 +459,15 @@ testCreateGame
 
 
 testStartTask
-testFailLocationCheckpoint
-testCheckpoint
+testFailLocation42MCheckpoint
+testFailACRCheckpoint
+testLocationInSectorCheckpoint
 
 testFirstTask
-testFirstTaskCheckpoint
+testFirstTaskTriangleCheckpoint
 
 testSecondTask
-testSecondTaskCheckpoint
+testSecondTaskLessDistanceCheckpoint
 
 testFinish
 

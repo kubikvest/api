@@ -12,6 +12,10 @@ $app    = new Application(array_merge_recursive($config, $quest));
 $app['dispatcher']->addSubscriber(new RequestSubscriber($app));
 
 $app->register(new \Kubikvest\Resource\Position\Provider());
+$app->register(new \Kubikvest\Resource\Point\Provider());
+$app->register(new \Kubikvest\Resource\Group\Provider());
+$app->register(new \Kubikvest\Resource\User\Provider());
+$app->register(new \Kubikvest\Resource\Quest\Provider());
 
 $app->get('/auth', function(Request $request) use ($app) {
     return (new \Kubikvest\Handler\Auth($app))->handle($request);
@@ -34,6 +38,17 @@ $app->get('/task', function (Request $request) use ($app) {
 });
 
 $app->post('/checkpoint', function (Request $request) use ($app) {
+    $data = $app['request.content'];
+    $app['logger']->log(
+        \Psr\Log\LogLevel::INFO,
+        'Checkout',
+        [
+            'lat' => $data['lat'],
+            'lng' => $data['lng'],
+            'acr' => $data['acr'],
+        ]
+    );
+
     return (new \Kubikvest\Handler\Checkpoint($app))->handle($request);
 });
 

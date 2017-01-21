@@ -19,6 +19,12 @@
 namespace Kubikvest\Handler;
 
 use Kubikvest\Resource;
+use Kubikvest\Validator\AccuracyLessDistance;
+use Kubikvest\Validator\PlayerAtRightPlace;
+use Kubikvest\Validator\PlayerFinished;
+use Kubikvest\Validator\PointIncludedAccuracyRange;
+use Kubikvest\Validator\PositionAroundBorderSector;
+use Kubikvest\Validator\PositionInsideSector;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,89 +49,65 @@ class Checkpoint implements Handler
      */
     public function handle(Request $request)
     {
-        $data = $this->app['request.content'];
-
         /**
-         * @var \Kubikvest\Model\User  $user
-         * @var \Kubikvest\Model\Group $group
-         * @var \Kubikvest\Model\Quest $quest
-         * @var \Kubikvest\Model\Point $point
-         * @var \Kubikvest\Manager\PointManager $pointManager
+         * @var Resource\User\Model\User  $user
+         * @var Resource\Position\Creator $creator
+         * @var Resource\Group\Builder    $groupBuilder
+         * @var Resource\Quest\Builder    $questBuilder
+         * @var Resource\Point\Builder    $pointBuilder
          */
-        $user  = $this->app['user'];
-        $group = $this->app['group.manager']->get($user->groupId);
-        $quest = $this->app['quest.mapper']->getQuest($group->questId);
-        $point = $this->app['point.mapper']->getPoint($group->pointId);
-        $pointManager = $this->app['point.manager'];
+        $user         = $this->app[Resource\User\Model\User::class];
+        $creator      = $this->app[Resource\Position\Creator::class];
+        $groupBuilder = $this->app[Resource\Group\Builder::class];
+        $questBuilder = $this->app[Resource\Quest\Builder::class];
+        $pointBuilder = $this->app[Resource\Point\Builder::class];
 
-        $response = [
-            't'            => $this->app['link.gen']->getToken($user),
-            'quest'        => (array) $quest,
-            'point'        => (array) $point,
-            'total_points' => count($quest->points),
-            'finish'       => false,
-        ];
-        unset($response['point']['prompt']);
-        $this->app['logger']->log(
-            \Psr\Log\LogLevel::INFO,
-            'Checkout',
-            [
-                'lat' => $data['lat'],
-                'lng' => $data['lng'],
-                'acr' => $data['acr'],
-            ]
+        $position = $creator->create();
+        $group    = $groupBuilder->build($user->getGroupId());
+        $quest    = $questBuilder->build($group->getQuestId());
+        $point    = $pointBuilder->build($group->getPointId());
+
+        $response = new Resource\Checkpoint\Response($this->app);
+        $response->setPoint($point);
+        $response->setQuest($quest);
+
+        $validator = new PlayerAtRightPlace(
+            new PositionInsideSector($position, $point->getSector()),
+            new PointIncludedAccuracyRange($position),
+            new AccuracyLessDistance($position, $point->getSector()),
+            new PositionAroundBorderSector($position, $point->getSector())
         );
+        if (!$validator->validate()) {
+            $response->error = 'Не верное место отметки.';
+            $response->addLink(Model\LinkGenerator::CHECKPOINT);
 
-        $response['coords'] = [
-            'lat' => $data['lat'] . '(' . (double)$data['lat'] . ')',
-            'lng' => $data['lng'] . '(' . (double)$data['lng'] . ')',
-            'acr' => $data['acr'],
-        ];
-
-        if (!$pointManager->checkCoordinates($point->coords, (double)$data['lat'], (double)$data['lng'])) {
-            $distances = $pointManager->calcDistanceToPointsSector($point->coords, (double)$data['lat'], (double)$data['lng']);
-            $response['distance'] = min($distances);
-            $this->app['logger']->log(
-                \Psr\Log\LogLevel::INFO,
-                'distance',
-                [
-                    'min_distance' => min($distances),
-                    'distance_border' => $pointManager->distanceBorderSector($distances),
-                ]
-            );
-
-            if ($pointManager->distanceBorderSector($distances) > (int)$data['acr'] ||
-                !$pointManager->pointIncludedAccuracyRange((int)$data['acr'], min($distances))
-            ){
-                $response['links']['checkpoint'] = $this->app['link.gen']
-                    ->getLink(Model\LinkGenerator::CHECKPOINT, $user);
-                $response['error'] = 'Не верное место отметки.';
-
-                return new JsonResponse($response, JsonResponse::HTTP_OK);
-            }
+            return (new Resource\Checkpoint\Respondent($response))->response();
         }
 
-        $group->startPoint = null;
+        /**
+         * @var Resource\Group\Updater $groupUpdater
+         */
+        $groupUpdater = $this->app[Resource\Group\Updater::class];
 
-        if ($group->pointId == end($quest->points)) {
-            $response['links']['finish'] = $this->app['link.gen']->getLink(Model\LinkGenerator::FINISH, $user);
-            $group->pointId = null;
-            $this->app['group.manager']->update($group);
-            $response['finish'] = true;
+        if ((new PlayerFinished($group, $quest))->validate()) {
+            $group->active = false;
+            $groupUpdater->update($group);
+            $response->finish = true;
+            $response->addLink(Model\LinkGenerator::FINISH);
         } else {
-            $group->pointId = $quest->nextPoint($group->pointId);
-            $this->app['group.manager']->update($group);
-            $response['links']['task'] = $this->app['link.gen']->getLink(Model\LinkGenerator::TASK, $user);
+            $group->setPointId((new Resource\Group\NextPoint())->nextPoint($quest, $point));
+            $groupUpdater->update($group);
+            $response->addLink(Model\LinkGenerator::TASK);
         }
 
         $this->app['logger']->log(
             \Psr\Log\LogLevel::INFO,
             'Пройдена точка',
             [
-                'finish' => $response['finish'],
+                'finish' => $response->finish,
             ]
         );
 
-        return new JsonResponse($response, JsonResponse::HTTP_OK);
+        return (new Resource\Checkpoint\Respondent($response))->response();
     }
 }
