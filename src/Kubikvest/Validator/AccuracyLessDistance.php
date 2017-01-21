@@ -19,6 +19,7 @@
 namespace Kubikvest\Validator;
 
 use Kubikvest\Model\Geo\Distance;
+use Kubikvest\Model\Geo\Sector;
 use Kubikvest\Resource\Position\Model\Position;
 
 class AccuracyLessDistance
@@ -28,20 +29,20 @@ class AccuracyLessDistance
      */
     private $position;
     /**
-     * @var Distance
+     * @var Sector
      */
-    private $distance;
+    private $sector;
 
     /**
      * AccuracyLessDistance constructor.
      *
      * @param Position $position
-     * @param Distance $distance
+     * @param Sector   $sector
      */
-    public function __construct(Position $position, Distance $distance)
+    public function __construct(Position $position, Sector $sector)
     {
         $this->position = $position;
-        $this->distance = $distance;
+        $this->sector = $sector;
     }
 
     /**
@@ -49,6 +50,22 @@ class AccuracyLessDistance
      */
     public function validate()
     {
-        return $this->distance->getValue() >= $this->position->getAccuracy();
+        return $this->nearestPoint($this->position, $this->sector)->getValue() <= $this->position->getAccuracy();
+    }
+
+    /**
+     * Ближайшая точка до сектора
+     *
+     * @param Position $position
+     * @param Sector   $sector
+     *
+     * @return Distance
+     */
+    public function nearestPoint(Position $position, Sector $sector)
+    {
+        $distances = (new PositionAroundBorderSector($position, $sector))
+            ->calcDistancesToPointsSector($position, $sector);
+
+        return $distances[min(array_keys($distances))];
     }
 }

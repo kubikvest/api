@@ -20,19 +20,20 @@ namespace Kubikvest\Validator;
 
 use Kubikvest\Model\Geo\Coordinate;
 use Kubikvest\Model\Geo\Distance;
+use Kubikvest\Model\Geo\Sector;
 use Kubikvest\Resource\Position\Model\Position;
 
 class AccuracyLessDistanceTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @param $position
-     * @param $distance
+     * @param $sector
      * @param $expected
      * @dataProvider validateDataProvider
      */
-    public function testValidate($position, $distance, $expected)
+    public function testValidate($position, $sector, $expected)
     {
-        $actual = (new AccuracyLessDistance($position, $distance))->validate();
+        $actual = (new AccuracyLessDistance($position, $sector))->validate();
         $this->assertSame($expected, $actual);
     }
 
@@ -40,14 +41,28 @@ class AccuracyLessDistanceTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
-                'position' => new Position(new Coordinate(0.00012, 0.00012), 15),
-                'distance' => new Distance(new Coordinate(0, 0), new Coordinate(0.0001, 0.0001)),
+                'position' => new Position(new Coordinate(60.170449, 24.943343), 21),
+                'sector'   => new Sector(new Distance(new Coordinate(60.170267, 24.943354), new Coordinate(60.169866, 24.944738))),
                 'expected' => true,
             ],
             [
-                'position' => new Position(new Coordinate(0.00012, 0.00012), 16),
-                'distance' => new Distance(new Coordinate(0, 0), new Coordinate(0.0001, 0.0001)),
+                'position' => new Position(new Coordinate(60.170449, 24.943343), 20),
+                'sector'   => new Sector(new Distance(new Coordinate(60.170267, 24.943354), new Coordinate(60.169866, 24.944738))),
                 'expected' => false,
+            ],
+            [
+                'position' => new Position(new Coordinate(60.983729, 25.659049), 11),
+                'sector'   => new Sector(
+                    new Distance(new Coordinate(60.983826, 25.658975), new Coordinate(60.983902, 25.659115))
+                ),
+                'expected' => false,
+            ],
+            [
+                'position' => new Position(new Coordinate(60.983729, 25.659049), 12),
+                'sector'   => new Sector(
+                    new Distance(new Coordinate(60.983826, 25.658975), new Coordinate(60.983902, 25.659115))
+                ),
+                'expected' => true,
             ],
         ];
     }
