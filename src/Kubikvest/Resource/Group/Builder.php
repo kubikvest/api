@@ -47,12 +47,12 @@ class Builder
         $data = $mapper->getGroup($uuid->getValue());
 
         $group = new Group();
-        $group->setGroupId(new Uuid($data['groupId']));
-        $group->setGameId(new Uuid($data['gameId']));
-        $group->setQuestId(new Uuid($data['questId']));
-        $group->setPointId(new Uuid($data['pointId']));
+        $group->setGroupId(new Uuid($data['groupid']));
+        $group->setGameId(new Uuid($data['gameid']));
+        $group->setQuestId(new Uuid($data['questid']));
+        $group->setPointId(new Uuid($data['pointid']));
         $group->pin = $data['pin'];
-        $group->setStartPoint(\DateTime::createFromFormat('Y-m-d H:i:s', $data['startPoint']));
+        $group->setStartPoint($data['startpoint']);
         $group->active = $data['active'];
         foreach ($data['users'] as $user) {
             $group->addUser($this->container[UserBuilder::class]->build(new Uuid($user)));
