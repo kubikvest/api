@@ -81,17 +81,17 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             [
                 'groupId' => new Uuid('5d47df8f-a62b-4bc6-9b0d-8cb1f03523dc'),
                 'dataMapper' => [
-                    'groupId' => '5d47df8f-a62b-4bc6-9b0d-8cb1f03523dc',
-                    'gameId'  => '23ecb2d3-2e37-4b55-9f7d-0efc68f83aea',
-                    'questId' => '2b7b8f82-199c-4481-9532-ae557ff9ec8d',
-                    'pointId' => 'fd8f21a4-a6e4-41d8-90bd-ea4152b57149',
+                    'groupid' => '5d47df8f-a62b-4bc6-9b0d-8cb1f03523dc',
+                    'gameid'  => '23ecb2d3-2e37-4b55-9f7d-0efc68f83aea',
+                    'questid' => '2b7b8f82-199c-4481-9532-ae557ff9ec8d',
+                    'pointid' => 'fd8f21a4-a6e4-41d8-90bd-ea4152b57149',
                     'pin'     => 9087,
                     'active'  => 1,
                     'users'   => [
                         'eb052787-94d7-4a27-909e-b62f99ecdee6',
                         'eeff77b9-8b13-4ffd-b161-70d4909032f6',
                     ],
-                    'startPoint' => '2017-01-17 09:11:00',
+                    'startpoint' => date_create_from_format('Y-m-d H:i:s', '2017-01-17 09:11:00'),
                 ],
                 'expected' => function () {
                     $group = new Group();

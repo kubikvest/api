@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!--
+  ~ Copyright (C) 2017. iMega ltd Dmitry Gavriloff (email: info@imega.ru),
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<dataset>
+    <kv_group groupId="adff5c92-008c-47ac-bad8-11be43ea1469"
+             gameId="7c12bdb0-b1d5-4f8b-867c-2572a712c3f9"
+             questId="919e9463-51a1-48b9-b1e3-bf871eef7b1f"
+             pointId="df8d418a-8d09-46e3-8d98-75e00fcc138f"
+             users='["84e4c4e4-c27d-465a-8155-cf36fbff1536"]'
+             pin="1020"
+             startPoint="2017-01-17 20:46:51"
+             active="1"/>
+</dataset>
