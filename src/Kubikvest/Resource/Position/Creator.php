@@ -43,7 +43,7 @@ class Creator
                 PositionFormatType::setDefault('content', 0)
             ]
         );
-///var_dump($this->container);
-        return $formatter->getValue('content', $this->container['content']);
+
+        return $formatter->getValue('content', $this->container['request.content']);
     }
 }

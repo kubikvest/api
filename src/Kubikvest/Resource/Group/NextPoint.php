@@ -18,27 +18,25 @@
 
 namespace Kubikvest\Resource\Group;
 
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
+use Kubikvest\Model\Uuid;
+use Kubikvest\Resource\Point\Model\Point;
+use Kubikvest\Resource\Quest\Model\Quest;
 
-class Provider implements ServiceProviderInterface
+class NextPoint
 {
-    public function register(Container $pimple)
+    /**
+     * @param Quest $quest
+     * @param Point $point
+     *
+     * @return Uuid
+     */
+    public function nextPoint(Quest $quest, Point $point)
     {
-        $pimple[Builder::class] = function () use ($pimple) {
-            return new Builder($pimple);
-        };
-
-        $pimple[Mapper::class] = function () use ($pimple) {
-            return new Mapper($pimple['pdo'], $pimple['queryBuilder']);
-        };
-
-        $pimple[Updater::class] = function () use ($pimple) {
-            return new Updater($pimple);
-        };
-
-        $pimple[NextPoint::class] = function () use ($pimple) {
-            return new NextPoint($pimple);
-        };
+        $index = array_keys($quest->points, $point->getPointId()->getValue())[0];
+        if ($index == count($quest->points) - 1) {
+            return new Uuid(end($quest->points));
+        } else {
+            return new Uuid($quest->points[$index + 1]);
+        }
     }
 }

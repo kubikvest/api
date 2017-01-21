@@ -18,6 +18,9 @@
 
 namespace Kubikvest\Subscriber;
 
+use Kubikvest\Model\Uuid;
+use Kubikvest\Resource\User\Builder;
+use Kubikvest\Resource\User\Model\User;
 use Silex\Application;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,6 +64,7 @@ class RequestSubscriber implements EventSubscriberInterface
         if (null !== $token) {
             $data = JWT::decode($token, $this->app['key'], ['HS256']);
             $this->app['user'] = $this->app['user.manager']->getUser($data->user_id);
+            $this->app[User::class] = (new Builder($this->app))->build(new Uuid($data->user_id));
         }
     }
     /**

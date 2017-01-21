@@ -18,6 +18,15 @@ class PointManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testInstance()
     {
+        $data['acr'] = 39;
+
+        if (32.391073763276 > (int)$data['acr'] ||
+            !$this->manager->pointIncludedAccuracyRange((int)$data['acr'], 32.407732383084)
+        ){
+            var_dump(11111);
+        }
+
+
         $actual = new PointManager(new PointMapper([]));
 
         $this->assertInstanceOf(PointManager::class, $actual);
@@ -326,6 +335,53 @@ class PointManagerTest extends \PHPUnit_Framework_TestCase
                     'c' => 50,
                 ],
                 'expected' => 24.0,
+            ],
+        ];
+    }
+
+    /**
+     * @param array $data
+     * @param float $expected
+     * @dataProvider nearestPointDataProvider
+     */
+    public function testNearestPoint($data, $expected)
+    {
+        $actual = $this->manager->nearestPoint($data);
+
+        $this->assertSame($expected, $actual);
+    }
+
+    public function nearestPointDataProvider()
+    {
+        return [
+            [
+                'data' => [
+                    '28.34925503859' => [
+                        'distance' => '28.34925503859',
+                        'latitude' => -0.0001,
+                        'longitude' => -0.0001,
+                    ],
+                    '7.8626686663813' => [
+                        'distance' => '7.8626686663813',
+                        'latitude' => -0.0001,
+                        'longitude' => 0.0001,
+                    ],
+                    '39.313343331937' => [
+                        'distance' => '39.313343331937',
+                        'latitude' => 0.0001,
+                        'longitude' => -0.0001,
+                    ],
+                    '28.349255038655' => [
+                        'distance' => '28.349255038655',
+                        'latitude' => 0.0001,
+                        'longitude' => 0.0001,
+                    ],
+                ],
+                'expected' => [
+                    'distance' => '7.8626686663813',
+                    'latitude' => -0.0001,
+                    'longitude' => 0.0001,
+                ],
             ],
         ];
     }

@@ -16,14 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Kubikvest\Resource\User;
+namespace Kubikvest\Resource\Group;
 
-use Kubikvest\Model\Uuid;
-use Kubikvest\Resource\Provider\Model\Provider as SocialNetworkProvider;
-use Kubikvest\Resource\User\Model\User;
+use Kubikvest\Resource\Group\Model\Group;
 use Pimple\Container;
 
-class Builder
+class Updater
 {
     /**
      * @var Container
@@ -36,29 +34,31 @@ class Builder
     }
 
     /**
-     * @param Uuid $uuid
-     *
-     * @return User
+     * @return Group
      */
-    public function build(Uuid $uuid)
+    public function update(Group $group)
     {
         /**
          * @var Mapper $mapper
          */
         $mapper = $this->container[Mapper::class];
-        $data   = $mapper->getUser($uuid->getValue());
 
-        $provider        = new SocialNetworkProvider();
-        $provider->name  = $data['provider'];
-        $provider->uid   = $data['uid'];
-        $provider->token = $data['access_token'];
-        $provider->ttl   = $data['ttl'];
+        $users = [];
+        foreach ($group->getUsers() as $user) {
+            $users[] = $user->getUserId()->getValue();
+        }
 
-        $user = new User();
-        $user->setUserId(new Uuid($data['user_id']));
-        $user->setProvider($provider);
-        $user->setGroupId(new Uuid($data['group_id']));
-
-        return $user;
+        $mapper->update(
+            [
+                'groupId'    => $group->getGroupId()->getValue(),
+                'gameId'     => $group->getGameId()->getValue(),
+                'questId'    => $group->getQuestId()->getValue(),
+                'pointId'    => $group->getPointId()->getValue(),
+                'users'      => $users,
+                'pin'        => $group->pin,
+                'startPoint' => $group->getStartPoint(),
+                'active'     => $group->active,
+            ]
+        );
     }
 }

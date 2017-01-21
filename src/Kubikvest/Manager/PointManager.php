@@ -22,6 +22,7 @@ class PointManager
      * @param array  $coords
      * @param double $latitude
      * @param double $longitude
+     * @deprecated
      *
      * @return bool
      */
@@ -196,5 +197,17 @@ class PointManager
         }
 
         return $prompt;
+    }
+
+    /**
+     * Ближайшая точка до сектора
+     *
+     * @param array $distances
+     *
+     * @return float
+     */
+    public function nearestPoint(array $distances)
+    {
+        return min($distances);
     }
 }
