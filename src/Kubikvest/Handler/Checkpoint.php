@@ -19,14 +19,8 @@
 namespace Kubikvest\Handler;
 
 use Kubikvest\Resource;
-use Kubikvest\Validator\AccuracyLessDistance;
-use Kubikvest\Validator\PlayerAtRightPlace;
-use Kubikvest\Validator\PlayerFinished;
-use Kubikvest\Validator\PointIncludedAccuracyRange;
-use Kubikvest\Validator\PositionAroundBorderSector;
-use Kubikvest\Validator\PositionInsideSector;
+use Kubikvest\Validator;
 use Silex\Application;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Kubikvest\Model;
 
@@ -45,7 +39,7 @@ class Checkpoint implements Handler
     /**
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Resource\Respondent
      */
     public function handle(Request $request)
     {
@@ -71,17 +65,17 @@ class Checkpoint implements Handler
         $response->setPoint($point);
         $response->setQuest($quest);
 
-        $validator = new PlayerAtRightPlace(
-            new PositionInsideSector($position, $point->getSector()),
-            new PointIncludedAccuracyRange($position),
-            new AccuracyLessDistance($position, $point->getSector()),
-            new PositionAroundBorderSector($position, $point->getSector())
+        $validator = new Validator\PlayerAtRightPlace(
+            new Validator\PositionInsideSector($position, $point->getSector()),
+            new Validator\PointIncludedAccuracyRange($position),
+            new Validator\AccuracyLessDistance($position, $point->getSector()),
+            new Validator\PositionAroundBorderSector($position, $point->getSector())
         );
         if (!$validator->validate()) {
             $response->error = 'Не верное место отметки.';
             $response->addLink(Model\LinkGenerator::CHECKPOINT);
 
-            return (new Resource\Checkpoint\Respondent($response))->response();
+            return new Resource\Checkpoint\Respondent($response);
         }
 
         /**
@@ -89,7 +83,7 @@ class Checkpoint implements Handler
          */
         $groupUpdater = $this->app[Resource\Group\Updater::class];
 
-        if ((new PlayerFinished($group, $quest))->validate()) {
+        if ((new Validator\PlayerFinished($group, $quest))->validate()) {
             $group->active = false;
             $groupUpdater->update($group);
             $response->finish = true;
@@ -108,6 +102,6 @@ class Checkpoint implements Handler
             ]
         );
 
-        return (new Resource\Checkpoint\Respondent($response))->response();
+        return new Resource\Checkpoint\Respondent($response);
     }
 }

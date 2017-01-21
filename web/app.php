@@ -49,7 +49,9 @@ $app->post('/checkpoint', function (Request $request) use ($app) {
         ]
     );
 
-    return (new \Kubikvest\Handler\Checkpoint($app))->handle($request);
+    $respondent = (new \Kubikvest\Handler\Checkpoint($app))->handle($request);
+
+    return $respondent->response();
 });
 
 $app->get('/finish', function (Request $request) use ($app) {
