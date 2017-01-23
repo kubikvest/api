@@ -70,8 +70,10 @@ class Checkpoint implements Handler
             'Расстояния до точек',
             [
                 'InsideSector' => (new Validator\PositionInsideSector($position, $point->getSector()))->validate(),
-                'distances' => (new Validator\PositionAroundBorderSector($position, $point->getSector()))->calcDistancesToPointsSector($position, $point->getSector()),
+                'AccuracyRange' => (new Validator\PointIncludedAccuracyRange($position))->validate(),
                 'lessDist' => (new Validator\AccuracyLessDistance($position, $point->getSector()))->validate(),
+                'BorderSector' => (new Validator\PositionAroundBorderSector($position, $point->getSector()))->validate(),
+                'distances' => (new Validator\PositionAroundBorderSector($position, $point->getSector()))->calcDistancesToPointsSector($position, $point->getSector()),
             ]
         );
 
