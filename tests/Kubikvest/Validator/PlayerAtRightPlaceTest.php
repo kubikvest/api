@@ -80,8 +80,8 @@ class PlayerAtRightPlaceTest extends \PHPUnit_Framework_TestCase
             [
                 'data'     => [
                     PositionInsideSector::class       => false,
-                    PointIncludedAccuracyRange::class => false,
-                    AccuracyLessDistance::class       => false,
+                    PointIncludedAccuracyRange::class => true,
+                    AccuracyLessDistance::class       => true,
                     PositionAroundBorderSector::class => true,
                 ],
                 'expected' => true,
@@ -91,6 +91,15 @@ class PlayerAtRightPlaceTest extends \PHPUnit_Framework_TestCase
                     PositionInsideSector::class       => false,
                     PointIncludedAccuracyRange::class => true,
                     AccuracyLessDistance::class       => false,
+                    PositionAroundBorderSector::class => true,
+                ],
+                'expected' => true,
+            ],
+            [
+                'data'     => [
+                    PositionInsideSector::class       => false,
+                    PointIncludedAccuracyRange::class => false,
+                    AccuracyLessDistance::class       => true,
                     PositionAroundBorderSector::class => false,
                 ],
                 'expected' => false,
@@ -99,7 +108,16 @@ class PlayerAtRightPlaceTest extends \PHPUnit_Framework_TestCase
                 'data'     => [
                     PositionInsideSector::class       => false,
                     PointIncludedAccuracyRange::class => false,
-                    AccuracyLessDistance::class       => true,
+                    AccuracyLessDistance::class       => false,
+                    PositionAroundBorderSector::class => true,
+                ],
+                'expected' => false,
+            ],
+            [
+                'data'     => [
+                    PositionInsideSector::class       => false,
+                    PointIncludedAccuracyRange::class => true,
+                    AccuracyLessDistance::class       => false,
                     PositionAroundBorderSector::class => false,
                 ],
                 'expected' => false,
