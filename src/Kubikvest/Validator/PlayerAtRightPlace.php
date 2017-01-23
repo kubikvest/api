@@ -54,7 +54,7 @@ class PlayerAtRightPlace
     {
         return $this->positionInsideSector->validate() ||
             $this->pointIncludedAccuracyRange->validate() &&
-            $this->accuracyLessDistance->validate() ||
-            $this->positionAroundBorderSector->validate();
+            ($this->accuracyLessDistance->validate() ||
+            $this->positionAroundBorderSector->validate());
     }
 }
