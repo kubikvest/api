@@ -65,6 +65,16 @@ class Checkpoint implements Handler
         $response->setPoint($point);
         $response->setQuest($quest);
 
+        $this->app['logger']->log(
+            \Psr\Log\LogLevel::INFO,
+            'Расстояния до точек',
+            [
+                'InsideSector' => (new Validator\PositionInsideSector($position, $point->getSector()))->validate(),
+                'distances' => (new Validator\PositionAroundBorderSector($position, $point->getSector()))->calcDistancesToPointsSector($position, $point->getSector()),
+                'lessDist' => (new Validator\AccuracyLessDistance($position, $point->getSector()))->validate(),
+            ]
+        );
+
         $validator = new Validator\PlayerAtRightPlace(
             new Validator\PositionInsideSector($position, $point->getSector()),
             new Validator\PointIncludedAccuracyRange($position),
