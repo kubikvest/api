@@ -64,7 +64,8 @@ class PositionAroundBorderSector
 
         $altitudeTriangle = $this->altitudeTriangle($a->getValue(), $b->getValue(), $distanceAB);
 
-        return $altitudeTriangle >= $this->position->getAccuracy();
+        return $altitudeTriangle <= PointIncludedAccuracyRange::ACCURACY_MAX &&
+            $altitudeTriangle >= $this->position->getAccuracy();
     }
 
     /**
