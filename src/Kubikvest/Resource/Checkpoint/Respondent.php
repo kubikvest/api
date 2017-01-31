@@ -42,6 +42,10 @@ class Respondent implements \Kubikvest\Resource\Respondent
             'quest' => $this->response->getQuest(),
             'point' => $this->response->getPoint(),
             'error' => $this->response->error,
+            'coords' => [
+                'lat' => $this->response->getPosition()->getCoordinate()->getLatitude(),
+                'lng' => $this->response->getPosition()->getCoordinate()->getLongitude(),
+            ],
         ];
         $data['total_points'] = $data['quest']['total_points'];
 

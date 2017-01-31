@@ -20,6 +20,7 @@ namespace Kubikvest\Resource\Checkpoint;
 
 use Kubikvest\Model\User;
 use Kubikvest\Resource\Point\Model\Point;
+use Kubikvest\Resource\Position\Model\Position;
 use Kubikvest\Resource\Quest\Model\Quest;
 use Silex\Application;
 
@@ -34,6 +35,7 @@ class Response
     public    $error = false;
     protected $quest;
     protected $point;
+    protected $position;
     /**
      * @var User
      */
@@ -126,5 +128,21 @@ class Response
     public function getPoint()
     {
         return $this->point;
+    }
+
+    /**
+     * @return Position
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * @param Position $position
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
     }
 }

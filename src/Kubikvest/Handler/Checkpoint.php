@@ -62,8 +62,19 @@ class Checkpoint implements Handler
         $point    = $pointBuilder->build($group->getPointId());
 
         $response = new Resource\Checkpoint\Response($this->app);
+        $response->setPosition($position);
         $response->setPoint($point);
         $response->setQuest($quest);
+
+        $this->app['logger']->log(
+            \Psr\Log\LogLevel::INFO,
+            'Текущая точка',
+            [
+                'PointId' => $point->getPointId(),
+                'PointLat' => $point->getSector()->getLatitudeRange()->getMin() . " - " . $point->getSector()->getLatitudeRange()->getMax(),
+                'PointLng' => $point->getSector()->getLongitudeRange()->getMin() . " - " . $point->getSector()->getLongitudeRange()->getMax(),
+            ]
+        );
 
         $this->app['logger']->log(
             \Psr\Log\LogLevel::INFO,
