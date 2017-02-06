@@ -69,6 +69,15 @@ return [
                 '00cf856c-e259-405a-9c01-4345f4310162',
             ],
         ],
+        '515ca01a-7b22-4f16-aa3e-7f0da736331d' => [
+            'title' => 'Тест: В Питере - пить!',
+            'description' => 'только для тестов -  не нажимай!',
+            'picture' => '/img/87e9d780-c943-11e6-9702-6dcb8dd92772.jpeg',
+            'points' => [
+                '5a850d58-caf2-4269-bab8-2ee0861f392a',
+                '8ca3199b-322d-4d72-a1c8-94b51b0347ab',
+            ],
+        ],
     ],
     'points' => [
         '1d2d4455-bb0a-48f0-8970-63e4db6bc52c' => [
@@ -411,6 +420,35 @@ return [
             'coords' => [
                 'latitude'  => [60.0065, 60.0068],
                 'longitude' => [30.4018, 30.4026],
+            ],
+            'prompt' => [
+                20 => 'Test first prompt',
+                40 => 'Test secont prompt',
+                60 => 'Test answer',
+            ],
+        ],
+        /**
+         * В Питере - пить!
+         */
+        '5a850d58-caf2-4269-bab8-2ee0861f392a' => [
+            'title'       => 'Finish point',
+            'description' => '',
+            'coords' => [
+                'latitude'  => [0, 100],
+                'longitude' => [0, 100],
+            ],
+            'prompt' => [
+                20 => 'Test first prompt',
+                40 => 'Test secont prompt',
+                60 => 'Test answer',
+            ],
+        ],
+        '8ca3199b-322d-4d72-a1c8-94b51b0347ab' => [
+            'title'       => 'Finish point',
+            'description' => '',
+            'coords' => [
+                'latitude'  => [0, 100],
+                'longitude' => [0, 100],
             ],
             'prompt' => [
                 20 => 'Test first prompt',
