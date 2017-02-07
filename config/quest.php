@@ -440,7 +440,7 @@ return [
             'prompt' => [
                 20 => 'Test first prompt',
                 40 => 'Test secont prompt',
-                60 => 'Test answer',
+                60 => 'Test answer <img src="https://lh6.googleusercontent.com/5rSYlH8KUs2ooKaF64f15rGmy_iMAEtLaZQqwp6JlWQFkvh00CDiS-yD2Ious6dAi2vPromMCWlHA_8=w1647-h934">',
             ],
         ],
         '8ca3199b-322d-4d72-a1c8-94b51b0347ab' => [
@@ -453,7 +453,7 @@ return [
             'prompt' => [
                 20 => 'Test first prompt',
                 40 => 'Test secont prompt',
-                60 => 'Test answer',
+                60 => 'Test answer <img src="https://lh6.googleusercontent.com/5rSYlH8KUs2ooKaF64f15rGmy_iMAEtLaZQqwp6JlWQFkvh00CDiS-yD2Ious6dAi2vPromMCWlHA_8=w1647-h934">',
             ],
         ],
         /**
