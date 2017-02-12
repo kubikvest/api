@@ -313,7 +313,8 @@ return [
          */
         '746505de-b53d-4ba6-9f49-db9eed343242' => [
             'title'       => 'Старт',
-            'description' => 'стартовое место дом <img src=”https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/4fd357ea-e851-4a3e-a3d8-b91fee321f2e.jpg”>',
+            'description' => 'стартовое место дом',
+            <img src=”https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/4fd357ea-e851-4a3e-a3d8-b91fee321f2e.jpg”>
             'coords' => [
                 'latitude'  => [58.5420, 58.5423],
                 'longitude' => [31.2215, 31.2225],
