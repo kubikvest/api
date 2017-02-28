@@ -113,6 +113,7 @@ class Checkpoint implements Handler
             $response->addLink(Model\LinkGenerator::FINISH);
         } else {
             $group->setPointId((new Resource\Group\NextPoint())->nextPoint($quest, $point));
+            $group->setStartPoint(new \DateTime());
             $groupUpdater->update($group);
             $response->addLink(Model\LinkGenerator::TASK);
         }

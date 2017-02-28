@@ -74,6 +74,7 @@ return [
             'description' => 'только для тестов -  не нажимай!',
             'picture' => '/img/87e9d780-c943-11e6-9702-6dcb8dd92772.jpeg',
             'points' => [
+                '1d2d4455-bb0a-48f0-8970-63e4db6bc52d',
                 '5a850d58-caf2-4269-bab8-2ee0861f392a',
                 '8ca3199b-322d-4d72-a1c8-94b51b0347ab',
             ],
@@ -430,9 +431,18 @@ return [
         /**
          * В Питере - пить!
          */
+        '1d2d4455-bb0a-48f0-8970-63e4db6bc52d' => [
+            'title'       => 'Старт',
+            'description' => 'Чтобы начать игру вам нужно подойти на Софийскую площадь к памятнику В.И. Ленину.',
+            'coords' => [
+                'latitude'  => [0, 100],
+                'longitude' => [0, 100],
+            ],
+            'prompt' => [],
+        ],
         '5a850d58-caf2-4269-bab8-2ee0861f392a' => [
-            'title'       => 'Finish point',
-            'description' => '',
+            'title'       => '1 point',
+            'description' => '11111',
             'coords' => [
                 'latitude'  => [0, 100],
                 'longitude' => [0, 100],
@@ -445,7 +455,7 @@ return [
         ],
         '8ca3199b-322d-4d72-a1c8-94b51b0347ab' => [
             'title'       => 'Finish point',
-            'description' => '',
+            'description' => '22222',
             'coords' => [
                 'latitude'  => [0, 100],
                 'longitude' => [0, 100],
