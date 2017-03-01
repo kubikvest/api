@@ -27,6 +27,7 @@ class GroupManager
         $group->pointId = $quest->points[0];
         $group->pin     = PinCode::gen();
         $group->active  = true;
+        $group->startPoint = date('Y-m-d H:i:s');
 
         $this->mapper->insert(
             [
@@ -35,6 +36,7 @@ class GroupManager
                 'questId' => $group->questId,
                 'pointId' => $group->pointId,
                 'pin'     => $group->pin,
+                'startPoint' => $group->startPoint,
             ]
         );
 
@@ -51,7 +53,7 @@ class GroupManager
                 'pointId'    => $group->pointId,
                 'users'      => json_encode($group->getUsers()),
                 'pin'        => $group->pin,
-                'startPoint' => '',
+                'startPoint' => $group->startPoint,
                 'active'     => $group->active,
             ]
         );
