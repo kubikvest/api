@@ -19,7 +19,11 @@ RUN echo "@main http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repo
         libressl@main \
         php7-openssl@community \
         php7-json@community \
-        php7-pdo@community && \
+        php7-pdo@community \
+        tzdata && \
+        cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
+        echo "Europe/Moscow" >  /etc/timezone && \
+        apk del tzdata && \
     rm -rf /var/cache/apk/*
 
 ENTRYPOINT ["/bin/sh", "/app/entrypoint/kubikvest.sh"]
