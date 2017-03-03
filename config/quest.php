@@ -111,8 +111,8 @@ return [
                 'longitude' => [31.2685, 31.2706],
             ],
             'prompt' => [
-                20 => '“А башня-то круглая!” - сказал Алексей.',
-                40 => 'Белый подтвердил: “И вид с этой башни отличный, на водную гладь и вал.”',
+                20 => '“А башня-то круглая!" - сказал Алексей.',
+                40 => 'Белый подтвердил: “И вид с этой башни отличный, на водную гладь и вал."',
                 60 => 'Белая Башня, она же Алексеевская, что по улице Троицкой (Пробойной) возле лодочной станции.(Подойдите к этому объекту и еще раз нажмите "проверить место", чтобы получить следующее задание.)',
             ],
         ],
@@ -252,7 +252,7 @@ return [
                 'longitude' => [31.2927, 31.2947],
             ],
             'prompt' => [
-                20 => 'Можно долго вести диалог об этом человеке, однако лучше его увидеть. <img src=”https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/25d61341-8119-4d52-b35b-38d6a39ef112.jpg”>',
+                20 => 'Можно долго вести диалог об этом человеке, однако лучше его увидеть. <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/25d61341-8119-4d52-b35b-38d6a39ef112.jpg">',
                 40 => 'Оказывается человек этот не охраняет, а приглашает всех на выставки в полукруглое здание.',
                 60 => 'МАУК Центр культуры, искусств и общественных инициатив Диалог, у входа есть металлическа скульптура человека на ходулях. Кстати, вы можете посетить любую выставку со скидкой. Просто скажите что вы от Кубика и покажите задание не телефоне.(Подойдите к этому объекту и еще раз нажмите "проверить место", чтобы получить следующее задание.)',
             ],
@@ -284,7 +284,7 @@ return [
             ],
         ],
         'de9f4fb0-6501-4a8d-a750-8df7e106fed0' => [
-            'title' => 'Найдите еще одну десткую площадку за <img src=”https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/ab13aebb-6500-4bb3-9f5f-6f58200ab843.jpg”>',
+            'title' => 'Найдите еще одну десткую площадку за <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/ab13aebb-6500-4bb3-9f5f-6f58200ab843.jpg">',
             'description' => 'Задание №4',
             'coords' => [
                 'latitude'  => [58.5360, 58.5366],
@@ -298,7 +298,7 @@ return [
         ],
         '00cf856c-e259-405a-9c01-4345f4310168' => [
             'title' => 'Задание №5 (последнее)',
-            'description' => 'Теперь посмотрим как вы читаете карты. <img src=”https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/4fd357ea-e851-4a3e-a3d8-b91fee321f2e.jpg”>',
+            'description' => 'Теперь посмотрим как вы читаете карты. <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/4fd357ea-e851-4a3e-a3d8-b91fee321f2e.jpg">',
             'coords' => [
                 'latitude'  => [58.5400, 58.5408],
                 'longitude' => [31.2868, 31.2888],
@@ -314,7 +314,7 @@ return [
          */
         '746505de-b53d-4ba6-9f49-db9eed343242' => [
             'title'       => 'Старт',
-            'description' => 'стартовое место дом <img src=”https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/4fd357ea-e851-4a3e-a3d8-b91fee321f2e.jpg”>',
+            'description' => 'стартовое место дом <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/4fd357ea-e851-4a3e-a3d8-b91fee321f2e.jpg">',
             'coords' => [
                 'latitude'  => [58.5420, 58.5423],
                 'longitude' => [31.2215, 31.2225],
@@ -323,7 +323,7 @@ return [
         ],
         '4d2402d7-7699-436b-a12a-bd40ebcbc7e2' => [
             'title' => 'Задание №1',
-            'description' => '1 задание пирамида <img src=”https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/ab13aebb-6500-4bb3-9f5f-6f58200ab843.jpg”>',
+            'description' => '1 задание пирамида <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/ab13aebb-6500-4bb3-9f5f-6f58200ab843.jpg">',
             'coords' => [
                 'latitude'  => [58.5423, 58.5426],
                 'longitude' => [31.2233, 31.2241],
