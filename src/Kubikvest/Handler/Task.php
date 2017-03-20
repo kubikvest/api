@@ -19,6 +19,7 @@
 namespace Kubikvest\Handler;
 
 use Kubikvest\Model;
+use Kubikvest\Resource\Prompt\Builder;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,17 +54,24 @@ class Task implements Handler
             $this->app['group.manager']->update($group);
         }
 
-        $response = [
-            'quest' => (array) $quest,
-            'point' => (array) $point,
-            'timer' => $point->getTimer($group->startPoint),
-            't'     => $this->app['link.gen']->getToken($user),
-            'links' => [
+        $response                    = [
+            'quest'        => (array) $quest,
+            'point'        => (array) $point,
+            'timer'        => $point->getTimer($group->startPoint),
+            't'            => $this->app['link.gen']->getToken($user),
+            'links'        => [
                 'checkpoint' => $this->app['link.gen']->getLink(Model\LinkGenerator::CHECKPOINT, $user),
             ],
             'total_points' => count($quest->points),
         ];
         $response['point']['prompt'] = $point->getPrompt($group->startPoint);
+
+        $prompt = (new Builder($point->prompt))->build(new \DateTime($group->startPoint));
+        $response['point']['prompt'] = [
+            'timer'       => $prompt->getTimer(),
+            'title'       => $prompt->getTitle(),
+            'description' => $prompt->getDescription(),
+        ];
 
         return new JsonResponse($response);
     }
