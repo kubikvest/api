@@ -788,20 +788,25 @@ return [
                 'longitude' => [0, 100],
             ],
             'prompt' => [
-                20 => [
-                    'timer'       => 20,
-                    'title'       => 'Prompt 1',
-                    'description' => 'Test first prompt'
+                0 => [
+                    'timer'       => 0,
+                    'title'       => 'До первой подсказки осталось',
+                    'description' => ''
                 ],
-                40 => [
-                    'timer'       => 40,
-                    'title'       => 'Prompt 1',
-                    'description' => 'Test secont prompt',
+                2 => [
+                    'timer'       => 2,
+                    'title'       => 'До второй подсказки осталось',
+                    'description' => 'Можно долго вести диалог об этом человеке, однако лучше его увидеть. <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/25d61341-8119-4d52-b35b-38d6a39ef112.jpg">',
+                ],
+                4 => [
+                    'timer'       => 4,
+                    'title'       => 'До ответа осталось',
+                    'description' => 'Можно долго вести диалог об этом человеке, однако лучше его увидеть. <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/25d61341-8119-4d52-b35b-38d6a39ef112.jpg"><br><br>Оказывается человек этот не охраняет, а приглашает всех на выставки в полукруглое здание.',
                 ],
                 60 => [
                     'timer'       => 60,
-                    'title'       => 'Prompt 1',
-                    'description' => 'Test answer <img src="https://lh6.googleusercontent.com/5rSYlH8KUs2ooKaF64f15rGmy_iMAEtLaZQqwp6JlWQFkvh00CDiS-yD2Ious6dAi2vPromMCWlHA_8=w1647-h934">',
+                    'title'       => 'Ответ (чтобы получить следующее задание, подойдите к этому объекту и еще раз нажмите кнопку "проверить место".)',
+                    'description' => 'Можно долго вести диалог об этом человеке, однако лучше его увидеть. <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/25d61341-8119-4d52-b35b-38d6a39ef112.jpg"><br><br>Оказывается человек этот не охраняет, а приглашает всех на выставки в полукруглое здание.<br><br>МАУК Центр культуры, искусств и общественных инициатив Диалог, у входа есть металлическа скульптура человека на ходулях.',
                 ],
             ],
         ],
