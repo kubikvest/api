@@ -46,10 +46,13 @@ class Builder
         $p = new Prompt();
         $since = $startTask->diff(new \DateTime());
 
+        $d = "";
+
         foreach ($this->prompts as $k => $v) {
+            $d .= isset($v['description']) ? $v['description'] . "<br><br>" : "";
             if ($since->i >= $k) {
                 $p->setTimer($k);
-                $p->setDescription($v['description']);
+                $p->setDescription($d);
                 $p->setTitle($v['title']);
             }
         }
