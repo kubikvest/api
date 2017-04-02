@@ -50,11 +50,11 @@ class Builder
         $d = "";
 
         foreach ($this->prompts as $k => $v) {
-            $t = isset($v['title']) ? $v['title'] : "";
+            $t = isset($v['header']) ? $v['header'] : "";
             if ($k == 0) {
                 $t = "";
             }
-            $d .= isset($v['description']) ? "<b>" . $t . "</b><br>" . $v['description'] . "<br><br>" : "";
+            $d .= isset($v['description']) ? "<mark>" . $t . "</mark><br>" . $v['description'] . "<br><br>" : "";
             if ($since->i >= $k) {
                 $p->setTimer($k);
                 $p->setDescription($d);
