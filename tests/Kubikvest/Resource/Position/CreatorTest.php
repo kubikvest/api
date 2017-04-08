@@ -18,35 +18,85 @@
 
 namespace Kubikvest\Resource\Position;
 
+use Kubikvest\Resource\Position\Model\Position;
+use PHPUnit\Framework\TestCase;
 use Pimple\Container;
 
-class CreatorTest extends \PHPUnit_Framework_TestCase
+class CreatorTest extends TestCase
 {
-    protected $container;
-
-    public function setUp()
+    public function test_create_WithValidRequest_ReturnsPosition()
     {
-        $this->container = $this->createMock(Container::class);
-
-        $this->container->method('offsetGet')->willReturn(
-            [
-                PositionFormatType::LATITUDE  => 1,
-                PositionFormatType::LONGITUDE => 2,
-                PositionFormatType::ACCURACY  => 3,
-            ]
+        $c = new Creator(
+            new Container(
+                [
+                    'request.content' => [
+                        'lat' => 10,
+                        'lng' => 20,
+                        'acr' => 30,
+                    ],
+                ]
+            )
         );
+
+        $actual = $c->create();
+
+        $this->assertInstanceOf(Position::class, $actual);
     }
 
-    public function testInstance()
+    public function test_create_WithValidRequest_ReturnsLatitude10()
     {
-        $actual = new Creator($this->container);
-        $this->assertInstanceOf('\\Kubikvest\\Resource\\Position\\Creator', $actual);
+        $c = new Creator(
+            new Container(
+                [
+                    'request.content' => [
+                        'lat' => 10.0,
+                        'lng' => 20.0,
+                        'acr' => 30,
+                    ],
+                ]
+            )
+        );
+
+        $actual = $c->create();
+
+        $this->assertSame(10.0, $actual->getCoordinate()->getLatitude());
     }
 
-    public function testCreate()
+    public function test_create_WithValidRequest_ReturnsLongitude20()
     {
-        $creator = new Creator($this->container);
-        $actual  = $creator->create();
-        $this->assertInstanceOf('\\Kubikvest\\Resource\\Position\\Model\\Position', $actual);
+        $c = new Creator(
+            new Container(
+                [
+                    'request.content' => [
+                        'lat' => 10.0,
+                        'lng' => 20.0,
+                        'acr' => 30,
+                    ],
+                ]
+            )
+        );
+
+        $actual = $c->create();
+
+        $this->assertSame(20.0, $actual->getCoordinate()->getLongitude());
+    }
+
+    public function test_create_WithValidRequest_ReturnsAccuracy30()
+    {
+        $c = new Creator(
+            new Container(
+                [
+                    'request.content' => [
+                        'lat' => 10.0,
+                        'lng' => 20.0,
+                        'acr' => 30,
+                    ],
+                ]
+            )
+        );
+
+        $actual = $c->create();
+
+        $this->assertSame(30, $actual->getAccuracy());
     }
 }
