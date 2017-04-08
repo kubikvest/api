@@ -19,6 +19,7 @@
 namespace Kubikvest\Resource\Checkpoint;
 
 use Kubikvest\Model\User;
+use Kubikvest\Resource\Error;
 use Kubikvest\Resource\Point\Model\Point;
 use Kubikvest\Resource\Position\Model\Position;
 use Kubikvest\Resource\Quest\Model\Quest;
@@ -32,7 +33,10 @@ class Response
     protected $links = [];
     public    $finish = false;
     protected $token;
-    public    $error = false;
+    /**
+     * @var Error|null
+     */
+    protected $error = null;
     protected $quest;
     protected $point;
     protected $position;
@@ -144,5 +148,21 @@ class Response
     public function setPosition($position)
     {
         $this->position = $position;
+    }
+
+    /**
+     * @return Error|null
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+
+    /**
+     * @param Error $error
+     */
+    public function setError(Error $error)
+    {
+        $this->error = $error;
     }
 }

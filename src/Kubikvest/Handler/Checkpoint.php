@@ -57,13 +57,13 @@ class Checkpoint implements Handler
         $pointBuilder = $this->app[Resource\Point\Builder::class];
 
         $response = new Resource\Checkpoint\Response($this->app);
-        $response->error = true;
         try {
             $position = $creator->create();
             $group    = $groupBuilder->build($user->getGroupId());
             $quest    = $questBuilder->build($group->getQuestId());
             $point    = $pointBuilder->build($group->getPointId());
         } catch (\Exception $e) {
+            $response->setError(new Resource\Error(true, $e->getMessage()));
             return new Resource\Checkpoint\Respondent($response);
         }
 
@@ -107,7 +107,7 @@ class Checkpoint implements Handler
             new Validator\PositionAroundBorderSector($position, $point->getSector())
         );
         if (!$validator->validate()) {
-            $response->error = 'Не верное место отметки.';
+            $response->setError(new Resource\Error(true, 'Не верное место отметки.'));
             $response->addLink(Model\LinkGenerator::CHECKPOINT);
 
             return new Resource\Checkpoint\Respondent($response);

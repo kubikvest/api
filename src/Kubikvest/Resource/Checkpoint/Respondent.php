@@ -18,6 +18,7 @@
 
 namespace Kubikvest\Resource\Checkpoint;
 
+use Kubikvest\Resource\Error;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class Respondent implements \Kubikvest\Resource\Respondent
@@ -34,17 +35,15 @@ class Respondent implements \Kubikvest\Resource\Respondent
 
     public function response()
     {
-        $h = [];
-        $status               = JsonResponse::HTTP_BAD_REQUEST;
+        $headers = [];
+        $status  = JsonResponse::HTTP_OK;
+
         $data                 = [
             't'      => $this->response->getToken(),
             'links'  => $this->response->getLinks(),
             'finish' => $this->response->finish,
             'quest'  => $this->response->getQuest(),
             'point'  => $this->response->getPoint(),
-            'error'  => [
-                'msg' => $this->response->error,
-            ],
             'coords' => [
                 'lat' => $this->response->getPosition()->getCoordinate()->getLatitude(),
                 'lng' => $this->response->getPosition()->getCoordinate()->getLongitude(),
@@ -52,15 +51,19 @@ class Respondent implements \Kubikvest\Resource\Respondent
         ];
         $data['total_points'] = $data['quest']['total_points'];
 
-        if (false === $this->response->error) {
-            $status = JsonResponse::HTTP_OK;
-        } else {
-            $h = [
+        if ($this->response->getError() instanceof Error) {
+            $data['error'] = [
+                'msg' => $this->response->getError()->getMsg(),
+            ];
+
+            $headers = [
                 'Access-Control-Allow-Methods' => 'OPTIONS, GET, POST',
                 'Access-Control-Allow-Origin'  => '*',
             ];
+
+            $status = JsonResponse::HTTP_BAD_REQUEST;
         }
 
-        return new JsonResponse($data, $status, $h);
+        return new JsonResponse($data, $status, $headers);
     }
 }
