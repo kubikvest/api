@@ -51,7 +51,7 @@ class Respondent implements \Kubikvest\Resource\Respondent
         ];
         $data['total_points'] = $data['quest']['total_points'];
 
-        if ($this->response->getError() instanceof Error) {
+        if ($this->response->getError() instanceof Error && $this->response->getError()->isStatus()) {
             $data['error'] = [
                 'msg' => $this->response->getError()->getMsg(),
             ];
