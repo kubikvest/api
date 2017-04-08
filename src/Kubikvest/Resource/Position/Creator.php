@@ -19,6 +19,7 @@
 namespace Kubikvest\Resource\Position;
 
 use iMega\Formatter\Formatter;
+use iMega\Formatter\FormatterException;
 use Pimple\Container;
 
 class Creator

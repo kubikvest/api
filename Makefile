@@ -131,10 +131,10 @@ deploy: composer destroy build
 		-e KEY=$(KEY) \
 		kubikvest/api \
 		php-fpm7 -F \
-			-d error_reporting=E_ALL \
+			-d error_reporting=E_ERROR \
 			-d log_errors=On \
 			-d error_log=/dev/stdout \
-			-d display_errors=On \
+			-d display_errors=Off \
 			-d always_populate_raw_post_data=-1
 	@docker run -d \
 		--name "kubikvest_nginx" \
