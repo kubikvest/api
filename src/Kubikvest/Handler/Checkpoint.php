@@ -56,12 +56,17 @@ class Checkpoint implements Handler
         $questBuilder = $this->app[Resource\Quest\Builder::class];
         $pointBuilder = $this->app[Resource\Point\Builder::class];
 
-        $position = $creator->create();
-        $group    = $groupBuilder->build($user->getGroupId());
-        $quest    = $questBuilder->build($group->getQuestId());
-        $point    = $pointBuilder->build($group->getPointId());
-
         $response = new Resource\Checkpoint\Response($this->app);
+        $response->error = true;
+        try {
+            $position = $creator->create();
+            $group    = $groupBuilder->build($user->getGroupId());
+            $quest    = $questBuilder->build($group->getQuestId());
+            $point    = $pointBuilder->build($group->getPointId());
+        } catch (\Exception $e) {
+            return new Resource\Checkpoint\Respondent($response);
+        }
+
         $response->setPosition($position);
         $response->setPoint($point);
         $response->setQuest($quest);
@@ -70,9 +75,11 @@ class Checkpoint implements Handler
             \Psr\Log\LogLevel::INFO,
             'Текущая точка',
             [
-                'PointId' => $point->getPointId(),
-                'PointLat' => $point->getSector()->getLatitudeRange()->getMin() . " - " . $point->getSector()->getLatitudeRange()->getMax(),
-                'PointLng' => $point->getSector()->getLongitudeRange()->getMin() . " - " . $point->getSector()->getLongitudeRange()->getMax(),
+                'PointId'  => $point->getPointId(),
+                'PointLat' => $point->getSector()->getLatitudeRange()->getMin() . " - " . $point->getSector()
+                        ->getLatitudeRange()->getMax(),
+                'PointLng' => $point->getSector()->getLongitudeRange()->getMin() . " - " . $point->getSector()
+                        ->getLongitudeRange()->getMax(),
             ]
         );
 
@@ -80,11 +87,16 @@ class Checkpoint implements Handler
             \Psr\Log\LogLevel::INFO,
             'Расстояния до точек',
             [
-                'InsideSector' => (new Validator\PositionInsideSector($position, $point->getSector()))->validate(),
+                'InsideSector'  => (new Validator\PositionInsideSector($position, $point->getSector()))->validate(),
                 'AccuracyRange' => (new Validator\PointIncludedAccuracyRange($position))->validate(),
-                'lessDist' => (new Validator\AccuracyLessDistance($position, $point->getSector()))->validate(),
-                'BorderSector' => (new Validator\PositionAroundBorderSector($position, $point->getSector()))->validate(),
-                'distances' => (new Validator\PositionAroundBorderSector($position, $point->getSector()))->calcDistancesToPointsSector($position, $point->getSector()),
+                'lessDist'      => (new Validator\AccuracyLessDistance($position, $point->getSector()))->validate(),
+                'BorderSector'  => (new Validator\PositionAroundBorderSector(
+                    $position,
+                    $point->getSector())
+                )->validate(),
+                'distances'     => (new Validator\PositionAroundBorderSector(
+                    $position, $point->getSector()
+                ))->calcDistancesToPointsSector($position, $point->getSector()),
             ]
         );
 

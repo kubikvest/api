@@ -1,6 +1,8 @@
 machine:
   services:
     - docker
+  php:
+    version: 7.0.4
 
 dependencies:
   pre:

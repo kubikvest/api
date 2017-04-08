@@ -34,14 +34,17 @@ class Respondent implements \Kubikvest\Resource\Respondent
 
     public function response()
     {
-        $status = JsonResponse::HTTP_OK;//HTTP_BAD_REQUEST;
-        $data = [
-            't' => $this->response->getToken(),
-            'links' => $this->response->getLinks(),
+        $h = [];
+        $status               = JsonResponse::HTTP_BAD_REQUEST;
+        $data                 = [
+            't'      => $this->response->getToken(),
+            'links'  => $this->response->getLinks(),
             'finish' => $this->response->finish,
-            'quest' => $this->response->getQuest(),
-            'point' => $this->response->getPoint(),
-            'error' => $this->response->error,
+            'quest'  => $this->response->getQuest(),
+            'point'  => $this->response->getPoint(),
+            'error'  => [
+                'msg' => $this->response->error,
+            ],
             'coords' => [
                 'lat' => $this->response->getPosition()->getCoordinate()->getLatitude(),
                 'lng' => $this->response->getPosition()->getCoordinate()->getLongitude(),
@@ -51,8 +54,13 @@ class Respondent implements \Kubikvest\Resource\Respondent
 
         if (false === $this->response->error) {
             $status = JsonResponse::HTTP_OK;
+        } else {
+            $h = [
+                'Access-Control-Allow-Methods' => 'OPTIONS, GET, POST',
+                'Access-Control-Allow-Origin'  => '*',
+            ];
         }
 
-        return new JsonResponse($data, $status);
+        return new JsonResponse($data, $status, $h);
     }
 }

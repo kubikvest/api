@@ -121,7 +121,7 @@ testStartTask() {
 testFailLocation42MCheckpoint() {
     ACTUAL=$(curl -X POST --write-out %{http_code} --silent --output /dev/null -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":60.983626, "lng":25.658256, "acr":39}' http://$URL/checkpoint)
 
-    assertTrue 200 $ACTUAL "$FUNCNAME Code"
+    assertTrue 400 $ACTUAL "$FUNCNAME Code"
 
     BODY=$(curl -X POST --silent -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":60.983626, "lng":25.658256, "acr":39}' http://$URL/checkpoint)
 
@@ -167,14 +167,14 @@ testFailLocation42MCheckpoint() {
     FINISH=$(echo $BODY | jq '.finish' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "false" "$FINISH" "$FUNCNAME FINISH"
 
-    ERROR=$(echo $BODY | jq '.error' | sed -e 's/^"//' -e 's/"$//')
+    ERROR=$(echo $BODY | jq '.error.msg' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Не верное место отметки." "$ERROR" "$FUNCNAME ERROR"
 }
 
 testFailACRCheckpoint() {
     ACTUAL=$(curl -X POST --write-out %{http_code} --silent --output /dev/null -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":60.983726, "lng":25.658856, "acr":42}' http://$URL/checkpoint)
 
-    assertTrue 200 $ACTUAL "$FUNCNAME Code"
+    assertTrue 400 $ACTUAL "$FUNCNAME Code"
 
     BODY=$(curl -X POST --silent -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":60.983726, "lng":25.658856, "acr":42}' http://$URL/checkpoint)
 
@@ -220,7 +220,7 @@ testFailACRCheckpoint() {
     FINISH=$(echo $BODY | jq '.finish' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "false" "$FINISH" "$FUNCNAME FINISH"
 
-    ERROR=$(echo $BODY | jq '.error' | sed -e 's/^"//' -e 's/"$//')
+    ERROR=$(echo $BODY | jq '.error.msg' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "Не верное место отметки." "$ERROR" "$FUNCNAME ERROR"
 }
 
