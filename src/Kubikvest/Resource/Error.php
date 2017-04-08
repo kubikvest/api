@@ -66,4 +66,19 @@ class Error
     {
         $this->msg = $msg;
     }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        if ($this->isStatus()) {
+            return [
+                'status' => $this->status,
+                'msg'    => $this->msg,
+            ];
+        }
+
+        return [];
+    }
 }
