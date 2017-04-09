@@ -75,10 +75,10 @@ class Checkpoint implements Handler
             \Psr\Log\LogLevel::INFO,
             'Текущая точка',
             [
-                'PointId'  => $point->getPointId(),
-                'PointLat' => $point->getSector()->getLatitudeRange()->getMin() . " - " . $point->getSector()
+                'Id'  => $point->getPointId()->getValue(),
+                'Lat' => $point->getSector()->getLatitudeRange()->getMin() . " - " . $point->getSector()
                         ->getLatitudeRange()->getMax(),
-                'PointLng' => $point->getSector()->getLongitudeRange()->getMin() . " - " . $point->getSector()
+                'Lng' => $point->getSector()->getLongitudeRange()->getMin() . " - " . $point->getSector()
                         ->getLongitudeRange()->getMax(),
             ]
         );
@@ -87,16 +87,16 @@ class Checkpoint implements Handler
             \Psr\Log\LogLevel::INFO,
             'Расстояния до точек',
             [
-                'InsideSector'  => (new Validator\PositionInsideSector($position, $point->getSector()))->validate(),
-                'AccuracyRange' => (new Validator\PointIncludedAccuracyRange($position))->validate(),
-                'lessDist'      => (new Validator\AccuracyLessDistance($position, $point->getSector()))->validate(),
-                'BorderSector'  => (new Validator\PositionAroundBorderSector(
+                'в секторе'  => (new Validator\PositionInsideSector($position, $point->getSector()))->validate(),
+                'точность' => (new Validator\PointIncludedAccuracyRange($position))->validate(),
+                'точность меньше до ближнего угла' => (new Validator\AccuracyLessDistance($position, $point->getSector()))->validate(),
+                'около сектора'  => (new Validator\PositionAroundBorderSector(
                     $position,
                     $point->getSector())
                 )->validate(),
-                'distances'     => (new Validator\PositionAroundBorderSector(
+                'расстояния до углов'     => array_keys((new Validator\PositionAroundBorderSector(
                     $position, $point->getSector()
-                ))->calcDistancesToPointsSector($position, $point->getSector()),
+                ))->calcDistancesToPointsSector($position, $point->getSector())),
             ]
         );
 
