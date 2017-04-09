@@ -42,11 +42,11 @@ class PointIncludedAccuracyRangeTest extends \PHPUnit_Framework_TestCase
                 'expected' => true,
             ],
             [
-                'position' => new Position(new Coordinate(0, 0), 40),
+                'position' => new Position(new Coordinate(0, 0), PointIncludedAccuracyRange::ACCURACY_MAX),
                 'expected' => true,
             ],
             [
-                'position' => new Position(new Coordinate(0, 0), 41),
+                'position' => new Position(new Coordinate(0, 0), PointIncludedAccuracyRange::ACCURACY_MAX+1),
                 'expected' => false,
             ],
         ];
