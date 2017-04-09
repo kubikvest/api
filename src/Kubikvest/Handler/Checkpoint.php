@@ -106,8 +106,27 @@ class Checkpoint implements Handler
             new Validator\AccuracyLessDistance($position, $point->getSector()),
             new Validator\PositionAroundBorderSector($position, $point->getSector())
         );
+
+        $req = $this->app['request.content'];
+        if (isset($req['point_id']) && $req['point_id'] != $point->getPointId()) {
+            $this->app['logger']->log(\Psr\Log\LogLevel::INFO, 'Повторный запрос', []);
+            if ($group->active) {
+                $response->finish = false;
+                $response->addLink(Model\LinkGenerator::TASK);
+            } else {
+                $response->finish = true;
+                $response->addLink(Model\LinkGenerator::FINISH);
+            }
+
+            return new Resource\Checkpoint\Respondent($response);
+        }
+
         if (!$validator->validate()) {
-            $response->setError(new Resource\Error(true, 'Не верное место отметки.'));
+            if ((new Validator\PointIncludedAccuracyRange($position))->validate()) {
+                $response->setError(new Resource\Error(true, 'Не верное место отметки.'));
+            } else {
+                $response->setError(new Resource\Error(true, 'Большая погрешность GPS ' . $position->getAccuracy()));
+            }
             $response->addLink(Model\LinkGenerator::CHECKPOINT);
 
             return new Resource\Checkpoint\Respondent($response);
