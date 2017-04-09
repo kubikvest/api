@@ -58,7 +58,7 @@ class Builder
             if ($since->i >= $k) {
                 $p->setTimer($k);
                 $p->setDescription($d);
-                $p->setTitle($t);
+                $p->setTitle($v['title']);
             }
         }
 
