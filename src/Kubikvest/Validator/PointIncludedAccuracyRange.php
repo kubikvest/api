@@ -22,7 +22,7 @@ use Kubikvest\Resource\Position\Model\Position;
 
 class PointIncludedAccuracyRange
 {
-    const ACCURACY_MAX = 40;
+    const ACCURACY_MAX = 65;
     /**
      * @var Position
      */

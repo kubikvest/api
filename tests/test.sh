@@ -172,11 +172,11 @@ testFailLocation42MCheckpoint() {
 }
 
 testFailACRCheckpoint() {
-    ACTUAL=$(curl -X POST --write-out %{http_code} --silent --output /dev/null -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":60.983726, "lng":25.658856, "acr":42}' http://$URL/checkpoint)
+    ACTUAL=$(curl -X POST --write-out %{http_code} --silent --output /dev/null -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":60.983726, "lng":25.658856, "acr":66}' http://$URL/checkpoint)
 
     assertTrue 400 $ACTUAL "$FUNCNAME Code"
 
-    BODY=$(curl -X POST --silent -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":60.983726, "lng":25.658856, "acr":42}' http://$URL/checkpoint)
+    BODY=$(curl -X POST --silent -d '{"t":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4", "lat":60.983726, "lng":25.658856, "acr":66}' http://$URL/checkpoint)
 
     TOKEN=$(echo $BODY | jq '.t' | sed -e 's/^"//' -e 's/"$//')
     assertTrue "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiOGM1YTM5MzQtMzFiMC00NjVlLTgxMmQtOWEyZTIwNzRkMGRhIn0.KO8wMlYcfdX4tAZWF7eegaOmX6l1BdrayUYYolAu3v4" "$TOKEN" "$FUNCNAME TOKEN"
@@ -221,7 +221,7 @@ testFailACRCheckpoint() {
     assertTrue "false" "$FINISH" "$FUNCNAME FINISH"
 
     ERROR=$(echo $BODY | jq '.error.msg' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "Большая погрешность GPS 42" "$ERROR" "$FUNCNAME ERROR"
+    assertTrue "Большая погрешность GPS 66" "$ERROR" "$FUNCNAME ERROR"
 }
 
 testLocationInSectorCheckpoint() {
