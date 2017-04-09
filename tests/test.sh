@@ -221,7 +221,7 @@ testFailACRCheckpoint() {
     assertTrue "false" "$FINISH" "$FUNCNAME FINISH"
 
     ERROR=$(echo $BODY | jq '.error.msg' | sed -e 's/^"//' -e 's/"$//')
-    assertTrue "Не верное место отметки." "$ERROR" "$FUNCNAME ERROR"
+    assertTrue "Большая погрешность GPS 42" "$ERROR" "$FUNCNAME ERROR"
 }
 
 testLocationInSectorCheckpoint() {
