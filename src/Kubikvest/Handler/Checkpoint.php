@@ -108,7 +108,7 @@ class Checkpoint implements Handler
         );
 
         $req = $this->app['request.content'];
-        if (isset($req['point_id']) && $req['point_id'] != $point->getPointId()) {
+        if (isset($req['point_id']) && $req['point_id'] != $point->getPointId()->getValue()) {
             $this->app['logger']->log(\Psr\Log\LogLevel::INFO, 'Повторный запрос', []);
             if ($group->active) {
                 $response->finish = false;
