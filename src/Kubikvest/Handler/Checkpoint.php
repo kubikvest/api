@@ -100,6 +100,12 @@ class Checkpoint implements Handler
             ]
         );
 
+        if (!$group->active) {
+            $response->finish = true;
+            $response->addLink(Model\LinkGenerator::FINISH);
+            return new Resource\Checkpoint\Respondent($response);
+        }
+
         $validator = new Validator\PlayerAtRightPlace(
             new Validator\PositionInsideSector($position, $point->getSector()),
             new Validator\PointIncludedAccuracyRange($position),

@@ -105,7 +105,7 @@ class Mapper
             ->where(
                 [
                     'groupid' => $this->formatter->getData('groupid', $groupId),
-                    'active' => $this->formatter->getData('active', $active),
+                    //'active' => $this->formatter->getData('active', $active),
                 ]
             );
         try {
