@@ -65,6 +65,7 @@ class Task implements Handler
             'total_points' => count($quest->points),
         ];
         $response['point']['prompt'] = $point->getPrompt($group->startPoint);
+        $response['point']['point_id'] = $response['point']['pointId'];
 
         $prompt = (new Builder($point->prompt))->build(new \DateTime($group->startPoint));
         $response['point']['prompt'] = [
