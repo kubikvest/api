@@ -580,8 +580,8 @@ return [
             'title' => 'Задание №1',
             'description' => '1 задание пирамида <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/ab13aebb-6500-4bb3-9f5f-6f58200ab843.jpg">',
             'coords' => [
-                'latitude'  => [58.5423, 58.5426],
-                'longitude' => [31.2234, 31.2241],
+                'latitude'  => [58.5408, 58.5410],
+                'longitude' => [31.2233, 31.2244],
             ],
             'prompt' => [
                 0 => [
@@ -611,7 +611,7 @@ return [
             'description' => '2 задание остановка',
             'coords' => [
                 'latitude'  => [58.5423, 58.5425],
-                'longitude' => [31.2264, 31.2271],
+                'longitude' => [31.2263, 31.2271],
             ],
             'prompt' => [
                 0 => [
