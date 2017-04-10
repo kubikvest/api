@@ -571,7 +571,7 @@ return [
             'title'       => 'Старт',
             'description' => 'стартовое место дом <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/4fd357ea-e851-4a3e-a3d8-b91fee321f2e.jpg">',
             'coords' => [
-                'latitude'  => [58.5420, 58.5423],
+                'latitude'  => [58.5420, 58.5422],
                 'longitude' => [31.2215, 31.2225],
             ],
             'prompt' => [],
@@ -581,7 +581,7 @@ return [
             'description' => '1 задание пирамида <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/ab13aebb-6500-4bb3-9f5f-6f58200ab843.jpg">',
             'coords' => [
                 'latitude'  => [58.5423, 58.5426],
-                'longitude' => [31.2233, 31.2241],
+                'longitude' => [31.2234, 31.2241],
             ],
             'prompt' => [
                 0 => [
