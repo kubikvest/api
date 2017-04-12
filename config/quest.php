@@ -565,23 +565,23 @@ return [
             ],
         ],
         /**
-         * 4 квест
+         * 4 квест тестовый
          */
         '746505de-b53d-4ba6-9f49-db9eed343242' => [
             'title'       => 'Старт',
-            'description' => 'стартовое место дом <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/4fd357ea-e851-4a3e-a3d8-b91fee321f2e.jpg">',
+            'description' => 'стартовое место собор рождества <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/4fd357ea-e851-4a3e-a3d8-b91fee321f2e.jpg">',
             'coords' => [
-                'latitude'  => [58.5420, 58.5422],
-                'longitude' => [31.2215, 31.2225],
+                'latitude'  => [58.5400, 58.5408],
+                'longitude' => [31.2868, 31.2888],
             ],
             'prompt' => [],
         ],
         '4d2402d7-7699-436b-a12a-bd40ebcbc7e2' => [
             'title' => 'Задание №1',
-            'description' => '1 задание пирамида <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/ab13aebb-6500-4bb3-9f5f-6f58200ab843.jpg">',
+            'description' => '1 задание перекресток парковой <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/ab13aebb-6500-4bb3-9f5f-6f58200ab843.jpg">',
             'coords' => [
-                'latitude'  => [58.5408, 58.5410],
-                'longitude' => [31.2233, 31.2244],
+                'latitude'  => [58.5397, 58.5401],
+                'longitude' => [31.2935, 31.2942],
             ],
             'prompt' => [
                 0 => [
@@ -608,10 +608,10 @@ return [
         ],
         '4fd0bf6b-659c-4d9b-b446-306b68513ea2' => [
             'title' => 'Задание №2',
-            'description' => '2 задание остановка',
+            'description' => '2 задание кондиционеры у пятерочки',
             'coords' => [
-                'latitude'  => [58.5423, 58.5425],
-                'longitude' => [31.2263, 31.2271],
+                'latitude'  => [58.5373, 58.5376],
+                'longitude' => [31.2995, 31.3001],
             ],
             'prompt' => [
                 0 => [
@@ -638,10 +638,10 @@ return [
         ],
         'f8658947-0341-4059-9692-45b4c6167f92' => [
             'title' => 'Задание №3',
-            'description' => '3 задание русь',
+            'description' => '3 задание остановка в парке',
             'coords' => [
-                'latitude'  => [58.5330, 58.5334],
-                'longitude' => [31.2681, 31.2685],
+                'latitude'  => [58.5325, 58.5328],
+                'longitude' => [31.2963, 31.2968],
             ],
             'prompt' => [
                 0 => [
@@ -668,10 +668,10 @@ return [
         ],
         'de9f4fb0-6501-4a8d-a750-8df7e106fed2' => [
             'title' => 'Задание №4',
-            'description' => '4 задание квест https://goo.gl/5gPxDn',
+            'description' => '4 задание перекресток маницына https://goo.gl/5gPxDn',
             'coords' => [
-                'latitude'  => [58.5338, 58.5342],
-                'longitude' => [31.2670, 31.2673],
+                'latitude'  => [58.5253, 58.5255],
+                'longitude' => [31.2917, 31.2923],
             ],
             'prompt' => [
                 0 => [
@@ -698,10 +698,10 @@ return [
         ],
         '00cf856c-e259-405a-9c01-4345f4310162' => [
             'title' => 'Задание №5 (последнее)',
-            'description' => '5 задание квест https://goo.gl/5yRxq4',
+            'description' => '5 задание дом пахи https://goo.gl/5yRxq4',
             'coords' => [
-                'latitude'  => [58.5338, 58.5342],
-                'longitude' => [31.2670, 31.2673],
+                'latitude'  => [58.5236, 58.5237],
+                'longitude' => [31.2969, 31.2975],
             ],
             'prompt' => [
                 0 => [
