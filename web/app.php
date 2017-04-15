@@ -58,6 +58,10 @@ $app->get('/finish', function (Request $request) use ($app) {
     return (new \Kubikvest\Handler\Finish($app))->handle($request);
 });
 
+$app->get('/escape', function (Request $request) use ($app) {
+    return (new \Kubikvest\Handler\Escape($app))->handle($request);
+});
+
 if (true === (bool) getenv('TEST')) {
     return $app;
 } else {
