@@ -29,6 +29,10 @@ class ListQuest implements Handler
      * @var Application
      */
     private $app;
+    private $excludeUsers = [
+        380117337 => 0,
+        1222731   => 1,
+    ];
 
     public function __construct(Application $app)
     {
@@ -49,6 +53,11 @@ class ListQuest implements Handler
             array_shift($quests);
         }
 
+        if (!isset($user->uid)) {
+            unset($quests['d53c9c0c-75dc-4816-862f-20913b1cdd19']);
+            unset($quests['515ca01a-7b22-4f16-aa3e-7f0da736331d']);
+        }
+
         foreach ($quests as $item) {
             /**
              * @var \Kubikvest\Model\Quest $item
@@ -65,10 +74,12 @@ class ListQuest implements Handler
             }
         }
 
-        return new JsonResponse([
-            't'      => $this->app['link.gen']->getToken($user),
-            'quests' => $data,
-        ]);
+        return new JsonResponse(
+            [
+                't'      => $this->app['link.gen']->getToken($user),
+                'quests' => $data,
+            ]
+        );
     }
 
 }
