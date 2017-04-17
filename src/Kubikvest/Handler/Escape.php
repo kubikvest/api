@@ -19,6 +19,7 @@
 namespace Kubikvest\Handler;
 
 use Kubikvest\Model\LinkGenerator;
+use Kubikvest\Model\Uuid;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,6 +62,13 @@ class Escape implements Handler
         $groupUpdater = $this->app[Resource\Group\Updater::class];
         $group->active = false;
         $groupUpdater->update($group);
+
+        /**
+         * @var Resource\User\Updater $userUpdater
+         */
+        $userUpdater = $this->app[Resource\User\Updater::class];
+        $user->setGroupId(new Uuid(''));
+        $userUpdater->update($user);
 
         $links['list_quest'] = $this->app['link.gen']->getLink(LinkGenerator::LIST_QUEST, $this->app['user']);
 
