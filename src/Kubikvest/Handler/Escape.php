@@ -62,7 +62,7 @@ class Escape implements Handler
         $group->active = false;
         $groupUpdater->update($group);
 
-        $links['list_quest'] = $this->app['link.gen']->getLink(LinkGenerator::LIST_QUEST, $user);
+        $links['list_quest'] = $this->app['link.gen']->getLink(LinkGenerator::LIST_QUEST, $this->app['user']);
 
         return new JsonResponse([
             't'     => $this->app['link.gen']->getToken($user),
