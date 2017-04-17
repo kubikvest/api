@@ -32,5 +32,9 @@ class Provider implements ServiceProviderInterface
         $pimple[Mapper::class] = function () use ($pimple) {
             return new Mapper($pimple['pdo'], $pimple['queryBuilder']);
         };
+
+        $pimple[Updater::class] = function () use ($pimple) {
+            return new Updater($pimple);
+        };
     }
 }
