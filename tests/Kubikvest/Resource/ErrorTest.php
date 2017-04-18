@@ -30,7 +30,8 @@ class ErrorTest extends TestCase
         $this->assertSame(
             [
                 'status' => true,
-                'msg'    => "Message",
+                'msg'    => 'Message',
+                'type'   => '',
             ],
             $actual
         );

@@ -129,9 +129,9 @@ class Checkpoint implements Handler
 
         if (!$validator->validate()) {
             if ((new Validator\PointIncludedAccuracyRange($position))->validate()) {
-                $response->setError(new Resource\Error(true, 'Не верное место отметки.'));
+                $response->setError(new Resource\Error(true, 'Не верное место отметки.', 'alert'));
             } else {
-                $response->setError(new Resource\Error(true, 'Большая погрешность GPS ' . $position->getAccuracy()));
+                $response->setError(new Resource\Error(true, 'Большая погрешность GPS ' . $position->getAccuracy()), 'alert');
             }
             $response->addLink(Model\LinkGenerator::CHECKPOINT);
 

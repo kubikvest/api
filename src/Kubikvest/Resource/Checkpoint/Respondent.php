@@ -53,7 +53,8 @@ class Respondent implements \Kubikvest\Resource\Respondent
 
         if ($this->response->getError() instanceof Error && $this->response->getError()->isStatus()) {
             $data['error'] = [
-                'msg' => $this->response->getError()->getMsg(),
+                'msg'  => $this->response->getError()->getMsg(),
+                'type' => $this->response->getError()->getType(),
             ];
 
             $headers = [
