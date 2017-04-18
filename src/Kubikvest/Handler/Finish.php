@@ -56,8 +56,9 @@ class Finish implements Handler
         $user->groupId = null;
         $this->app['user.manager']->update($user);
 
+        $interval = (new \DateTime())->diff($nGroup->getStartPoint());
         return new JsonResponse([
-            'time' => $nGroup->getStartPoint()->format('hh:mm'),
+            'time' => $interval->format('h:m'),
         ], JsonResponse::HTTP_OK);
     }
 }
