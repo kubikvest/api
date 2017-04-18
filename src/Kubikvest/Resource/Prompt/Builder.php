@@ -54,7 +54,7 @@ class Builder
             if ($k == 0) {
                 $t = "";
             }
-            $d .= isset($v['description']) ? "<mark>" . $t . "</mark><br>" . $v['description'] . "<br><br>" : "";
+            $d .= isset($v['description']) ? '<section class="large-12 small-12 columns card end"><h4 class="head-prompt">' . $t . "</h4>" . $v['description'] . "</section>" : "";
             if ($since->i >= $k) {
                 $p->setTimer($k);
                 $p->setDescription($d);
