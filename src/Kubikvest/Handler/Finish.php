@@ -18,6 +18,7 @@
 
 namespace Kubikvest\Handler;
 
+use Kubikvest\Model\LinkGenerator;
 use Kubikvest\Model\Uuid;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -56,8 +57,12 @@ class Finish implements Handler
         $user->groupId = null;
         $this->app['user.manager']->update($user);
 
+        $links['list_quest'] = $this->app['link.gen']->getLink(LinkGenerator::LIST_QUEST, $this->app['user']);
+
         $interval = (new \DateTime())->diff($nGroup->getStartPoint());
         return new JsonResponse([
+            't'     => $this->app['link.gen']->getToken($this->app['user']),
+            'links' => $links,
             'time' => $interval->format('%H:%I:%S'),
         ], JsonResponse::HTTP_OK);
     }
