@@ -18,9 +18,11 @@
 
 namespace Kubikvest\Handler;
 
+use Kubikvest\Model\Uuid;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Kubikvest\Resource;
 
 class Finish implements Handler
 {
@@ -39,9 +41,12 @@ class Finish implements Handler
         /**
          * @var \Kubikvest\Model\User  $user
          * @var \Kubikvest\Model\Group $group
+         * @var Resource\Group\Builder $groupBuilder
          */
         $user = $this->app['user'];
         $group = $this->app['group.manager']->get($user->groupId);
+        $groupBuilder = $this->app[Resource\Group\Builder::class];
+        $nGroup = $groupBuilder->build(new Uuid($user->groupId));
 
         if (! $group->isEmpty()) {
             $group->active = false;
@@ -51,6 +56,8 @@ class Finish implements Handler
         $user->groupId = null;
         $this->app['user.manager']->update($user);
 
-        return new JsonResponse([], JsonResponse::HTTP_OK);
+        return new JsonResponse([
+            'time' => $nGroup->getStartPoint()->format('hh:mm'),
+        ], JsonResponse::HTTP_OK);
     }
 }
