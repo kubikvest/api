@@ -58,7 +58,7 @@ class Finish implements Handler
 
         $interval = (new \DateTime())->diff($nGroup->getStartPoint());
         return new JsonResponse([
-            'time' => $interval->format('%h:%m'),
+            'time' => $interval->format('%h:%i'),
         ], JsonResponse::HTTP_OK);
     }
 }
