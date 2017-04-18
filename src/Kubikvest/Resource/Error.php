@@ -22,6 +22,10 @@ class Error
 {
     private $status;
     private $msg;
+    /**
+     * @var string
+     */
+    private $type;
 
     /**
      * Error constructor.
@@ -29,10 +33,11 @@ class Error
      * @param bool   $status
      * @param string $msg
      */
-    public function __construct($status, $msg = "")
+    public function __construct($status, $msg = "", $type = "")
     {
         $this->status = $status;
         $this->msg    = $msg;
+        $this->type   = $type;
     }
 
     /**
@@ -76,9 +81,26 @@ class Error
             return [
                 'status' => $this->status,
                 'msg'    => $this->msg,
+                'type'   => $this->type,
             ];
         }
 
         return [];
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
     }
 }
