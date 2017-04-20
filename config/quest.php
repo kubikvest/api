@@ -853,19 +853,19 @@ return [
          */
         '16a4f9df-e636-4cfc-ae32-910c0a20ba03' => [
             'title'       => 'Test title start point',
-            'description' => 'Test point start description',
+            'description' => 'точки как есть',
             'coords' => [
-                'latitude'  => [60.983826, 60.983902],
-                'longitude' => [25.658975, 25.659115],
+                'latitude'  => [58.5420, 58.5422],
+                'longitude' => [31.2215, 31.2217],
             ],
             'prompt' => [],
         ],
         'd7e9f433-7f21-47f0-b322-b8ef4af03113' => [
             'title'       => 'Test title first point',
-            'description' => 'Test point first description',
+            'description' => 'точки +-2',
             'coords' => [
-                'latitude'  => [60.983826, 60.983902],
-                'longitude' => [25.658975, 25.659115],
+                'latitude'  => [58.5418, 58.5424],
+                'longitude' => [31.2213, 31.2219],
             ],
             'prompt' => [
                 20 => 'Test first prompt',
@@ -875,10 +875,10 @@ return [
         ],
         'ddc3ec2e-9d11-4c26-96ff-620788af9e37' => [
             'title'       => 'Test title second point',
-            'description' => 'Test point second description',
+            'description' => 'одна точка с радиусом',
             'coords' => [
-                'latitude'  => [60.983826, 60.983902],
-                'longitude' => [25.658975, 25.659115],
+                'latitude'  => [58.542164, 10],
+                'longitude' => [31.221669, 10],
             ],
             'prompt' => [
                 20 => 'Test first prompt',
