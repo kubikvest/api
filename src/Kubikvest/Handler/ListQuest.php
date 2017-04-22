@@ -30,8 +30,8 @@ class ListQuest implements Handler
      */
     private $app;
     private $excludeUsers = [
-        380117337 => 0,
-        1222731   => 1,
+        //380117337 => 0,
+        1222731   => 0,
     ];
 
     public function __construct(Application $app)
@@ -53,7 +53,7 @@ class ListQuest implements Handler
             array_shift($quests);
         }
 
-        if (!isset($user->uid)) {
+        if (!isset($this->excludeUsers[$user->uid])) {
             unset($quests['d53c9c0c-75dc-4816-862f-20913b1cdd19']);
             unset($quests['515ca01a-7b22-4f16-aa3e-7f0da736331d']);
         }
