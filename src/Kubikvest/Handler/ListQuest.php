@@ -33,6 +33,10 @@ class ListQuest implements Handler
         //380117337 => 0,
         1222731   => 0,
     ];
+    private $testQuests = [
+        'd53c9c0c-75dc-4816-862f-20913b1cdd19' => 0,
+        '515ca01a-7b22-4f16-aa3e-7f0da736331d' => 0,
+    ];
 
     public function __construct(Application $app)
     {
@@ -53,12 +57,10 @@ class ListQuest implements Handler
             array_shift($quests);
         }
 
-        if (!isset($this->excludeUsers[$user->uid])) {
-            unset($quests['d53c9c0c-75dc-4816-862f-20913b1cdd19']);
-            unset($quests['515ca01a-7b22-4f16-aa3e-7f0da736331d']);
-        }
-
         foreach ($quests as $item) {
+            if (!isset($this->excludeUsers[$user->uid]) && isset($this->testQuests[$item->questId])) {
+                continue;
+            }
             /**
              * @var \Kubikvest\Model\Quest $item
              */
