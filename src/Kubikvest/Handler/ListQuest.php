@@ -30,8 +30,10 @@ class ListQuest implements Handler
      */
     private $app;
     private $excludeUsers = [
-        //380117337 => 0,
+        380117337 => 0,
         1222731   => 0,
+        240409434 => 0,
+        246265203 => 0,
     ];
     private $testQuests = [
         'd53c9c0c-75dc-4816-862f-20913b1cdd19' => 0,
