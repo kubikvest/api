@@ -18,7 +18,7 @@
     "guzzlehttp/guzzle": "6.2.1",
     "packaged/querybuilder":"0.16.1",
     "ramsey/uuid": "^3.5",
-    "monolog/monolog": "^1.21",
+    "monolog/monolog": "1.22.1",
     "imega/formatter": "^0.0.4"
   },
   "require-dev": {
