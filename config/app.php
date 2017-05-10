@@ -79,6 +79,7 @@ return [
         $logger = new Monolog\Logger('kubikvest');
         $logger->setHandlers([
             new Monolog\Handler\StreamHandler('php://stdout'),
+            new Monolog\Handler\SlackWebhookHandler(getenv('VK_WEBHOOK'), 'kubik_walkers', 'kubik'),
         ]);
 
         return $logger;
