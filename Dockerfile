@@ -20,6 +20,7 @@ RUN echo "@main http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repo
         php7-openssl@community \
         php7-json@community \
         php7-pdo@community \
+        php7-curl@community \
         tzdata && \
         cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
         echo "Europe/Moscow" >  /etc/timezone && \
