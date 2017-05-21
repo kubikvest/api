@@ -129,6 +129,7 @@ deploy: composer destroy build
 		-e URI_OAUTH_VK=$(URI_OAUTH_VK) \
 		-e URL=$(URL) \
 		-e KEY=$(KEY) \
+		-e VK_WEBHOOK=$(VK_WEBHOOK) \
 		kubikvest/api \
 		php-fpm7 -F \
 			-d error_reporting=E_ERROR \
