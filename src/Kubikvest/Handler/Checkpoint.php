@@ -115,7 +115,7 @@ class Checkpoint implements Handler
 
         $req = $this->app['request.content'];
         if (isset($req['point_id']) && $req['point_id'] != $point->getPointId()->getValue()) {
-            $this->app['logger']->log(\Psr\Log\LogLevel::INFO, 'Повторный запрос', []);
+            $this->app['logger']->log(\Psr\Log\LogLevel::CRITICAL, 'Повторный запрос', []);
             if ($group->active) {
                 $response->finish = false;
                 $response->addLink(Model\LinkGenerator::TASK);
@@ -130,8 +130,24 @@ class Checkpoint implements Handler
         if (!$validator->validate()) {
             if ((new Validator\PointIncludedAccuracyRange($position))->validate()) {
                 $response->setError(new Resource\Error(true, 'Не верное место отметки.', 'alert'));
+                $this->app['logger']->log(
+                    \Psr\Log\LogLevel::CRITICAL,
+                    'Не верное место отметки.',
+                    [
+                        'name' => $user->getProvider()->name,
+                        'id' => $user->getProvider()->uid,
+                    ]
+                );
             } else {
                 $response->setError(new Resource\Error(true, 'Большая погрешность GPS ' . $position->getAccuracy(), 'alert'));
+                $this->app['logger']->log(
+                    \Psr\Log\LogLevel::CRITICAL,
+                    'Большая погрешность GPS ' . $position->getAccuracy(),
+                    [
+                        'name' => $user->getProvider()->name,
+                        'id' => $user->getProvider()->uid,
+                    ]
+                );
             }
             $response->addLink(Model\LinkGenerator::CHECKPOINT);
 
@@ -148,6 +164,14 @@ class Checkpoint implements Handler
             $groupUpdater->update($group);
             $response->finish = true;
             $response->addLink(Model\LinkGenerator::FINISH);
+            $this->app['logger']->log(
+                \Psr\Log\LogLevel::NOTICE,
+                'Игрок финишировал.',
+                [
+                    'name' => $user->getProvider()->name,
+                    'id' => $user->getProvider()->uid,
+                ]
+            );
         } else {
             $group->setPointId((new Resource\Group\NextPoint())->nextPoint($quest, $point));
             $group->setStartPoint(new \DateTime());
@@ -156,10 +180,12 @@ class Checkpoint implements Handler
         }
 
         $this->app['logger']->log(
-            \Psr\Log\LogLevel::INFO,
+            \Psr\Log\LogLevel::NOTICE,
             'Пройдена точка',
             [
                 'finish' => $response->finish,
+                'name'   => $user->getProvider()->name,
+                'id'     => $user->getProvider()->uid,
             ]
         );
 
