@@ -6,7 +6,7 @@ error_log = /proc/self/fd/2
 log_level = notice
 emergency_restart_threshold = 10
 emergency_restart_interval = 1m
-process_control_timeout = 10s
+process_control_timeout = 100s
 daemonize = no
 
 [www]
@@ -20,7 +20,7 @@ pm.min_spare_servers = 1
 pm.max_spare_servers = 3
 pm.max_requests = 1000
 access.log = /proc/1/fd/2
-request_terminate_timeout = 35s
+request_terminate_timeout = 350s
 chdir = /
 catch_workers_output = yes
 php_admin_value[error_log] = /proc/self/fd/2
@@ -39,8 +39,8 @@ implicit_flush = Off
 serialize_precision = 17
 zend.enable_gc = On
 expose_php = On
-max_execution_time = 30
-max_input_time = 60
+max_execution_time = 300
+max_input_time = 600
 memory_limit = 128M
 error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
 display_errors = Off
@@ -65,7 +65,7 @@ upload_max_filesize = 2M
 max_file_uploads = 20
 allow_url_fopen = On
 allow_url_include = Off
-default_socket_timeout = 60
+default_socket_timeout = 600
 date.timezone = "Europe/Moscow"
 
 [CLI Server]
