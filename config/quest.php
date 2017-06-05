@@ -505,8 +505,8 @@ return [
             ],
         ],
         'de9f4fb0-6501-4a8d-a750-8df7e106fed0' => [
-            'title' => 'Найдите еще одну десткую площадку за <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/ab13aebb-6500-4bb3-9f5f-6f58200ab843.jpg">',
-            'description' => 'Задание №4',
+            'title' => 'Задание №4',
+            'description' => 'Найдите еще одну десткую площадку за <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/ab13aebb-6500-4bb3-9f5f-6f58200ab843.jpg">',
             'coords' => [
                 'latitude'  => [58.5360, 58.5366],
                 'longitude' => [31.2899, 31.2913],
