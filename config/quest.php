@@ -59,7 +59,7 @@ return [
         '1227cea8-40a2-4504-aa65-b9fa7dd770b3' => [
             'title' => 'Праздник №1158',
             'description' => 'Сложность-средняя/ротяженность-около 4,5 км/Работает-09:00-23:00',
-            'picture' => '/img/8fb12c2e-9454-465a-a86d-d1b33e7c72cc.jpg',
+            'picture' => '/img/01422aec-8eec-4f50-8fcd-943e0e826fcf.png',
             'points' => [
                 'ddf1c1e7-a451-42cf-8c30-fc0053ac669b',
                 '8848b93c-7ad3-48df-98a4-2c61e86fa81b',
