@@ -817,8 +817,8 @@ return [
             'title' => 'Задание №1',
             'description' => '1 задание рынок <img src="https://raw.githubusercontent.com/kubikvest/front/gh-pages/img/ab13aebb-6500-4bb3-9f5f-6f58200ab843.jpg">',
             'coords' => [
-                'latitude'  => [58.5408, 58.5410],
-                'longitude' => [31.2233, 31.2244],
+                'latitude'  => [58.5266, 58.5290],
+                'longitude' => [31.2514, 31.2538],
             ],
             'prompt' => [
                 0 => [
@@ -848,8 +848,8 @@ return [
             'title' => 'Задание №2',
             'description' => '2 задание остановка',
             'coords' => [
-                'latitude'  => [58.5423, 58.5425],
-                'longitude' => [31.2263, 31.2271],
+                'latitude'  => [58.5210, 58.5228],
+                'longitude' => [31.2970, 31.2988],
             ],
             'prompt' => [
                 0 => [
@@ -878,8 +878,8 @@ return [
             'title' => 'Задание №3',
             'description' => '3 задание русь',
             'coords' => [
-                'latitude'  => [58.5330, 58.5334],
-                'longitude' => [31.2681, 31.2685],
+                'latitude'  => [58.5171, 58.5183],
+                'longitude' => [31.2935, 31.2947],
             ],
             'prompt' => [
                 0 => [
@@ -908,8 +908,8 @@ return [
             'title' => 'Задание №4',
             'description' => '4 задание обратно остановка https://goo.gl/5gPxDn',
             'coords' => [
-                'latitude'  => [58.5351, 58.5354],
-                'longitude' => [31.2669, 31.2673],
+                'latitude'  => [58.5186, 58.5192],
+                'longitude' => [31.2873, 31.2879],
             ],
             'prompt' => [
                 0 => [
@@ -938,8 +938,8 @@ return [
             'title' => 'Задание №5 (последнее)',
             'description' => '5 задание дом https://goo.gl/5yRxq4',
             'coords' => [
-                'latitude'  => [58.5420, 58.5422],
-                'longitude' => [31.2215, 31.2225],
+                'latitude'  => [58.5189, 58.5195],
+                'longitude' => [31.2837, 31.2843],
             ],
             'prompt' => [
                 0 => [
