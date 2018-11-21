@@ -1,4 +1,4 @@
-FROM alpine:3.4
+FROM alpine:3.8
 
 VOLUME ["/app"]
 
@@ -9,18 +9,16 @@ ENV VK_CLIENT_ID="111" \
 
 COPY . /app
 
-RUN echo "@main http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
-    echo "@community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
-    apk add --update \
-        php7-fpm@community \
-        php7-zlib@community \
-        php7-pdo_mysql@community \
-        php7-dom@community \
-        libressl@main \
-        php7-openssl@community \
-        php7-json@community \
-        php7-pdo@community \
-        php7-curl@community \
+RUN apk add --update \
+        php7-fpm \
+        php7-zlib \
+        php7-pdo_mysql \
+        php7-dom \
+        libressl \
+        php7-openssl \
+        php7-json \
+        php7-pdo \
+        php7-curl \
         tzdata && \
         cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
         echo "Europe/Moscow" >  /etc/timezone && \
