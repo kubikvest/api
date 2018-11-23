@@ -908,8 +908,8 @@ return [
             'title' => 'Задание №4',
             'description' => '4 задание Ильина московская https://goo.gl/5gPxDn',
             'coords' => [
-                'latitude'  => [58.5186, 58.5192],
-                'longitude' => [31.2873, 31.2879],
+                'latitude'  => [58.5188, 58.5190],
+                'longitude' => [31.2874, 31.2880],
             ],
             'prompt' => [
                 0 => [
@@ -938,8 +938,8 @@ return [
             'title' => 'Задание №5 ганза фонтан (последнее)',
             'description' => '5 задание дом https://goo.gl/5yRxq4',
             'coords' => [
-                'latitude'  => [58.5189, 58.5195],
-                'longitude' => [31.2837, 31.2843],
+                'latitude'  => [58.5191, 58.5193],
+                'longitude' => [31.2837, 31.2841],
             ],
             'prompt' => [
                 0 => [
